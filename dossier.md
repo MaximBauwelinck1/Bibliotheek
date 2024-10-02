@@ -4,8 +4,8 @@
 > Lees <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet> om te weten hoe een Markdown-bestand opgemaakt moet worden.
 > Verwijder alle instructies (lijnen die starten met >).
 
-- Student: VOORNAAM NAAM
-- Studentennummer: xxxxxxxxx
+- Student: Maxim Bauwelinck
+- Studentennummer: 302041mb
 - E-mailadres: <mailto:voornaam.naam@student.hogent.be>
 - Demo: <DEMO_LINK_HIER>
 - GitHub-repository: <GITHUB_REPO_LINK_HIER>
