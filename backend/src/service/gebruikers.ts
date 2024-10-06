@@ -7,13 +7,15 @@ export const getAll = () => {
 };
 
 export const getById = (id: string)  => {
-  console.log('test'+id);
   return gebruikers.find((g) => g.id === id);
 };
 
 export const create = ({ voornaam, achternaam, geboortedatum,email,rol,hashedpwd }: any) => {
+  if(gebruikers.find((g) => g.voornaam === voornaam && g.achternaam === achternaam)){
+    return new Error('gebruiker bestaat al!');
+  }
   const salt = genSaltSync(10);
-  const salted_pwd = hashSync(hashedpwd,salt);
+  const hashed_password = hashSync(hashedpwd,salt);
   const nieuwegebruiker = {
     id: randomUUID(),
     voornaam,
@@ -21,7 +23,7 @@ export const create = ({ voornaam, achternaam, geboortedatum,email,rol,hashedpwd
     geboortedatum,
     email,
     rol,
-    salted_pwd,
+    hashed_password,
     salt,
   };
   gebruikers.push(nieuwegebruiker); 
