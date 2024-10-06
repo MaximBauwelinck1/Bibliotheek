@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import {gebruikers} from './../data/mock_data.js';
 import {hashSync,genSaltSync} from 'bcrypt-ts';
+import { getLogger } from '../core/logging.js';
 
 export const getAll = () => {
   return gebruikers;
@@ -27,6 +28,7 @@ export const create = ({ voornaam, achternaam, geboortedatum,email,rol,hashedpwd
     salt,
   };
   gebruikers.push(nieuwegebruiker); 
+  getLogger().info(`Gebruiker met id:${nieuwegebruiker.id} is aangemaakt.`);
   return nieuwegebruiker.id; 
 };
 

@@ -2,7 +2,6 @@
 import Koa from 'koa';
 import { getLogger } from './core/logging';
 import bodyParser from 'koa-bodyparser';
-import * as gebruikerService from './service/gebruikers';
 import installRest from './rest';
 
 const app = new Koa();
