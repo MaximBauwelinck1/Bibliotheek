@@ -2,18 +2,34 @@ import Router from '@koa/router';
 import * as gebruikerService from '../service/gebruikers';
 import type { Context } from 'koa';
 import { validate as isUuid } from 'uuid';
+import { getLogger } from '../core/logging';
+import { stringify } from 'querystring';
 
 const getAllGebruikers = async (ctx: Context) => {
   ctx.body = {
     gebruikers: gebruikerService.getAll(),
   };
+  getLogger().info('Alle gebruikers zijn opgevraagd.');
 };
 
 const createGebruiker = async (ctx: Context) => {
   const nieweGebruiker = gebruikerService.create({
     ...ctx.request.body,
   });
-  ctx.body = nieweGebruiker;
+  if(nieweGebruiker instanceof Error){
+    ctx.status = 400;
+    ctx.body ={ 
+      status: 'gefaald',
+      error: nieweGebruiker.message,
+    };
+    getLogger().error(
+      `Gefaald om gebruiker:${JSON.stringify(ctx.request.body)} aan te maken met foutboodschap:${nieweGebruiker}.`);
+  } else{
+    ctx.body = {
+      status: 'geslaagd',
+      gebruikerId: nieweGebruiker};
+    getLogger().info(`Gebruiker met id:${nieweGebruiker} is succesvol aangemaakt.`);
+  }
 };
 
 const getGebruikerById = async (ctx: Context) => {
@@ -30,7 +46,21 @@ const getGebruikerById = async (ctx: Context) => {
     ctx.body = { error: 'Invalid UUID' };
     return;
   }
-  ctx.body = gebruikerService.getById(ctx.params.id);
+  const opt_res = gebruikerService.getById(ctx.params.id);
+  if(opt_res instanceof Error){
+    ctx.status = 400;
+    ctx.body = {
+      status: 'gefaald',
+      foutboodschap: opt_res.message};
+    getLogger().info(opt_res);
+  } else{
+    ctx.body = {
+      status: 'geslaagd',
+      gebruiker: opt_res};
+    console.log(opt_res);
+    getLogger().info(`Gebruiker met id:${ctx.params.id} is geretourneerd.`);
+  }
+
 };
 
 export default (parent: Router) => {
