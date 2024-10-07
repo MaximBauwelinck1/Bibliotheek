@@ -3,7 +3,6 @@ import * as gebruikerService from '../service/gebruikers';
 import type { Context } from 'koa';
 import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
-import { stringify } from 'querystring';
 
 const getAllGebruikers = async (ctx: Context) => {
   ctx.body = {
@@ -57,7 +56,6 @@ const getGebruikerById = async (ctx: Context) => {
     ctx.body = {
       status: 'geslaagd',
       gebruiker: opt_res};
-    console.log(opt_res);
     getLogger().info(`Gebruiker met id:${ctx.params.id} is geretourneerd.`);
   }
 
