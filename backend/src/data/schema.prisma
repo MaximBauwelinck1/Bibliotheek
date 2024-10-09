@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Auteur {
+  id           String    @id @default(uuid()) @db.Uuid
+  voornaam     String    @db.VarChar(255)
+  achternaam   String    @db.VarChar(255)
+  geboortedatum DateTime
+  nationaliteit String   @db.VarChar(255)
+  biografie     String?  @db.VarChar(255)
+  aangemaakt    DateTime @default(now())
+  upgedate      DateTime @updatedAt
+  
+  Boeken       Boek[]    @relation("BoekAuteur")
+}
+
+model Boek {
+  id            String    @id @default(uuid()) @db.Uuid
+  ISBN          String    @unique
+  titel         String    @db.VarChar(255)
+  genre         String    @db.VarChar(100)
+  publicatie_datum DateTime?
+  taal          String    @db.VarChar(50)
+  paginas       Int
+  vrije_kopieen Int
+  totale_kopieen Int
+  beschrijving  String?   @db.VarChar(255)
+  cover_uri     String?   @db.VarChar(255)
+  aangemaakt    DateTime @default(now())
+  upgedate      DateTime @updatedAt
+
+  auteur_id     String
+  auteur        Auteur    @relation("BoekAuteur", fields: [auteur_id], references: [id])
+
+  BoekKopie     BoekKopie[] 
+}
+
+model BoekKopie {
+  id             String    @id @default(uuid()) @db.Uuid
+  boek_id        String    @db.VarChar(255)
+  status         String    @db.VarChar(50)
+  extra_informatie String? @db.VarChar(255)
+  aangemaakt     DateTime  @default(now())
+  upgedate       DateTime  @updatedAt
+
+  boek           Boek      @relation(fields: [boek_id], references: [id])
+
+  Reservaties    Reservatie[]
+}
+
+model Gebruiker {
+  id             String    @id @default(uuid()) @db.Uuid
+  voornaam       String    @db.VarChar(255)
+  achternaam     String    @db.VarChar(255)
+  geboortedatum  DateTime
+  email          String    @unique
+  rol            String    @db.VarChar(50)
+  hashed_password String   @db.VarChar(255)
+  salt           String    @db.VarChar(255)
+  aangemaakt     DateTime  @default(now())
+  upgedate       DateTime  @updatedAt
+
+  Reservaties    Reservatie[]
+}
+
+model Reservatie {
+  id             String    @id @default(uuid()) @db.Uuid
+  boek_kopie_id  String    @db.VarChar(255)
+  gebruiker_id   String    @db.VarChar(255)
+  startdatum     DateTime
+  einddatum      DateTime
+  status         String    @db.VarChar(50)
+
+  boek_kopie     BoekKopie @relation(fields: [boek_kopie_id], references: [id])
+  gebruiker      Gebruiker @relation(fields: [gebruiker_id], references: [id])
+}
