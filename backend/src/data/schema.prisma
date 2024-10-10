@@ -42,7 +42,7 @@ model Boek {
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt
 
-  auteur_id     String
+  auteur_id     String    @db.Uuid
   auteur        Auteur    @relation("BoekAuteur", fields: [auteur_id], references: [id])
 
   BoekKopie     BoekKopie[] 
@@ -50,7 +50,7 @@ model Boek {
 
 model BoekKopie {
   id             String    @id @default(uuid()) @db.Uuid
-  boek_id        String    @db.VarChar(255)
+  boek_id        String    @db.Uuid
   status         String    @db.VarChar(50)
   extra_informatie String? @db.VarChar(255)
   aangemaakt     DateTime  @default(now())
@@ -78,8 +78,8 @@ model Gebruiker {
 
 model Reservatie {
   id             String    @id @default(uuid()) @db.Uuid
-  boek_kopie_id  String    @db.VarChar(255)
-  gebruiker_id   String    @db.VarChar(255)
+  boek_kopie_id  String    @db.Uuid
+  gebruiker_id   String    @db.Uuid
   startdatum     DateTime
   einddatum      DateTime
   status         String    @db.VarChar(50)
