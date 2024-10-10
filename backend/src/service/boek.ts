@@ -1,43 +1,63 @@
 import { randomUUID } from 'crypto';
 import { prisma } from '../data';
 import {boeken} from './../data/mock_data.js';
+import { Console } from 'console';
 
 export const getAll = async () => {
   return prisma.boek.findMany();
 };
 
-export const getById = (id: string)  => {
-  const opt_boek = boeken.find((b) => b.id === id);
-  if(opt_boek == null){
-    return new Error(`Boek met id:${id} bestaat niet.`);
-  } else{
-    return opt_boek;
+export const getById = async (id: string)  => {
+
+  const boek = await prisma.boek.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!boek) {
+    throw new Error(`Boek met id:${id} bestaat niet.`);
   }
+
+  return boek;
+
 };
 
-export const create = ({ ISBN, titel, genre,publicatie_datum,taal,paginas,vrije_kopieën,totale_kopieën,beschrijving,
+export const create = async ({ ISBN, titel, genre,publicatie_datum,taal,
+  paginas,vrije_kopieën,totale_kopieën,beschrijving,
   cover_uri,aangemaakt,upgedate,auteur_id }: any) => {
-  if(boeken.find((b) => b.ISBN === ISBN || b.titel === titel)){
+  const opt_boek = await prisma.boek.findFirst({
+    where: {
+      OR:[
+        { ISBN},
+        {titel},
+      ],
+    },
+  });
+
+  if (opt_boek) {
     return new Error('boek met ISBN code of titel bestaat al!');
   }
-  const nieuwBoek = {
-    id: randomUUID(),
-    ISBN,
-    titel,
-    genre,
-    publicatie_datum,
-    taal,
-    paginas,
-    vrije_kopieën,
-    totale_kopieën,
-    beschrijving,
-    cover_uri,
-    aangemaakt,
-    upgedate,
-    auteur_id,
-  };
-  boeken.push(nieuwBoek); 
-  return nieuwBoek.id; 
+  
+  return prisma.boek.create({
+    data: {
+      id: randomUUID(),
+      ISBN,
+      titel,
+      genre,
+      publicatie_datum: new Date(publicatie_datum),
+      taal,
+      paginas,
+      vrije_kopieen: vrije_kopieën,
+      totale_kopieen: totale_kopieën,
+      beschrijving,
+      cover_uri,
+      aangemaakt,
+      upgedate,
+      auteur_id,
+    },
+  });
+
 };
 
 export const updateById = (

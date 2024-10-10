@@ -3,6 +3,7 @@ import * as boekenService from '../service/boek';
 import type { Context } from 'koa';
 import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
+import { stringify } from 'querystring';
 
 const getAllBoeken = async (ctx: Context) => {
   ctx.body = {
@@ -12,7 +13,7 @@ const getAllBoeken = async (ctx: Context) => {
 };
 
 const createBoek = async (ctx: Context) => {
-  const nieuwBoek = boekenService.create({
+  const nieuwBoek = await boekenService.create({
     ...ctx.request.body,
   });
   if(nieuwBoek instanceof Error){
@@ -61,7 +62,7 @@ const getBoekById = async (ctx: Context) => {
     ctx.body = { error: 'Invalid UUID' };
     return;
   }
-  const opt_res = boekenService.getById(ctx.params.id);
+  const opt_res =await  boekenService.getById(ctx.params.id);
   if(opt_res instanceof Error){
     ctx.status = 400;
     ctx.body = {
