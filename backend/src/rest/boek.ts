@@ -6,7 +6,7 @@ import { getLogger } from '../core/logging';
 
 const getAllBoeken = async (ctx: Context) => {
   ctx.body = {
-    boeken: boekenService.getAll(),
+    boeken: await boekenService.getAll(),
   };
   getLogger().info('Alle boeken zijn opgevraagd.');
 };

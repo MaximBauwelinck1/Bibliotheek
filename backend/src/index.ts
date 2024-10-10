@@ -3,12 +3,16 @@ import Koa from 'koa';
 import { getLogger } from './core/logging';
 import bodyParser from 'koa-bodyparser';
 import installRest from './rest';
-
-const app = new Koa();
-app.use(bodyParser()); 
+import { initializeData } from './data';
   
-installRest(app);
+async function main(): Promise<void> {
+  const app = new Koa();
+  installRest(app);
+  app.use(bodyParser()); 
+  await initializeData(); 
+  app.listen(9000, () => {
+    getLogger().info('🚀 Server listening on http://127.0.0.1:9000');
+  });
+}
+main();
 
-app.listen(9000, () => {
-  getLogger().info('🚀 Server listening on http://127.0.0.1:9000');
-});

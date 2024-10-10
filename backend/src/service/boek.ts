@@ -1,8 +1,9 @@
 import { randomUUID } from 'crypto';
+import { prisma } from '../data';
 import {boeken} from './../data/mock_data.js';
 
-export const getAll = () => {
-  return boeken;
+export const getAll = async () => {
+  return prisma.boek.findMany();
 };
 
 export const getById = (id: string)  => {
