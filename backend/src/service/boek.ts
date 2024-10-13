@@ -3,8 +3,38 @@ import { prisma } from '../data';
 import {boeken} from './../data/mock_data.js';
 import { Console } from 'console';
 
+const BOEKEN_SELECT = {
+  id: true,
+  ISBN: true,
+  titel: true,
+  genre: true,
+  publicatie_datum: true,
+  taal: true,
+  paginas:true,
+  vrije_kopieen: true,
+  totale_kopieen: true,
+  beschrijving: true,
+  cover_uri: true,
+  aangemaakt: true,
+  upgedate: true,
+  auteur: {
+    select: {
+      id: true,
+      voornaam: true,
+      achternaam: true,
+      geboortedatum: true,
+      nationaliteit: true,
+      biografie: true,
+      aangemaakt: true,
+      upgedate: true,
+    },
+  },
+};
+
 export const getAll = async () => {
-  return prisma.boek.findMany();
+  return prisma.boek.findMany({
+    select: BOEKEN_SELECT,
+  });
 };
 
 export const getById = async (id: string)  => {
