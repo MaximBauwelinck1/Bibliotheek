@@ -3,6 +3,7 @@ import * as gebruikerService from '../service/gebruikers';
 import type { Context } from 'koa';
 import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
+import type { BibliotheekAppContext, BibliotheekAppState, KoaRouter } from '../types/koa';
 
 const getAllGebruikers = async (ctx: Context) => {
   ctx.body = {
@@ -61,8 +62,8 @@ const getGebruikerById = async (ctx: Context) => {
 
 };
 
-export default (parent: Router) => {
-  const router = new Router({
+export default (parent: KoaRouter) => {
+  const router = new Router<BibliotheekAppState, BibliotheekAppContext>({
     prefix: '/gebruikers',
   });
 

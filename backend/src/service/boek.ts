@@ -96,7 +96,7 @@ const deleteAuteurIndienNietGebruikt = async(auteurId : string) :Promise<void> =
   }
 };
 
-export const create = async (new_boek: BoekCreateInput): Promise<Boek| Error> => {
+export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
   const opt_boek = await prisma.boek.findFirst({
     where: {
       OR:[
@@ -107,7 +107,7 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek| Error> =>
   });
 
   if (opt_boek) {
-    return new Error('boek met ISBN code of titel bestaat al!');
+    throw new Error('boek met ISBN code of titel bestaat al!');
   }
 
   const auteurId = (await createAuteurIndienNietBestaat(
@@ -135,7 +135,7 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek| Error> =>
 
 };
 
-export const deleteById = async (id: UUID): Promise<string | Error> => {
+export const deleteById = async (id: UUID): Promise<string> => {
   
   const opt_boek = await getById(id);
 
@@ -148,7 +148,7 @@ export const deleteById = async (id: UUID): Promise<string | Error> => {
     deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
     return opt_boek.id;
   } else {
-    return new Error(`Boek met id:${id} bestaat niet.`);
+    throw new Error(`Boek met id:${id} bestaat niet.`);
   }
   
   ;

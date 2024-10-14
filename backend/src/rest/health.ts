@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import * as healthService from '../service/health';
 import type { Context } from 'koa';
+import type { BibliotheekAppContext, BibliotheekAppState, KoaRouter } from '../types/koa';
 
 const ping = async (ctx: Context) => {
   ctx.status = 200;
@@ -12,8 +13,8 @@ const getDetails = async (ctx: Context) => {
   ctx.body = healthService.getDetails();
 };
 
-export default (parent: Router) => {
-  const router = new Router({ prefix: '/health' });
+export default (parent: KoaRouter) => {
+  const router = new Router<BibliotheekAppState, BibliotheekAppContext>({ prefix: '/health' });
 
   router.get('/ping', ping);
   router.get('/details', getDetails);

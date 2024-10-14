@@ -1,4 +1,4 @@
-import type { Entity } from './common';
+import type { Entity, ListResponse } from './common';
 import type { Auteur } from './auteur';
 
 export interface Boek extends Entity {
@@ -33,3 +33,11 @@ export interface BoekCreateInput {
 }
   
 export interface BoekUpdateInput extends BoekCreateInput {}
+
+export interface CreateBoekRequest extends BoekCreateInput {}
+export interface UpdateBoekRequest extends BoekUpdateInput {}
+
+export interface GetAllBoekenResponse extends ListResponse<Boek> {}
+export interface GetBoekByIdResponse extends Boek {}
+export interface CreateBoekResponse extends GetBoekByIdResponse {}
+export interface UpdateBoekResponse extends GetBoekByIdResponse {}
