@@ -1,9 +1,7 @@
 import type { UUID } from 'crypto';
 import { randomUUID } from 'crypto';
 import { prisma } from '../data';
-import {boeken} from './../data/mock_data.js';
-import { getLogger } from 'bibliotheek_app/src/core/logging';
-import type { Boek, BoekCreateInput } from '../types/boek';
+import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
 
 const BOEKEN_SELECT = {
@@ -83,7 +81,7 @@ const createAuteurIndienNietBestaat = async (auteur: AuteurCreateInput) : Promis
   }
 };
 
-const deleteAuteurIndienNietGebruikt = async(auteurId : string) =>{
+const deleteAuteurIndienNietGebruikt = async(auteurId : string) :Promise<void> =>{
   const boeken = await prisma.boek.findMany({
     where: {
       auteur_id: auteurId,
@@ -98,16 +96,14 @@ const deleteAuteurIndienNietGebruikt = async(auteurId : string) =>{
   }
 };
 
-export const create = async ({ ISBN, titel, genre,publicatie_datum,taal,
-  paginas,vrije_kopieen,totale_kopieen,beschrijving,
-  cover_uri,auteur }: BoekCreateInput): Promise<Boek| Error> => {
+export const create = async (new_boek: BoekCreateInput): Promise<Boek| Error> => {
   const opt_boek = await prisma.boek.findFirst({
     where: {
       OR:[
-        { ISBN},
-        {titel},
+        { ISBN: new_boek.ISBN},
+        {titel: new_boek.titel},
       ],
-    },
+    }, 
   });
 
   if (opt_boek) {
@@ -115,21 +111,21 @@ export const create = async ({ ISBN, titel, genre,publicatie_datum,taal,
   }
 
   const auteurId = (await createAuteurIndienNietBestaat(
-    auteur.voornaam,auteur.achternaam,auteur.geboortedatum,auteur.nationaliteit,auteur.biografie)).id;
+    new_boek.auteur)).id;
   
   return prisma.boek.create({
     data: {
       id: randomUUID(),
-      ISBN,
-      titel,
-      genre,
-      publicatie_datum: new Date(publicatie_datum),
-      taal,
-      paginas,
-      vrije_kopieen,
-      totale_kopieen,
-      beschrijving,
-      cover_uri,
+      ISBN: new_boek.ISBN,
+      titel: new_boek.titel,
+      genre: new_boek.genre,
+      publicatie_datum: new Date(new_boek.publicatie_datum),
+      taal: new_boek.taal,
+      paginas: new_boek.paginas,
+      vrije_kopieen: new_boek.vrije_kopieen,
+      totale_kopieen: new_boek.totale_kopieen,
+      beschrijving: new_boek.beschrijving,
+      cover_uri: new_boek.cover_uri,
       aangemaakt:new Date(),
       upgedate:new Date(),
       auteur_id: auteurId,
@@ -158,31 +154,29 @@ export const deleteById = async (id: UUID): Promise<string | Error> => {
   ;
 };
 
-export const updateById = async (id: UUID, { ISBN, titel, genre,publicatie_datum,taal,
-  paginas,vrije_kopieen,totale_kopieen,beschrijving,
-  cover_uri,auteur }: Boek): Promise<Boek> => {
+export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promise<Boek> => {
   const opt_boek = await getById(id);
   if(opt_boek instanceof Error){
     return opt_boek;
   } else{
     const auteurId = (await createAuteurIndienNietBestaat(
-      auteur.voornaam,auteur.achternaam,auteur.geboortedatum,auteur.nationaliteit,auteur.biografie)).id;
+      updated_boek.auteur)).id;
         
     const upgedate_boek = await prisma.boek.update({
       where: {
         id,
       },
       data: {
-        ISBN,
-        titel,
-        genre,
-        publicatie_datum: new Date(publicatie_datum),
-        taal,
-        paginas,
-        vrije_kopieen,
-        totale_kopieen,
-        beschrijving,
-        cover_uri,
+        ISBN: updated_boek.ISBN,
+        titel: updated_boek.titel,
+        genre: updated_boek.genre,
+        publicatie_datum: new Date(updated_boek.publicatie_datum),
+        taal: updated_boek.taal,
+        paginas: updated_boek.paginas,
+        vrije_kopieen: updated_boek.vrije_kopieen,
+        totale_kopieen: updated_boek.totale_kopieen,
+        beschrijving: updated_boek.beschrijving,
+        cover_uri: updated_boek.cover_uri,
         upgedate:new Date(),
         auteur_id: auteurId,
       },
