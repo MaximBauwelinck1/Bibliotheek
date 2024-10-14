@@ -4,6 +4,7 @@ import type { Context } from 'koa';
 import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
 import { stringify } from 'querystring';
+import type { UUID } from 'crypto';
 
 const getAllBoeken = async (ctx: Context) => {
   ctx.body = {
@@ -27,14 +28,14 @@ const createBoek = async (ctx: Context) => {
   } else{
     ctx.body = {
       status: 'geslaagd',
-      boekId: nieuwBoek};
+      boek: nieuwBoek};
     getLogger().info(`boek met id:${nieuwBoek} is succesvol aangemaakt.`);
   }
 };
 
 const deleteBoekById= async (ctx: Context) => {
-  const id = ctx.params.id;
-  const opt_res = boekenService.deleteById(id);
+  const id : UUID = ctx.params.id;
+  const opt_res = await boekenService.deleteById(id);
   if(opt_res instanceof Error){
     ctx.status = 400;
     ctx.body = {
@@ -49,7 +50,7 @@ const deleteBoekById= async (ctx: Context) => {
   }
 };
 const getBoekById = async (ctx: Context) => {
-  const id = ctx.params.id;
+  const id : UUID = ctx.params.id;
 
   if (!id) {
     ctx.status = 400;
@@ -77,6 +78,23 @@ const getBoekById = async (ctx: Context) => {
   }
 
 };
+const updateBoekById = async( ctx: Context) => {
+  const id : UUID = ctx.params.id;
+
+  const opt_res =await  boekenService.updateById(id, {...ctx.request.body});
+  if(opt_res instanceof Error){
+    ctx.status = 400;
+    ctx.body = {
+      status: 'gefaald',
+      foutboodschap: opt_res.message};
+    getLogger().error(opt_res);
+  } else{
+    ctx.body = {
+      status: 'geslaagd',
+      boek: opt_res};
+    getLogger().info(`boek met id:${ctx.params.id} is succesvol geupdate.`);
+  }
+};
 
 export default (parent: Router) => {
   const router = new Router({
@@ -87,6 +105,7 @@ export default (parent: Router) => {
   router.post('/', createBoek);
   router.get('/:id', getBoekById);
   router.delete('/:id', deleteBoekById);
+  router.put('/:id',updateBoekById);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };
