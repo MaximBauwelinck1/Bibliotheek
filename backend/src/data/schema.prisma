@@ -32,12 +32,12 @@ model Boek {
   ISBN          String    @unique
   titel         String    @db.VarChar(255)
   genre         String    @db.VarChar(100)
-  publicatie_datum DateTime?
+  publicatie_datum DateTime
   taal          String    @db.VarChar(50)
   paginas       Int
   vrije_kopieen Int
   totale_kopieen Int
-  beschrijving  String?   @db.VarChar(255)
+  beschrijving  String   @db.VarChar(255)
   cover_uri     String?   @db.VarChar(255)
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt

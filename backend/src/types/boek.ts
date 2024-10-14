@@ -1,0 +1,35 @@
+import type { Entity } from './common';
+import type { Auteur } from './auteur';
+
+export interface Boek extends Entity {
+  ISBN: string;             
+  titel: string;            
+  genre: string;            
+  publicatie_datum: Date;   
+  taal: string;             
+  paginas: number;          
+  vrije_kopieen: number;    
+  totale_kopieen: number;   
+  beschrijving: string ;     
+  cover_uri: string | null;       
+  aangemaakt: Date;         
+  upgedate: Date;          
+  auteur: Pick<Auteur, 'id'|'voornaam'|'achternaam'|'geboortedatum'|'nationaliteit'|'biografie'|
+  'aangemaakt'|'upgedate'>;   
+}
+
+export interface BoekCreateInput {
+  ISBN: string;             
+  titel: string;            
+  genre: string;            
+  publicatie_datum: Date;   
+  taal: string;             
+  paginas: number;          
+  vrije_kopieen: number;    
+  totale_kopieen: number;   
+  beschrijving: string ;     
+  cover_uri: string | null;                
+  auteur: Pick<Auteur, 'voornaam'|'achternaam'|'geboortedatum'|'nationaliteit'|'biografie'>;  
+}
+  
+export interface BoekUpdateInput extends BoekCreateInput {}
