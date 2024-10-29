@@ -1,32 +1,19 @@
-import '../../css/Boek.css';
-
-const Boek = (prop) => {
+const Book = (props) => {
   return (
-    <div className="boek_container">
-      <h1 className="boek_titel">{prop.titel}</h1>
-
+    <div className="boek_card">
       <div className="cover_container">
-        <div className="cover">
-          {prop.cover_uri ? <img src={prop.cover_uri} alt="Cover" className="cover_img" /> : 'Cover Image'}
-        </div>
-
-        <div className="auteur_info">
-          <div className="auteur_foto">
-            {prop.authorPhoto ? <img src={prop.authorPhoto} alt="Author" className="author_img" /> : 'Author Photo'}
-          </div>
-          <div className="auteur_description">
-            <h3>{prop.voornaam + prop.achternaam}</h3>
-            <p>{prop.biografie}</p>
-          </div>
-        </div>
+        {props.cover_uri ? (
+          <img src={props.cover_uri} alt={`${props.titel} cover`} className="cover_img" />
+        ) : (
+          <div className="placeholder_cover">Cover Image</div>
+        )}
       </div>
-
-      <div className="description_container">
-        <h2>beschrijving</h2>
-        <p>{prop.beschrijving}</p>
+      <div className="boek_info">
+        <h4 className="boek_titel">{props.titel}</h4>
+        <p className="boek_auteur">{props.voornaam} {props.achternaam}</p>
       </div>
     </div>
   );
 };
 
-export default Boek;
+export default Book;

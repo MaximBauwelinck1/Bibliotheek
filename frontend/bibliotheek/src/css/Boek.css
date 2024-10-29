@@ -1,69 +1,70 @@
-.boek_container {
-    width: 80%;
-    margin: auto;
-    border: 1px solid black;
-    padding: 20px;
-    margin-left: 5em;
-    border-radius: 1em;
-    background-color:lightcyan;
-  }
-  .grid{
+
+
+.boek_grid {
     display: grid;
-    grid-template-columns: repeat(3, 0.8fr); 
-    gap: 20px; 
+    grid-template-columns: repeat(auto-fill, minmax(120px, 2fr));
+    gap: 50px;
+    padding: 20px;
+    padding-left: 15em;
   }
-  .book_titel {
-    font-size: 2em;
-    text-align: left;
+  
+  .boek_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    max-width: 150px;
   }
   
   .cover_container {
-    display: flex;
-    margin-top: 20px;
-  }
-  
-  .cover {
     width: 100%;
-    height: 300px;
-    background-color: lightgray;
-    text-align: center;
+    height: 200px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
+    overflow: hidden;
   }
   
   .cover_img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-  
-  .auteur_info {
-    margin-left: 20px;
-    width: 40%;
-  }
-  
-  .auteur_foto {
-    width: 100px;
-    height: 100px;
-    background-color: lightgray;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  
-  .auteur_img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 4px;
   }
   
-  .auteur_description h3 {
+  .placeholder_cover {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    color: #aaa;
+    font-size: 12px;
+  }
+  
+  .boek_titel {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .boek_auteur {
+    font-size: 0.9em;
+    color: #666;
     margin: 0;
-  }
-  
-  .description_container {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid black;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   
