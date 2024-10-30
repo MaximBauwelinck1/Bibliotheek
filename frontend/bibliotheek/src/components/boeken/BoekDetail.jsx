@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { BOEKEN_DATA } from '../../api/mock_data';
-import '../../css/BoekDetail.css';
+import styles from '../../css/BoekDetail.module.css';
 import { Link } from 'react-router-dom';
 
 const BoekDetail = () => {
@@ -20,13 +20,13 @@ const BoekDetail = () => {
 
   return (
     <>
-      <Link to={'/boeken'}> <button className="top-left-button" >Terugkeren</button></Link>
-      <div className="boek_detail_container">
-        <div className="cover_container">
-          <img src={boek.cover_uri} alt={boek.titel} className="cover_img" />
-        </div>
-        <div className="book_info">
-          <h1>{boek.titel}</h1>
+      <Link to={'/boeken'}> <button className={styles.top_left_button} >Terugkeren</button></Link>
+      <div className={styles.boek_detail_container}>
+       
+        <img src={boek.cover_uri} alt={boek.titel} className={styles.cover_img} />
+      
+        <div className={styles.boek_info}>
+          <h1 className={styles.boek_titel}>{boek.titel}</h1>
           <p><strong>Auteur:</strong> {boek.voornaam} {boek.achternaam}</p>
           <p><strong>Genre:</strong> {boek.genre}</p>
           <p><strong>Publicatiedatum:</strong> {boek.publicatie_datum}</p>

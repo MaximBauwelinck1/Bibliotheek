@@ -3,9 +3,10 @@
 .boek_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 2fr));
-    gap: 50px;
+    gap: 5em;
     padding: 20px;
     padding-left: 15em;
+    padding-right: 15em;
   }
   
   .boek_card {
@@ -66,5 +67,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+  .link_uitgezet {
+    text-decoration: none;
+    color: inherit;
   }
   

@@ -1,7 +1,7 @@
 import  {BOEKEN_DATA} from '../../api/mock_data';
 import Boek from '../../components/boeken/boek';
 import { useState } from 'react';
-import '../../css/Boek.css';
+import styles from '../../css/Boek.module.css';
 
 const BoekenList = () => {
   const[boeken,setBoeken] = useState(BOEKEN_DATA);
@@ -75,7 +75,7 @@ const BoekenList = () => {
         </div>
       </div>
       
-      <div className="boek_grid">
+      <div className={styles.boek_grid}>
         {boeken
           .sort((a, b) =>
             a.titel.toUpperCase().localeCompare(b.titel.toUpperCase()),
