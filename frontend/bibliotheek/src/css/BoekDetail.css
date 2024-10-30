@@ -1,0 +1,59 @@
+.boek_detail_container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: grid;
+    grid-template-areas: "a b"
+                         "a b";
+    margin-top: 5em;
+    box-shadow: 3px 3px gray;
+  }
+  
+  .cover_img {
+    max-width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: contain;
+    grid-area: a;
+    min-width: fit-content;
+  }
+  .cover_container {
+    text-align: center;
+    margin-bottom: 20px;
+    grid-area: b;
+  }
+  .auteur_info {
+    margin-top: 20px;
+    font-size: 1rem;
+  }
+  
+  .boek_info p {
+    margin: 5px 0;
+  }
+  
+  .boek_titel {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .top-left-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .top-left-button:hover {
+    background-color: #0056b3; 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
