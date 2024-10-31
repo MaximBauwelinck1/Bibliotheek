@@ -34,7 +34,7 @@ export const auteurs = [
       vrije_kopieën: 3,
       totale_kopieën: 5,
       beschrijving: 'A novel that portrays a terrifying vision of a controlled and monitored society.',
-      cover_uri: 'https://example.com/cover/1984.jpg',
+      cover_uri: 'https://cdn.kobo.com/book-images/c9472126-7f96-402d-ba57-5ba4c0f4b238/353/569/90/False/nineteen-eighty-four-1984-george.jpg',
       aangemaakt: '2024-01-01T12:00:00Z',
       upgedate: '2024-01-01T12:00:00Z',
       auteur_id: '1c6f4b8d-233b-4b72-900e-7d474b8768fe'
@@ -50,7 +50,7 @@ export const auteurs = [
       vrije_kopieën: 2,
       totale_kopieën: 4,
       beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
-      cover_uri: 'https://example.com/cover/pride-and-prejudice.jpg',
+      cover_uri: 'https://m.media-amazon.com/images/M/MV5BMTA1NDQ3NTcyOTNeQTJeQWpwZ15BbWU3MDA0MzA4MzE@._V1_.jpg',
       aangemaakt: '2024-01-01T12:00:00Z',
       upgedate: '2024-01-01T12:00:00Z',
       auteur_id: '2d4a51d4-334a-4b8d-8a8f-6d5a7d3278af'

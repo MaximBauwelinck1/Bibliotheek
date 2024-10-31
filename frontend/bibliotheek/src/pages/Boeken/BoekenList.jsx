@@ -1,16 +1,35 @@
 import  {BOEKEN_DATA} from '../../api/mock_data';
 import Boek from '../../components/boeken/boek';
-import { useState } from 'react';
+import { useState,useEffect,useMemo } from 'react';
 import styles from '../../css/Boek.module.css';
+import * as boekenApi from './../../api/boeken';
 
 const BoekenList = () => {
-  const[boeken,setBoeken] = useState(BOEKEN_DATA);
+  const[boeken,setBoeken] = useState([]);
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
   const [categorie, setCategorie] = useState('');
   const [searchcategorie, setSearchCategorie] = useState('');
   const [taal, setTaal] = useState('');
   const [searchtaal, seSearchtTaal] = useState('');
+
+  useEffect(() => {
+    const fetchBoeken = async () => {
+      const boeken = await boekenApi.getAll(); 
+      setBoeken(boeken); 
+    };
+
+    fetchBoeken();
+  }, []);
+
+  const filteredBoeken = useMemo(
+    () =>
+      // 👇 4
+      boeken.filter((b) => {
+        return b.titel.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search, boeken],
+  );
   return (
     <>
       <div className='text-center'>Bibliotheek</div>
