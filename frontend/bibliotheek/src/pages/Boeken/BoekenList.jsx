@@ -17,6 +17,7 @@ const BoekenList = () => {
     const fetchBoeken = async () => {
       const boeken = await boekenApi.getAll(); 
       setBoeken(boeken); 
+      console.log(boeken);
     };
 
     fetchBoeken();
@@ -24,7 +25,7 @@ const BoekenList = () => {
 
   const filteredBoeken = useMemo(
     () =>
-      // 👇 4
+      
       boeken.filter((b) => {
         return b.titel.toLowerCase().includes(search.toLowerCase());
       }),

@@ -1,13 +1,22 @@
 import { useParams } from 'react-router-dom';
+import {useEffect,useState} from 'react';
 import { BOEKEN_DATA } from '../../api/mock_data';
 import styles from '../../css/BoekDetail.module.css';
 import { Link } from 'react-router-dom';
+import * as boekenApi from './../../api/boeken';
 
 const BoekDetail = () => {
   const { id } = useParams();
-  const idAsNumber = id;
+  const[boek,setBoek] = useState([]);
+  useEffect(() => {
+    const fetchBoeken = async () => {
+      const boek = await boekenApi.getById(id);
+      setBoek(boek);
+      console.log(boek);
+    };
 
-  const boek = BOEKEN_DATA.find((p) => p.id === idAsNumber);
+    fetchBoeken();
+  }, []);
 
   if (!boek) {
     return (

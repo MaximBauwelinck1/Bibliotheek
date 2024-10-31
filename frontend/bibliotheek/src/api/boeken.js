@@ -7,3 +7,8 @@ export const getAll = async () => {
   const response = await axios.get(baseUrl);
   return response.data.items;
 };
+
+export const getById = async (id) => {
+  const response = await axios.get(baseUrl.concat('/'+id));
+  return response.data.items;
+};

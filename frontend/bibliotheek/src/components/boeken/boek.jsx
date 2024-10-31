@@ -14,7 +14,7 @@ const Book = (props) => {
         </div>
         <div className={styles.boek_info}>
           <p className={styles.boek_titel}>{props.titel}</p>
-          <p className={styles.boek_auteur}>{props.voornaam} {props.achternaam}</p>
+          <p className={styles.boek_auteur}>{props.auteur.voornaam} {props.auteur.achternaam}</p>
         </div>
       </div>
     </Link>
