@@ -1,25 +1,27 @@
-import { Link } from 'react-router-dom';
-import styles from '../../css/Boek.module.css';
+import styles from '../../css/BoekDetail.module.css';
+const Boek = (props) => {
+  console.log(props.achternaam);
+  return(
+    <div className={styles.boek_detail_container}>
+       
+      <img src={props.cover_uri} alt={props.titel} className={styles.cover_img} />
 
-const Book = (props) => {
-  return (
-    <Link className={styles.link_uitgezet} to={props.id}>
-      <div className={styles.boek_card}>
-        <div className={styles.cover_container}>
-          {props.cover_uri ? (
-            <img src={props.cover_uri} alt={`${props.titel} cover`} className={styles.cover_img} />
-          ) : (
-            <div className={styles.placeholder_cover}>Cover Image</div>
-          )}
-        </div>
-        <div className={styles.boek_info}>
-          <p className={styles.boek_titel}>{props.titel}</p>
-          <p className={styles.boek_auteur}>{props.auteur.voornaam} {props.auteur.achternaam}</p>
-        </div>
+      <div className={styles.boek_info}>
+        <h1 className={styles.boek_titel}>{props.titel}</h1>
+        <p><strong>Auteur:</strong> {props.voornaam} {props.achternaam}</p>
+        <p><strong>Genre:</strong> {props.genre}</p>
+        <p><strong>Publicatiedatum:</strong> {props.publicatie_datum}</p>
+        <p><strong>Taal:</strong> {props.taal}</p>
+        <p><strong>Pagina&apos;s:</strong> {props.paginas}</p>
+        <p><strong>Beschikbare Kopieën:</strong> {props.vrije_kopieën} / {props.totale_kopieën}</p>
+        <h3>Beschrijving</h3>
+        <p>{props.beschrijving}</p>
+        <h3>Auteursinformatie</h3>
+        <p><strong>Nationaliteit:</strong> {props.nationaliteit}</p>
+        <p><strong>Biografie:</strong> {props.biografie}</p>
       </div>
-    </Link>
-    
+    </div>
   );
 };
 
-export default Book;
+export default Boek;

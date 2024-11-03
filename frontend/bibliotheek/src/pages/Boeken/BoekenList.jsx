@@ -1,36 +1,24 @@
-import  {BOEKEN_DATA} from '../../api/mock_data';
-import Boek from '../../components/boeken/boek';
-import { useState,useEffect,useMemo } from 'react';
+import Boek from '../../components/boeken/boekListItem';
+import { useState } from 'react';
 import styles from '../../css/Boek.module.css';
-import * as boekenApi from './../../api/boeken';
+import * as API from '../../api';
+import AsyncData from '../../components/AsyncData';
+import useSWR from 'swr';
 
 const BoekenList = () => {
-  const[boeken,setBoeken] = useState([]);
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
   const [categorie, setCategorie] = useState('');
   const [searchcategorie, setSearchCategorie] = useState('');
   const [taal, setTaal] = useState('');
   const [searchtaal, seSearchtTaal] = useState('');
+  
+  const {
+    data: boeken = [],
+    isLoading,
+    error,
+  } = useSWR('boeken', API.getAll);
 
-  useEffect(() => {
-    const fetchBoeken = async () => {
-      const boeken = await boekenApi.getAll(); 
-      setBoeken(boeken); 
-      console.log(boeken);
-    };
-
-    fetchBoeken();
-  }, []);
-
-  const filteredBoeken = useMemo(
-    () =>
-      
-      boeken.filter((b) => {
-        return b.titel.toLowerCase().includes(search.toLowerCase());
-      }),
-    [search, boeken],
-  );
   return (
     <>
       <div className='text-center'>Bibliotheek</div>
@@ -95,19 +83,23 @@ const BoekenList = () => {
         </div>
       </div>
       
-      <div className={styles.boek_grid}>
-        {boeken
-          .sort((a, b) =>
-            a.titel.toUpperCase().localeCompare(b.titel.toUpperCase()),
-          ).filter((a) =>{
-            const matchedTitel = search ? a.titel.toLowerCase().includes(search.toLowerCase()) : true;
-            const MatchedGenre = searchcategorie.length > 0 ? searchcategorie.includes(a.genre) : true;
-            const MatchedTaal =  searchtaal.length > 0 ? searchtaal.includes(a.taal) : true;
-            return matchedTitel && MatchedGenre && MatchedTaal;
-          })
-          .map((p) => (       
-            <Boek key={p.id}  {...p} />
-          ))}
+      <div className='mt-4'>
+        <AsyncData loading={isLoading} error={error}>
+          <div className={styles.boek_grid}>
+            {boeken
+              .sort((a, b) =>
+                a.titel.toUpperCase().localeCompare(b.titel.toUpperCase()),
+              ).filter((a) =>{
+                const matchedTitel = search ? a.titel.toLowerCase().includes(search.toLowerCase()) : true;
+                const MatchedGenre = searchcategorie.length > 0 ? searchcategorie.includes(a.genre) : true;
+                const MatchedTaal =  searchtaal.length > 0 ? searchtaal.includes(a.taal) : true;
+                return matchedTitel && MatchedGenre && MatchedTaal;
+              })
+              .map((p) => (       
+                <Boek key={p.id}  {...p} />
+              ))}
+          </div>
+        </AsyncData>
       </div>
     </>
     

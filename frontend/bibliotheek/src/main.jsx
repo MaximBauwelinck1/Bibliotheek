@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import BoekenList from './pages/Boeken/BoekenList.jsx';
 import About from './pages/About/About.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
-import BoekDetail from './components/boeken/BoekDetail.jsx';
+import BoekDetail from './pages/Boeken/BoekDetail.jsx';
 import Layout from './pages/Layout.jsx';
 import { Navigate } from 'react-router-dom';
 const router = createBrowserRouter([
