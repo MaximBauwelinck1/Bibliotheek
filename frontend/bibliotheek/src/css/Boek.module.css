@@ -20,6 +20,12 @@
     text-align: center;
     width: 100%;
     max-width: 150px;
+    min-width: 150px;
+    transition: transform 0.2s;
+  }
+
+  .boek_card:hover {
+    transform: scale(1.1);
   }
   
   .cover_container {
@@ -58,6 +64,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
   }
   
   .boek_auteur {

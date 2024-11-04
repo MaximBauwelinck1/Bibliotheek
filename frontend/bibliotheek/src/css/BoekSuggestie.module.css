@@ -1,0 +1,68 @@
+#suggestie_tekst{
+    margin-top: 5em;
+    font-size: large;
+    font-weight: bold;
+    display: inline-block;
+    padding: 4px 8px;           
+    border: 1px solid #333;       
+    border-radius: 4px;          
+    background-color: #f0f0f0;    
+    color: #333;
+    align-content: center;
+  }
+
+  .boek_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 2fr));
+    gap: 5em;
+    padding: 20px;
+    padding-left:30%;
+    padding-right: 30%;
+  }
+
+  .suggestions_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+    padding-left:30%;
+    padding-right: 30%;
+}
+
+.scrollable_container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  max-width: 100%;
+
+  grid-template-columns: repeat(auto-fill, minmax(120px, 2fr));
+  gap: 5em;
+}
+.wider_list_item{
+    min-width: 500px;
+}
+
+.scrollable_container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll_button {
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 1.5em;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+}
+
+.scroll_button:focus {
+  outline: none;
+}
+
+.scroll_button:hover {
+  
+}
