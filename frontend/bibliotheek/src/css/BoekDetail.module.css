@@ -43,7 +43,7 @@
     margin-bottom: 20px;margin-right: 1em;
   }
   .top_left_button {
-    position: fixed;
+    position:absolute;
     margin: 2em 2em;
     padding: 10px 20px;
     background-color: #007bff; 
@@ -59,4 +59,17 @@
   .top_left_button:hover {
     background-color: #0056b3; 
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  #suggestie_tekst{
+    margin-top: 5em;
+    font-size: large;
+    font-weight: bold;
+    display: inline-block;
+    padding: 4px 8px;           
+    border: 1px solid #333;       
+    border-radius: 4px;          
+    background-color: #f0f0f0;    
+    color: #333;
+    align-content: center;
   }

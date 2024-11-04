@@ -3,7 +3,7 @@ import styles from '../../css/Boek.module.css';
 
 const BoekListItem = (props) => {
   return (
-    <Link className={styles.link_uitgezet} to={props.id}>
+    <Link className={styles.link_uitgezet} to={`/boeken/${props.id}`}>
       <div className={styles.boek_card}>
         <div className={styles.cover_container}>
           {props.cover_uri ? (

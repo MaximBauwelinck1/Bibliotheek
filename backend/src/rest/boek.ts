@@ -8,14 +8,20 @@ import type { CreateBoekRequest, CreateBoekResponse, GetAllBoekenResponse, GetBo
 import type { IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
+import { query } from 'winston';
 
 const getAllBoeken = async (ctx: KoaContext<GetAllBoekenResponse>) => {
+  const  genre = ctx.query.genre;
   ctx.body = {
-    items: await boekenService.getAll(),
+    items: await boekenService.getAll(genre),
   };
   getLogger().info('Alle boeken zijn opgevraagd.');
 };
-getAllBoeken.validationScheme = null;
+getAllBoeken.validationScheme = {
+  query:{
+    genre: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())).optional(),
+  },
+};
 
 const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRequest>) => {
   const nieuwBoek = await boekenService.create({

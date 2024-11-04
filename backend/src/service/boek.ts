@@ -34,10 +34,19 @@ const BOEKEN_SELECT = {
   },
 };
 
-export const getAll = async (): Promise<Boek[]> => {
-  return prisma.boek.findMany({
-    select: BOEKEN_SELECT,
-  });
+export const getAll = async (genre?: string  | string[]): Promise<Boek[]> => {
+  if(!genre){
+    return prisma.boek.findMany({
+      select: BOEKEN_SELECT,
+    });
+  } else{
+    return prisma.boek.findMany({
+      select: BOEKEN_SELECT,
+      where: {  genre: Array.isArray(genre) ? { in: genre } : genre},
+       
+    });
+  }
+  
 };
 
 export const getById = async (id: UUID): Promise<Boek>  => {
