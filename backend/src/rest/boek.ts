@@ -78,7 +78,7 @@ createBoek.validationScheme = {
         'Science fiction', 'Biografie', 'romantiek', 
         'Geschiedenis', 'Dystopisch', 'Souterh- gothic', 
         'post-apocaliptisch', 'anti-war', 'tragedie', 
-        'avontuur',
+        'avontuur','Memoir','Thriller',
       ),            
     publicatie_datum: Joi.date(),   
     taal: Joi.string(),             

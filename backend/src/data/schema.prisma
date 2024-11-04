@@ -20,7 +20,7 @@ model Auteur {
   achternaam   String    @db.VarChar(255)
   geboortedatum DateTime
   nationaliteit String   @db.VarChar(255)
-  biografie     String?  @db.VarChar(255)
+  biografie     String?  
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt
   
@@ -37,7 +37,7 @@ model Boek {
   paginas       Int
   vrije_kopieen Int
   totale_kopieen Int
-  beschrijving  String   @db.VarChar(255)
+  beschrijving  String   
   cover_uri     String?   @db.VarChar(255)
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt

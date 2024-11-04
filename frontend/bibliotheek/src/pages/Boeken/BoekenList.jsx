@@ -44,11 +44,12 @@ const BoekenList = () => {
             <option value="Romantiek">Romantiek</option>
             <option value="Geschiedenis">Geschiedenis</option>
             <option value="Dystopisch">Dystopisch</option>
-            <option value="Southern Gothic">Southern Gothic</option>
+            <option value="Memoir">Memoir</option>
             <option value="Post-apocalyptisch">Post-apocalyptisch</option>
             <option value="Tragedie">Tragedie</option>
             <option value="Anti-War">Anti-War</option>
             <option value="Aventuur">Aventuur</option>
+            <option value="Thriller">Thriller</option>
           </select>
           <select id="taal" name="taal" multiple size="3" onChange={(e) => {
             setTaal(Array.from(e.target.selectedOptions, (option) => option.value));
