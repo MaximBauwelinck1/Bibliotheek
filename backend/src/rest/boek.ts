@@ -1,10 +1,9 @@
 import Router from '@koa/router';
 import * as boekenService from '../service/boek';
-import type { Context } from 'koa';
-import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
 import type { UUID } from 'crypto';
 import type { BibliotheekAppContext, BibliotheekAppState, KoaContext, KoaRouter } from '../types/koa';
+// eslint-disable-next-line @stylistic/max-len
 import type { CreateBoekRequest, CreateBoekResponse, GetAllBoekenResponse, GetBoekByIdResponse, UpdateBoekRequest, UpdateBoekResponse } from '../types/boek';
 import type { IdParams } from '../types/common';
 
@@ -33,7 +32,7 @@ const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRe
 
 const deleteBoekById= async (ctx: KoaContext<void, IdParams>) => {
   const id : UUID = ctx.params.id;
-  const opt_res = await boekenService.deleteById(id);
+  await boekenService.deleteById(id);
   /*if(opt_res instanceof Error){
     ctx.status = 400;
     ctx.body = {

@@ -1,16 +1,16 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
-
-// 👇 1
+import jest from 'eslint-plugin-jest';
 export default tseslint.config(
-  eslint.configs.recommended, // 👈 2
-  ...tseslint.configs.recommended, // 👈 2
+  eslint.configs.recommended, 
+  ...tseslint.configs.recommended, 
   {
-    // 👇 3
+   
     files: ['**/*.ts', '**/*.spec.ts'],
     plugins: {
       '@stylistic': stylistic,
+      jest
     },
     rules: {
       '@stylistic/no-multiple-empty-lines': [
