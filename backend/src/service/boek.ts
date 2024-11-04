@@ -1,6 +1,8 @@
 import type { UUID } from 'crypto';
 import { randomUUID } from 'crypto';
 import { prisma } from '../data';
+import ServiceError from '../core/serviceError'; 
+import handleDBError from './_handleDBError';
 import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
 
@@ -48,7 +50,7 @@ export const getById = async (id: UUID): Promise<Boek>  => {
   });
 
   if (!boek) {
-    throw new Error(`Boek met id:${id} bestaat niet.`);
+    throw ServiceError.notFound(`Boek met id:${id} bestaat niet.`);
   }
 
   return boek;
@@ -107,31 +109,34 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
   });
 
   if (opt_boek) {
-    throw new Error('boek met ISBN code of titel bestaat al!');
+    throw ServiceError.conflict('boek met ISBN code of titel bestaat al!');
   }
 
   const auteurId = (await createAuteurIndienNietBestaat(
     new_boek.auteur)).id;
-  
-  return prisma.boek.create({
-    data: {
-      id: randomUUID(),
-      ISBN: new_boek.ISBN,
-      titel: new_boek.titel,
-      genre: new_boek.genre,
-      publicatie_datum: new Date(new_boek.publicatie_datum),
-      taal: new_boek.taal,
-      paginas: new_boek.paginas,
-      vrije_kopieen: new_boek.vrije_kopieen,
-      totale_kopieen: new_boek.totale_kopieen,
-      beschrijving: new_boek.beschrijving,
-      cover_uri: new_boek.cover_uri,
-      aangemaakt:new Date(),
-      upgedate:new Date(),
-      auteur_id: auteurId,
-    },
-    select:BOEKEN_SELECT,
-  });
+  try {
+    return await prisma.boek.create({
+      data: {
+        id: randomUUID(),
+        ISBN: new_boek.ISBN,
+        titel: new_boek.titel,
+        genre: new_boek.genre,
+        publicatie_datum: new Date(new_boek.publicatie_datum),
+        taal: new_boek.taal,
+        paginas: new_boek.paginas,
+        vrije_kopieen: new_boek.vrije_kopieen,
+        totale_kopieen: new_boek.totale_kopieen,
+        beschrijving: new_boek.beschrijving,
+        cover_uri: new_boek.cover_uri,
+        aangemaakt:new Date(),
+        upgedate:new Date(),
+        auteur_id: auteurId,
+      },
+      select:BOEKEN_SELECT,
+    });
+  }catch (error: any) {
+    throw handleDBError(error);
+  }
 
 };
 
