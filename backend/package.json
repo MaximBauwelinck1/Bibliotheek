@@ -37,6 +37,7 @@
     "bcrypt-ts": "^5.0.2",
     "bibliotheek_app": "file:",
     "config": "^3.3.12",
+    "joi": "^17.13.3",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
     "prisma": "^5.20.0",

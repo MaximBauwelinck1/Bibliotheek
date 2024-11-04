@@ -11,10 +11,12 @@ export default function AsyncData({
   if (loading) {
     return <Loader />;
   }
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <>
-      <Error error={error} /> 
       {children} 
     </>
   );

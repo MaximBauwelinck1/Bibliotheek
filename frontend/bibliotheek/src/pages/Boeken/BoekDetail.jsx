@@ -14,21 +14,13 @@ const BoekDetail = () => {
     isLoading,
     error,
   } = useSWR( id?`boeken/${id}`: null, API.getById);
-  
-  if (!boek) {
-    return (
-      <>
-        <Link to={'/boeken'}> <button className={styles.top_left_button} >Terugkeren</button></Link>  
-        <AsyncData loading={isLoading} error={error}>
-        </AsyncData>
-      </>
-    );
-  }
 
   return (
     <>
-      <Link to={'/boeken'}> <button className={styles.top_left_button} >Terugkeren</button></Link>     
-      <Boek key={id} {...boek}/>
+      <Link to={'/boeken'}> <button className={styles.top_left_button} >Terugkeren</button></Link>    
+      <AsyncData loading={isLoading} error={error}> 
+        <Boek key={id} {...boek}/>
+      </AsyncData>
     </>
   );
 };
