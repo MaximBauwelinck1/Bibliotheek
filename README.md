@@ -71,6 +71,7 @@ yarn set version berry
 ```bash
 yarn install
 ```
+## postgres
 - maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
 ```
 NODE_ENV=production
@@ -80,6 +81,17 @@ DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek"
 ```
 NODE_ENV=production
 DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek_test"
+```
+## mysql
+- maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
+```
+NODE_ENV=production
+DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek"
+```
+- en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
+```
+NODE_ENV=production
+DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek"
 ```
 ## Development
 1) Als je het project wilt opzetten voor development purposes voer je het volgende commando uit om de databank op te zetten met de nodige migrations en ook eveneens de seed data te importeren.

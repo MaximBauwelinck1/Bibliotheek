@@ -26,16 +26,8 @@ const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRe
   const nieuwBoek = await boekenService.create({
     ...ctx.request.body,
   });
-  /*
-  if (nieuwBoek instanceof Error){
-    ctx.status = 400;
-    ctx.body = nieuwBoek.message;
-    getLogger().error(
-      `Gefaald om boek:${JSON.stringify(ctx.request.body)} aan te maken met foutboodschap:${nieuwBoek}.`);
-  } else{*/
   ctx.body = nieuwBoek;
   getLogger().info(`boek met id:${nieuwBoek} is succesvol aangemaakt.`);
-  // }
 };
 
 createBoek.validationScheme = {
@@ -64,7 +56,7 @@ createBoek.validationScheme = {
             return calculatedCheckDigit.toString() === (isbn[9] as string).toUpperCase();
              
           }
-          return false; // geen geldig isbn formaat
+          throw new Error('Het ISBN formaat is ongeldig'); // geen geldig isbn formaat
           
         };
 
