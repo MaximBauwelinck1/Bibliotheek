@@ -180,13 +180,13 @@ describe('boeken', () => {
       await prisma.auteur.createMany({ data: data.auteurs });
     });
 
-    it('should be 201 and return the created books', async () => {
+    it('should be 201 and return the created book', async () => {
       const response = await request.post(url).send({
         ISBN: '9780141439518',
         titel: 'Pride and Prejudice',
         genre: 'Romantiek',
         publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
-        taal: 'English',
+        taal: 'Engels',
         paginas: 279,
         vrije_kopieen: 2,
         totale_kopieen: 4,

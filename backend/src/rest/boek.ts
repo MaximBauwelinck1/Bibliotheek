@@ -56,12 +56,12 @@ createBoek.validationScheme = {
             return calculatedCheckDigit.toString() === (isbn[9] as string).toUpperCase();
              
           }
-          throw new Error('Het ISBN formaat is ongeldig'); // geen geldig isbn formaat
+          return false;
           
         };
 
         if (!isValidISBN(value)) {
-          return false;
+          throw new Error('Het ISBN formaat is ongeldig');
         }
         return value; 
       }).message('Het ISBN formaat is ongeldig'),
@@ -75,7 +75,9 @@ createBoek.validationScheme = {
         'avontuur','Memoir','Thriller',
       ),            
     publicatie_datum: Joi.date(),   
-    taal: Joi.string(),             
+    taal: Joi.string().valid(
+      'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees',
+    ),             
     paginas: Joi.number().integer().positive(),          
     vrije_kopieen: Joi.number().integer().min(0),    
     totale_kopieen: Joi.number().integer().min(0),   
@@ -94,44 +96,19 @@ createBoek.validationScheme = {
 const deleteBoekById= async (ctx: KoaContext<void, IdParams>) => {
   const id : UUID = ctx.params.id;
   await boekenService.deleteById(id);
-  /*if(opt_res instanceof Error){
-    ctx.status = 400;
-    ctx.body = {
-      status: 'gefaald',
-      foutboodschap: opt_res.message};
-    getLogger().error(opt_res);
-  } else{*/
   ctx.status = 204;
   getLogger().info(`boek met id:${ctx.params.id} is succesvol verwijderd.`);
-  // }
+};
+deleteBoekById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
 };
 const getBoekById = async (ctx: KoaContext<GetBoekByIdResponse, IdParams>) => {
   const id : UUID = ctx.params.id;
   const opt_res =await  boekenService.getById(id);
-  /*
-  if (!id) {
-    ctx.status = 400;
-    ctx.body = { error: 'ID is required' };
-    return;
-  }
-  
-  if (!isUuid(id)) {
-    ctx.status = 400;
-    ctx.body = { error: 'Invalid UUID' };
-    return;
-  }
-  const opt_res =await  boekenService.getById(ctx.params.id);
-  if(opt_res instanceof Error){
-    ctx.status = 400;
-    ctx.body = {
-      status: 'gefaald',
-      foutboodschap: opt_res.message};
-    getLogger().error(opt_res);
-  } else{*/
   ctx.body = opt_res;
   getLogger().info(`boek met id:${ctx.params.id} is geretourneerd.`);
-  //}
-
 };
 
 getBoekById.validationScheme = {
@@ -141,19 +118,75 @@ getBoekById.validationScheme = {
 };
 const updateBoekById = async( ctx: KoaContext<UpdateBoekResponse, IdParams, UpdateBoekRequest>) => {
   const id : UUID = ctx.params.id;
-
   const opt_res =await  boekenService.updateById(id, {...ctx.request.body});
-  /*
-  if(opt_res instanceof Error){
-    ctx.status = 400;
-    ctx.body = {
-      status: 'gefaald',
-      foutboodschap: opt_res.message};
-    getLogger().error(opt_res);
-  } else{*/
   ctx.body = opt_res;
   getLogger().info(`boek met id:${ctx.params.id} is succesvol geupdate.`);
-  //}
+};
+
+updateBoekById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+  body: {
+    ISBN: Joi.string()
+      .custom((value) => {
+         
+        const isValidISBN = (isbn: string): boolean => {
+          // boek kan nog isbn 13 of 10 gebruiken
+          const isbn13Regex = /^(978|979)\d{10}$/; 
+          const isbn10Regex = /^(?:\d{9}[\dX])$/; 
+         
+          if (isbn13Regex.test(isbn)) {
+            // indien isbn 13
+            const checkDigit = Array.from(isbn)
+              .slice(0, 12)
+              .reduce((sum, num, index) => sum + (index % 2 === 0 ? Number(num) : Number(num) * 3), 0) % 10;
+            const calculatedCheckDigit = checkDigit === 0 ? 0 : 10 - checkDigit;
+            return calculatedCheckDigit === Number(isbn[12]);
+          } else if (isbn10Regex.test(isbn)) {
+            const checkDigit = Array.from(isbn)
+              .slice(0, 9)
+              .reduce((sum, num, index) => sum + (Number(num) * (10 - index)), 0) % 11;
+            const calculatedCheckDigit = checkDigit === 10 ? 'X' : checkDigit;
+              
+            return calculatedCheckDigit.toString() === (isbn[9] as string).toUpperCase();
+             
+          }
+          return false; 
+          
+        };
+
+        if (!isValidISBN(value)) {
+          throw new Error('Het ISBN formaat is ongeldig'); // geen geldig isbn formaat
+        }
+        return value; 
+      }).optional(),
+    titel: Joi.string().optional(),            
+    genre: Joi.string()
+      .valid(
+        'Fictie', 'non fictie', 'Mysterie', 'Fantasie', 
+        'Science fiction', 'Biografie', 'Romantiek', 
+        'Geschiedenis', 'Dystopisch', 'Souterh- gothic', 
+        'post-apocaliptisch', 'anti-war', 'tragedie', 
+        'avontuur','Memoir','Thriller',
+      ).optional(),            
+    publicatie_datum: Joi.date().optional(),   
+    taal: Joi.string().valid(
+      'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees',
+    ).optional(),             
+    paginas: Joi.number().integer().positive().optional(),          
+    vrije_kopieen: Joi.number().integer().min(0).optional(),    
+    totale_kopieen: Joi.number().integer().min(0).optional(),   
+    beschrijving: Joi.string().optional(),     
+    cover_uri: Joi.string().uri().allow(null).optional(),                
+    auteur: Joi.object({
+      voornaam: Joi.string().optional(),
+      achternaam: Joi.string().optional(),
+      geboortedatum: Joi.date().optional(),
+      nationaliteit: Joi.string().optional(),
+      biografie: Joi.string().optional(),
+    }).optional(),
+  },
 };
 
 export default (parent: KoaRouter) => {
@@ -164,8 +197,8 @@ export default (parent: KoaRouter) => {
   router.get('/',validate(getAllBoeken.validationScheme), getAllBoeken);
   router.post('/',validate(createBoek.validationScheme), createBoek);
   router.get('/:id',  validate(getBoekById.validationScheme), getBoekById);
-  router.delete('/:id', deleteBoekById);
-  router.put('/:id',updateBoekById);
+  router.delete('/:id',validate(deleteBoekById.validationScheme), deleteBoekById);
+  router.put('/:id',validate(updateBoekById.validationScheme),updateBoekById);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };
