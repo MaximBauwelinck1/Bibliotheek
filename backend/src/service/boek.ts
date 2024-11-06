@@ -162,7 +162,7 @@ export const deleteById = async (id: UUID): Promise<string> => {
     deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
     return opt_boek.id;
   } else {
-    throw new Error(`Boek met id:${id} bestaat niet.`);
+    throw ServiceError.conflict(`Boek met id:${id} bestaat niet.`);
   }
   
   ;
