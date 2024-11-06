@@ -184,7 +184,7 @@ describe('boeken', () => {
       const response = await request.post(url).send({
         ISBN: '9780141439518',
         titel: 'Pride and Prejudice',
-        genre: 'Romance',
+        genre: 'Romantiek',
         publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
         taal: 'English',
         paginas: 279,
@@ -192,7 +192,6 @@ describe('boeken', () => {
         totale_kopieen: 4,
         beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
         cover_uri: 'https://example.com/cover/pride-and-prejudice.jpg',
-        upgedate: '2024-01-01T12:00:00Z',
         auteur: {
           voornaam: 'Gabriel',
           achternaam: 'Garcia Marquez',

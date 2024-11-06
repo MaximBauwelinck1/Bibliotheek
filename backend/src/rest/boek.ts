@@ -8,7 +8,6 @@ import type { CreateBoekRequest, CreateBoekResponse, GetAllBoekenResponse, GetBo
 import type { IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
-import { query } from 'winston';
 
 const getAllBoeken = async (ctx: KoaContext<GetAllBoekenResponse>) => {
   const  genre = ctx.query.genre;
@@ -42,15 +41,15 @@ const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRe
 createBoek.validationScheme = {
   body: {
     ISBN: Joi.string()
-      .custom((value, helpers) => {
+      .custom((value) => {
          
         const isValidISBN = (isbn: string): boolean => {
           // boek kan nog isbn 13 of 10 gebruiken
           const isbn13Regex = /^(978|979)\d{10}$/; 
           const isbn10Regex = /^(?:\d{9}[\dX])$/; 
-
+         
           if (isbn13Regex.test(isbn)) {
-          // indien isbn 13
+            // indien isbn 13
             const checkDigit = Array.from(isbn)
               .slice(0, 12)
               .reduce((sum, num, index) => sum + (index % 2 === 0 ? Number(num) : Number(num) * 3), 0) % 10;
@@ -61,21 +60,24 @@ createBoek.validationScheme = {
               .slice(0, 9)
               .reduce((sum, num, index) => sum + (Number(num) * (10 - index)), 0) % 11;
             const calculatedCheckDigit = checkDigit === 10 ? 'X' : checkDigit;
-            return calculatedCheckDigit.toString() === isbn[9].toUpperCase();
+              
+            return calculatedCheckDigit.toString() === (isbn[9] as string).toUpperCase();
+             
           }
           return false; // geen geldig isbn formaat
+          
         };
 
         if (!isValidISBN(value)) {
-          return helpers.message('Invalid ISBN format');
+          return false;
         }
         return value; 
-      }),       
+      }).message('Het ISBN formaat is ongeldig'),
     titel: Joi.string(),            
     genre: Joi.string()
       .valid(
         'Fictie', 'non fictie', 'Mysterie', 'Fantasie', 
-        'Science fiction', 'Biografie', 'romantiek', 
+        'Science fiction', 'Biografie', 'Romantiek', 
         'Geschiedenis', 'Dystopisch', 'Souterh- gothic', 
         'post-apocaliptisch', 'anti-war', 'tragedie', 
         'avontuur','Memoir','Thriller',
