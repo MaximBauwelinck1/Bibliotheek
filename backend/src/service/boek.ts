@@ -93,17 +93,24 @@ const createAuteurIndienNietBestaat = async (auteur: AuteurCreateInput) : Promis
 };
 
 const deleteAuteurIndienNietGebruikt = async(auteurId : string) :Promise<void> =>{
-  const boeken = await prisma.boek.findMany({
-    where: {
-      auteur_id: auteurId,
+  const opt_auteur = await prisma.auteur.findUnique({
+    where:{
+      id: auteurId,
     },
   });
-  if(boeken.length == 0){
-    await prisma.auteur.delete({
-      where:{
-        id: auteurId,
+  if(opt_auteur){
+    const boeken = await prisma.boek.findMany({
+      where: {
+        auteur_id: auteurId,
       },
     });
+    if(boeken.length == 0){
+      await prisma.auteur.delete({
+        where:{
+          id: auteurId,
+        },
+      });
+    }
   }
 };
 
@@ -149,23 +156,19 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
 
 };
 
-export const deleteById = async (id: UUID): Promise<string> => {
-  
+export const deleteById = async (id: UUID): Promise<void> => {
   const opt_boek = await getById(id);
-
   if (opt_boek) {
     await prisma.boek.delete({
       where:{
         id,
       },
     });
-    deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
-    return opt_boek.id;
+    await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
   } else {
     throw ServiceError.conflict(`Boek met id:${id} bestaat niet.`);
   }
-  
-  ;
+
 };
 
 export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promise<Boek> => {
@@ -196,7 +199,7 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
       },
       select: BOEKEN_SELECT,
     });
-    deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
+    await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
     return upgedate_boek;
   }
   

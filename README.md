@@ -79,7 +79,7 @@ DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek"
 ```
 - en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
 ```
-NODE_ENV=production
+NODE_ENV=testing
 DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek_test"
 ```
 ## mysql
