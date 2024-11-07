@@ -234,7 +234,7 @@ describe('boeken', () => {
     });
     it('should be 201 and return the created book', async () => { // met isbn 10 code
       const response = await request.post(url).send({
-        ISBN: '9781590302255',
+        ISBN: '0306406152',
         titel: 'ISBN10',
         genre: 'Romantiek',
         publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
@@ -274,6 +274,30 @@ describe('boeken', () => {
         publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
         taal: 'Engels',
         paginas: -1000,
+        vrije_kopieen: 2,
+        totale_kopieen: 4,
+        beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
+        cover_uri: 'https://example.com/cover/pride-and-prejudice.jpg',
+        auteur: {
+          voornaam: 'Gabriel',
+          achternaam: 'Garcia Marquez',
+          geboortedatum: new Date('1927-03-06T00:00:00.000Z'),
+          nationaliteit: 'Colombian',
+          biografie: 'Known for One Hundred Years of Solitude.',
+        },
+      });
+      
+      expect(response.status).toBe(400); 
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+    });
+    it('should be 400 when sending an wrong ISBN', async () => {
+      const response = await request.post(url).send({
+        ISBN: '20',
+        titel: 'Pride and Prejudice',
+        genre: 'Romantiek',
+        publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
+        taal: 'Engels',
+        paginas: 50,
         vrije_kopieen: 2,
         totale_kopieen: 4,
         beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
@@ -415,7 +439,7 @@ describe('boeken', () => {
     });
     it('should be 200 and return the updated book', async () => { // met isbn 10 
       const response = await request.put(url+'/5e846780-937b-471d-96e3-d567b86a95bb').send({
-        ISBN: '9781590302255',
+        ISBN: '0306406152',
         titel: 'ISBN10',
         genre: 'Romantiek',
         publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
@@ -438,7 +462,7 @@ describe('boeken', () => {
       expect(response.body.id).toBeTruthy(); 
       expect(response.body.titel).toBe('ISBN10'); 
       expect(response.body.cover_uri).toBe('https://example.com/cover/pride-and-prejudice.jpg'); 
-      expect(response.body.ISBN).toBe('9781590302255');
+      expect(response.body.ISBN).toBe('0306406152');
       expect(response.body.auteur).toEqual(expect.objectContaining({
         voornaam: 'Gabriel',
         achternaam: 'Garcia Marquez',
@@ -447,7 +471,30 @@ describe('boeken', () => {
         biografie: 'Known for One Hundred Years of Solitude.',
       }));
     });
-
+    it('should be 400 when sending an wrong ISBN', async () => {
+      const response = await request.put(url+'/5e846780-937b-471d-96e3-d567b86a95bb').send({
+        ISBN: '20',
+        titel: 'tttttttt',
+        genre: 'Romantiek',
+        publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
+        taal: 'Engels',
+        paginas: 50,
+        vrije_kopieen: 2,
+        totale_kopieen: 4,
+        beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
+        cover_uri: 'https://example.com/cover/pride-and-prejudice.jpg',
+        auteur: {
+          voornaam: 'Gabriel',
+          achternaam: 'Garcia Marquez',
+          geboortedatum: new Date('1927-03-06T00:00:00.000Z'),
+          nationaliteit: 'Colombian',
+          biografie: 'Known for One Hundred Years of Solitude.',
+        },
+      });
+      
+      expect(response.status).toBe(400); 
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+    });
     it('should be 404 when updating an non existant book', async () => {
       const response = await request.put(url+'/3fa85f64-5717-4562-b3fc-2c963f66afa5').send({
         ISBN: '9783127323207',
