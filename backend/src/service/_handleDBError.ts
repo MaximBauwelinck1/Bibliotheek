@@ -51,4 +51,4 @@ const handleDBError = (error: any) => {
   throw error;
 };
 
-export default handleDBError; // 👈 1
+export default handleDBError;

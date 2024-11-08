@@ -3,13 +3,13 @@ import type  {Boek} from './boek';
 export interface BoekKopie extends Entity {            
   boek: Boek           
   status: string;      
-  extra_informatie: string | undefined;            
+  extra_informatie: string | null;            
   aangemaakt: Date;         
   upgedate: Date;           
 }
 
 export interface BoekkopieCreateInput {
-  boek: Pick<Boek,'id' >           
+  boek_id: string          
   status: string;      
   extra_informatie: string;            
 }
