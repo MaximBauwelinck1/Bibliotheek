@@ -139,7 +139,7 @@ updateBoekById.validationScheme = {
             const calculatedCheckDigit = checkDigit === 0 ? 0 : 10 - checkDigit;
             return calculatedCheckDigit === Number(isbn[12]);
           } else if (isbn10Regex.test(isbn)) {
-            return true; // algoritme om isbn 10 te checken werkt
+            return true; // algoritme om isbn 10 te checken werkt niet
              
           }
           return false; 

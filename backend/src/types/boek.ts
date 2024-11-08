@@ -14,8 +14,7 @@ export interface Boek extends Entity {
   cover_uri: string | null;       
   aangemaakt: Date;         
   upgedate: Date;          
-  auteur: Pick<Auteur, 'id'|'voornaam'|'achternaam'|'geboortedatum'|'nationaliteit'|'biografie'|
-  'aangemaakt'|'upgedate'>;   
+  auteur: Auteur;   
 }
 
 export interface BoekCreateInput {
