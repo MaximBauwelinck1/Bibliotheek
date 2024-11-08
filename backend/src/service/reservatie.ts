@@ -63,8 +63,6 @@ const RESERVATIES_SELECT = {
   startdatum: true,
   einddatum: true,
   status: true,
-  aangemaakt: true,
-  upgedate: true,
 };
 
 export const getAll = async (): Promise<Reservatie[]> => {
