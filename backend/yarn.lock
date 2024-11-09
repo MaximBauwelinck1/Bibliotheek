@@ -2060,7 +2060,8 @@ __metadata:
     tsx: "npm:^4.19.1"
     typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.8.0"
-    uuid: "npm:^10.0.0"
+    uuid: "npm:^11.0.2"
+    uuidjs: "npm:^5.1.0"
     winston: "npm:^3.15.0"
   languageName: unknown
   linkType: soft
@@ -6012,12 +6013,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "uuid@npm:10.0.0"
+"uuid@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "uuid@npm:11.0.2"
   bin:
-    uuid: dist/bin/uuid
-  checksum: 10c0/eab18c27fe4ab9fb9709a5d5f40119b45f2ec8314f8d4cf12ce27e4c6f4ffa4a6321dc7db6c515068fa373c075b49691ba969f0010bf37f44c37ca40cd6bf7fe
+    uuid: dist/esm/bin/uuid
+  checksum: 10c0/bd0670a0d6f77f1932da7544c51c32ceb467f3835382df2265f3275c4981d32c136a08a4369fb027ecfffd0b2ae48f19a28266ef636c7347264d5720e85d5ba0
+  languageName: node
+  linkType: hard
+
+"uuidjs@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "uuidjs@npm:5.1.0"
+  bin:
+    uuidjs: dist/cli.js
+  checksum: 10c0/9fd94df254db1e3936a33c2babe7292e8551048806ad51ffb790ec8668cba575d7ac56661d77ce699edacd02bad92f68d0a0d80db2b80cb1f8936107220ce997
   languageName: node
   linkType: hard
 

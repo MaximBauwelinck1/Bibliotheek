@@ -115,39 +115,59 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
   }
 
   try { //TODO dit zou een transactie moeten zijn!
-    const reservatie = await prisma.$transaction(
-      [
-        prisma.reservatie.create({
+    const maak_reservatie = async (new_reservatie: any) => {
+      const result = await prisma.$transaction(async (tx) => {
+        const [createdReservatie, updatedBoekKopie] = await Promise.all([
+          tx.reservatie.create({
+            data: {
+              id: randomUUID(),
+              boek_kopie_id: new_reservatie.boek_kopie_id,
+              gebruiker_id: new_reservatie.gebruiker_id,
+              startdatum: new Date(),
+              einddatum: new_reservatie.einddatum,
+              status: new_reservatie.status,
+            },
+            select: RESERVATIES_SELECT,
+          }),
+          tx.boekKopie.update({
+            where: { id: new_reservatie.boek_kopie_id },
+            data: {
+              status: 'gereserveerd',
+            },
+            select: {
+              boek_id: true,
+            },
+          }),
+        ]);
+
+        const updatedBoek = await tx.boek.update({
+          where: { id: updatedBoekKopie.boek_id },
           data: {
-            id: randomUUID(),
-            boek_kopie_id: new_reservatie.boek_kopie_id,
-            gebruiker_id: new_reservatie.gebruiker_id,
-            startdatum:new Date(),
-            einddatum: new_reservatie.einddatum,
-            status:  new_reservatie.status,
-          },
-          select:RESERVATIES_SELECT,
-        }),
-        prisma.boekKopie.update({ 
-          where:{id: new_reservatie.boek_kopie_id},
-          data :{
-            status: 'gereserveerd',
-          },
-        }),
-        prisma.boek.update({ 
-          where:{id: new_reservatie.boek_kopie_id},
-          data :{
             vrije_kopieen: {
               decrement: 1,
             },
           },
-        }),
-      ],
-      {
+        });
+
+        return { createdReservatie, updatedBoekKopie, updatedBoek };
+      }, {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      });
+
+      return result;
+    };
+    const id = (await maak_reservatie(new_reservatie)).createdReservatie.id;
+    const opt_res =  await prisma.reservatie.findUnique({
+      where:{
+        id,
       },
-    );
-    return reservatie[0];
+      select: RESERVATIES_SELECT,
+    });
+    if(opt_res){
+      return opt_res;
+    } else{
+      throw ServiceError.internalServerError('Kan onmogelijk gethrowed worden?');
+    }
   }catch (error: any) {
     throw handleDBError(error);
   }
@@ -194,8 +214,8 @@ export const updateById = async (id: UUID, new_reservatie: ReservatieUpdateInput
               status: 'gereserveerd',
             },
           }),
-          prisma.boek.update({ 
-            where:{id: new_reservatie.boek_kopie_id},
+          prisma.boek.update({ //TODO moet nog juiste id zijn + opnieuw reservatie opvragen zoals bij create
+            where:{id: new_reservatie.boek_kopie_id}, 
             data :{
               vrije_kopieen: {
                 decrement: 1,

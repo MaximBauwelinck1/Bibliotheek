@@ -289,7 +289,7 @@ async function main() {
         gebruiker_id: '8a128b24-411e-4312-8618-e0c0c72bcb41',
         startdatum: '2024-02-01T12:00:00Z',
         einddatum: '2024-02-15T12:00:00Z',
-        status: 'active',
+        status: 'actief',
       },
       {
         id: 'b4a746b4-5cc4-41b6-bc32-78f79c86b4f1',
@@ -297,7 +297,7 @@ async function main() {
         gebruiker_id: 'f1a98976-2d4b-4e88-8a96-fc5d12b04564',
         startdatum: '2024-02-10T12:00:00Z',
         einddatum: '2024-02-20T12:00:00Z',
-        status: 'pending',
+        status: 'niet-actief',
       }],
   });
 }
