@@ -69,10 +69,8 @@ updateBoekById.validationScheme = {
   params: {
     id: Joi.string().uuid(),
   },
-  body: {
-    boek_kopie_id: Joi.string().uuid(),          
-    gebruiker_id: Joi.string().uuid(),    
-    einddatum: Joi.date().greater('now'),   
+  body: {   
+    einddatum: Joi.date().greater('now').optional(),   
     status: Joi.string().valid('actief','niet-actief'),  
   },
 };

@@ -190,79 +190,110 @@ export const deleteById = async (id: UUID): Promise<void> => {
 
 export const updateById = async (id: UUID, new_reservatie: ReservatieUpdateInput): Promise<Reservatie> => {
   const opt_reservatie = await getById(id);
+  const updateData: Prisma.ReservatieUpdateInput = {
+    status: new_reservatie.status,
+    ...(new_reservatie.einddatum ? { einddatum: new_reservatie.einddatum } : {}),
+  };
   if(opt_reservatie instanceof Error){
     return opt_reservatie;
   } else{
     if(new_reservatie.status == 'actief'){
-      const updated_reservatie = await prisma.$transaction(
-        [
-          prisma.reservatie.update({
-            where: {
-              id,
-            },
+      const maak_reservatie = async () => {
+        const result = await prisma.$transaction(async (tx) => {
+          const [createdReservatie, updatedBoekKopie] = await Promise.all([
+            tx.reservatie.update({
+              where:{
+                id:opt_reservatie.id,
+              },
+              data: updateData,
+              select: RESERVATIES_SELECT,
+            }),
+            tx.boekKopie.update({
+              where: { id: opt_reservatie.boek_kopie.id },
+              data: {
+                status: 'gereserveerd',
+              },
+            }),
+          ]);
+      
+          const updatedBoek = await tx.boek.update({
+            where: { id: updatedBoekKopie.boek_id },
             data: {
-              boek_kopie_id: new_reservatie.boek_kopie_id,
-              gebruiker_id: new_reservatie.gebruiker_id,
-              einddatum: new_reservatie.einddatum,
-              status:  new_reservatie.status,
-            },
-            select: RESERVATIES_SELECT,
-          }),
-          prisma.boekKopie.update({ 
-            where:{id: new_reservatie.boek_kopie_id},
-            data :{
-              status: 'gereserveerd',
-            },
-          }),
-          prisma.boek.update({ //TODO moet nog juiste id zijn + opnieuw reservatie opvragen zoals bij create
-            where:{id: new_reservatie.boek_kopie_id}, 
-            data :{
               vrije_kopieen: {
                 decrement: 1,
               },
             },
-          }),
-        ],
-        {
+          });
+      
+          return { createdReservatie, updatedBoekKopie, updatedBoek };
+        }, {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        });
+      
+        return result;
+      };
+      const id = (await maak_reservatie()).createdReservatie.id;
+      const opt_res =  await prisma.reservatie.findUnique({
+        where:{
+          id,
         },
-      );
-      return updated_reservatie[0];
+        select: RESERVATIES_SELECT,
+      });
+      if(opt_res){
+        return opt_res;
+      } else{
+        throw ServiceError.internalServerError('Kan onmogelijk gethrowed worden?');
+      }
     } else if( new_reservatie.status == 'niet-actief'){
-      const updated_reservatie = await prisma.$transaction(
-        [
-          prisma.reservatie.update({
-            where: {
-              id,
-            },
+      const maak_reservatie = async () => {
+        const result = await prisma.$transaction(async (tx) => {
+          const [createdReservatie, updatedBoekKopie] = await Promise.all([
+            tx.reservatie.update({
+              where:{
+                id:opt_reservatie.id,
+              },
+              data: updateData,
+              select: RESERVATIES_SELECT,
+            }),
+            tx.boekKopie.update({
+              where: { id: opt_reservatie.boek_kopie.id },
+              data: {
+                status: 'beschikbaar',
+              },
+              select: {
+                boek_id: true,
+              },
+            }),
+          ]);
+      
+          const updatedBoek = await tx.boek.update({
+            where: { id: updatedBoekKopie.boek_id },
             data: {
-              boek_kopie_id: new_reservatie.boek_kopie_id,
-              gebruiker_id: new_reservatie.gebruiker_id,
-              einddatum: new_reservatie.einddatum,
-              status:  new_reservatie.status,
-            },
-            select: RESERVATIES_SELECT,
-          }),
-          prisma.boekKopie.update({ 
-            where:{id: new_reservatie.boek_kopie_id},
-            data :{
-              status: 'beschikbaar',
-            },
-          }),
-          prisma.boek.update({ 
-            where:{id: new_reservatie.boek_kopie_id},
-            data :{
               vrije_kopieen: {
                 increment: 1,
               },
             },
-          }),
-        ],
-        {
+          });
+      
+          return { createdReservatie, updatedBoekKopie, updatedBoek };
+        }, {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        });
+      
+        return result;
+      };
+      const id = (await maak_reservatie()).createdReservatie.id;
+      const opt_res =  await prisma.reservatie.findUnique({
+        where:{
+          id,
         },
-      );
-      return updated_reservatie[0];
+        select: RESERVATIES_SELECT,
+      });
+      if(opt_res){
+        return opt_res;
+      } else{
+        throw ServiceError.internalServerError('Kan onmogelijk gethrowed worden?');
+      }
     } else{
       throw ServiceError.validationFailed('Reservatie mag enkel status actief of niet-actief hebben.');
     }
