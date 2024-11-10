@@ -1,65 +1,84 @@
 import Router from '@koa/router';
 import * as gebruikerService from '../service/gebruikers';
-import type { Context } from 'koa';
-import { validate as isUuid } from 'uuid';
 import { getLogger } from '../core/logging';
-import type { BibliotheekAppContext, BibliotheekAppState, KoaRouter } from '../types/koa';
+import type { BibliotheekAppContext, BibliotheekAppState, KoaRouter,KoaContext } from '../types/koa';
+import type { IdParams } from '../types/common';
+import Joi from 'joi';
+import type { UUID } from 'crypto';
+import validate from '../core/validation';
+// eslint-disable-next-line @stylistic/max-len
+import type { CreateGebruikerRequest, CreateGebruikerResponse, GetAllgebruikersResponse, GetGebruikerByIdResponse, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
 
-const getAllGebruikers = async (ctx: Context) => {
+const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
   ctx.body = {
-    gebruikers: gebruikerService.getAll(),
+    items: await gebruikerService.getAll(),
   };
   getLogger().info('Alle gebruikers zijn opgevraagd.');
 };
+getAllGebruikers.validationScheme = null;
 
-const createGebruiker = async (ctx: Context) => {
-  const nieweGebruiker = gebruikerService.create({
+const createGebruiker = async (ctx: KoaContext<CreateGebruikerResponse, void, CreateGebruikerRequest>) => {
+  const nieuwGebruiker = await gebruikerService.create({
     ...ctx.request.body,
   });
-  if(nieweGebruiker instanceof Error){
-    ctx.status = 400;
-    ctx.body ={ 
-      status: 'gefaald',
-      error: nieweGebruiker.message,
-    };
-    getLogger().error(
-      `Gefaald om gebruiker:${JSON.stringify(ctx.request.body)} aan te maken met foutboodschap:${nieweGebruiker}.`);
-  } else{
-    ctx.body = {
-      status: 'geslaagd',
-      gebruikerId: nieweGebruiker};
-    getLogger().info(`Gebruiker met id:${nieweGebruiker} is succesvol aangemaakt.`);
-  }
+  ctx.body = nieuwGebruiker;
+  ctx.status = 201;
+  getLogger().info(`gebruiker met id:${nieuwGebruiker.id} is succesvol aangemaakt.`);
 };
 
-const getGebruikerById = async (ctx: Context) => {
-  const id = ctx.params.id;
+createGebruiker.validationScheme = {
+  body: {            
+    voornaam: Joi.string(),            
+    achternaam: Joi.date(),                
+    geboortedatum: Joi.date().max('now'),          
+    email: Joi.string().email(),    
+    rol: Joi.string().valid('user','admin'),   
+    wachtwoord: Joi.string(),     
+  },
+};
 
-  if (!id) {
-    ctx.status = 400;
-    ctx.body = { error: 'ID is required' };
-    return;
-  }
-  
-  if (!isUuid(id)) {
-    ctx.status = 400;
-    ctx.body = { error: 'Invalid UUID' };
-    return;
-  }
-  const opt_res = gebruikerService.getById(ctx.params.id);
-  if(opt_res instanceof Error){
-    ctx.status = 400;
-    ctx.body = {
-      status: 'gefaald',
-      foutboodschap: opt_res.message};
-    getLogger().info(opt_res);
-  } else{
-    ctx.body = {
-      status: 'geslaagd',
-      gebruiker: opt_res};
-    getLogger().info(`Gebruiker met id:${ctx.params.id} is geretourneerd.`);
-  }
+const deleteGebruikerById= async (ctx: KoaContext<void, IdParams>) => {
+  const id : UUID = ctx.params.id;
+  await gebruikerService.deleteById(id);
+  ctx.status = 204;
+  getLogger().info(`gebruiker met id:${ctx.params.id} is succesvol verwijderd.`);
+};
+deleteGebruikerById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+};
+const getGebruikerById = async (ctx: KoaContext<GetGebruikerByIdResponse, IdParams>) => {
+  const id : UUID = ctx.params.id;
+  const opt_res =await  gebruikerService.getById(id);
+  ctx.body = opt_res;
+  getLogger().info(`gebruiker met id:${ctx.params.id} is geretourneerd.`);
+};
 
+getGebruikerById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+};
+const updateGebruikerById = async( ctx: KoaContext<UpdateGebruikerResponse, IdParams, UpdateGebruikerRequest>) => {
+  const id : UUID = ctx.params.id;
+  const opt_res =await  gebruikerService.updateById(id, {...ctx.request.body});
+  ctx.body = opt_res;
+  getLogger().info(`gebruiker met id:${ctx.params.id} is succesvol geupdate.`);
+};
+
+updateGebruikerById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+  body: {            
+    voornaam: Joi.string(),            
+    achternaam: Joi.date(),                
+    geboortedatum: Joi.date().max('now'),          
+    email: Joi.string().email(),    
+    rol: Joi.string().valid('user','admin'),   
+    wachtwoord: Joi.string(),     
+  },
 };
 
 export default (parent: KoaRouter) => {
@@ -67,9 +86,11 @@ export default (parent: KoaRouter) => {
     prefix: '/gebruikers',
   });
 
-  router.get('/', getAllGebruikers);
-  router.post('/', createGebruiker);
-  router.get('/:id', getGebruikerById);
+  router.get('/',validate(getAllGebruikers.validationScheme), getAllGebruikers);
+  router.post('/',validate(createGebruiker.validationScheme), createGebruiker);
+  router.get('/:id',  validate(getGebruikerById.validationScheme), getGebruikerById);
+  router.delete('/:id',validate(deleteGebruikerById.validationScheme), deleteGebruikerById);
+  router.put('/:id',validate(updateGebruikerById.validationScheme),updateGebruikerById);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };

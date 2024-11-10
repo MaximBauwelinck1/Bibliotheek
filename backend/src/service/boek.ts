@@ -36,11 +36,11 @@ const BOEKEN_SELECT = {
 
 export const getAll = async (genre?: string  | string[]): Promise<Boek[]> => {
   if(!genre){
-    return prisma.boek.findMany({
+    return await prisma.boek.findMany({
       select: BOEKEN_SELECT,
     });
   } else{
-    return prisma.boek.findMany({
+    return await prisma.boek.findMany({
       select: BOEKEN_SELECT,
       where: {  genre: Array.isArray(genre) ? { in: genre } : genre},
        

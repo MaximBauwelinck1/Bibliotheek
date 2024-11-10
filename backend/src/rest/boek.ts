@@ -28,7 +28,7 @@ const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRe
   });
   ctx.body = nieuwBoek;
   ctx.status = 201;
-  getLogger().info(`boek met id:${nieuwBoek} is succesvol aangemaakt.`);
+  getLogger().info(`boek met id:${nieuwBoek.id} is succesvol aangemaakt.`);
 };
 
 createBoek.validationScheme = {

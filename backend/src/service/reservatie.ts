@@ -67,7 +67,7 @@ const RESERVATIES_SELECT = {
 
 export const getAll = async (): Promise<Reservatie[]> => {
  
-  return prisma.reservatie.findMany({
+  return await prisma.reservatie.findMany({
     select: RESERVATIES_SELECT,    
   });
   
