@@ -21,20 +21,32 @@ const ReservatiePaneel = () => {
       const formattedDateStartdatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.startdatum));
       const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum));
        
-      return { ...res, startdatum_display: formattedDateStartdatum,einddatum_display:formattedDateEinddatum }; 
+      // eslint-disable-next-line @stylistic/max-len
+      return { ...res,boek_kopie_id:res.boek_kopie.id, gebruiker_id:res.gebruiker.id,startdatum_display: formattedDateStartdatum,einddatum_display:formattedDateEinddatum }; 
     });
   }, [reservaties]);
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredReservaties =useMemo(() => {
+    let parsed_zoekveld;
     const string_zoekvelden = ['id','boek kopie id','gebruiker id','status'];
     return [...filteredReservaties].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
-        if (a[zoekveld] > b[zoekveld]) return order === 'asc' ? 1 : -1; 
-        if (a[zoekveld] < b[zoekveld]) return order === 'asc' ? -1 : 1;
+        switch (zoekveld) {
+          case 'boek kopie id':
+            parsed_zoekveld = 'boek_kopie_id';
+            break;
+          case 'gebruiker id':
+            parsed_zoekveld = 'gebruiker_id';
+            break;
+          default:
+            parsed_zoekveld = zoekveld;
+            break;
+        }
+        if (a[parsed_zoekveld] > b[parsed_zoekveld]) return order === 'asc' ? 1 : -1; 
+        if (a[parsed_zoekveld] < b[parsed_zoekveld]) return order === 'asc' ? -1 : 1;
         return 0;
       }else{
-        let parsed_zoekveld;
         switch (zoekveld) { // dit is echt een mess maar ik weet anders niet hoe
           case 'startdatum reservatie':
             parsed_zoekveld = 'startdatum';
