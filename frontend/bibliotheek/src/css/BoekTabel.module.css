@@ -17,7 +17,8 @@
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    white-space: nowrap;       
+    white-space: nowrap; 
+    text-indent: 1em;
   }
   
   th {
@@ -29,3 +30,23 @@
   
 tr:nth-child(even) {background: #CCC}
 tr:nth-child(odd) {background: #FFF}
+
+.up{
+  color: black;
+  background-image: url("../assets/up_arrow.png");
+}
+.down{
+  color: black;
+  background-image: url("../assets/down_arrow.png");
+}
+.default_arrow{
+  color: peru;
+  background-image: url("../assets/default.png");
+}
+th.up,
+th.default_arrow,
+th.down {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center left;
+}

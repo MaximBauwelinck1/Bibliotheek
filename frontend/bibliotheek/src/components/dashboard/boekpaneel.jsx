@@ -4,8 +4,6 @@ import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 const BoekPaneel = () => {
-  const test =[{test:'z'},{test:'g'},{test:'a'},{test:'c'}];
-  const naam = 'test';
   const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum','taal','paginas',
     'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt','upgedate'];
   const zichtbare_kolommen = ['id','ISBN','titel','genre','gepubliceerd','taal','paginas',
@@ -31,24 +29,19 @@ const BoekPaneel = () => {
   const [zoekveld, setZoekVeld] = useState('');
   const [order, setOrder] = useState('asc');
   filteredBoeken =useMemo(() => {
-    console.log(test);
-    test.sort((a, b) => {
-      if (a[naam] > b[naam]) return 1;
-      if (a[naam] < b[naam]) return -1;
-      return 0;
-    });
     return filteredBoeken.sort((a,b) => {
-      if (a[zoekveld] > b[zoekveld]) return 1;
-      if (a[zoekveld] < b[zoekveld]) return -1;
+      if (a[zoekveld] > b[zoekveld]) return order === 'asc' ? 1 : -1; 
+      if (a[zoekveld] < b[zoekveld]) return order === 'asc' ? -1 : 1;
       return 0;
     });
-  }, [filteredBoeken, zoekveld]);
-
-  const handleSorteren = (zoekveld) => {
-    setZoekVeld(zoekveld);
+  }, [filteredBoeken, zoekveld,order]);
+  const handleSorteren = (nieuw_zoekveld) => {
+    if(zoekveld == nieuw_zoekveld){
+      setOrder(order == 'asc'?'desc':'asc');
+    }
+    setZoekVeld(nieuw_zoekveld);
   
   };
-  console.log(test);
   return (
     <div>
       <h2>Boeken</h2>
@@ -58,7 +51,11 @@ const BoekPaneel = () => {
             <thead>
               <tr>
                 {zichtbare_kolommen.map((col, index) => (
-                  <th key={index} onClick={() => handleSorteren(col)}>{col}</th>
+                  <th key={index} onClick={() => handleSorteren(col)} className={zoekveld === col && order === 'desc'
+                    ? styles.up
+                    : zoekveld === col && order === 'asc'
+                      ? styles.down
+                      : styles.default_arrow}>{col}</th>
                 ))}
               </tr>
             </thead>
