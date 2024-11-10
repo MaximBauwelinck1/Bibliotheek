@@ -1,6 +1,5 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import BoekenList from './pages/Boeken/BoekenList.jsx';
@@ -9,6 +8,7 @@ import NotFound from './pages/NotFound/NotFound.jsx';
 import BoekDetail from './pages/Boeken/BoekDetail.jsx';
 import Layout from './pages/Layout.jsx';
 import { Navigate } from 'react-router-dom';
+import Dashbord from './pages/admin/dashbord.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
       { 
         path: '/',
         element: <Navigate replace to='/boeken' />,
+      },
+      { 
+        path: '/dashboard',
+        element: <Dashbord/>,
       },
       {
         path: '/boeken',

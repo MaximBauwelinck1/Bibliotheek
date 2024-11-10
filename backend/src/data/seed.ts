@@ -3,7 +3,6 @@ import type { Prisma} from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import config from 'config';
-import { getLogger } from '../core/logging';
 
 const prisma = new PrismaClient(); 
 const AANTAL_KOPIEËN_P_BOEK : number = Number(config.get<number>('kopieen'));
@@ -81,11 +80,9 @@ async function main() {
 
   // om 3 kopieen te veranderen naar status gereserveerd
   boek_kopieen.forEach((b) =>{
-    getLogger().info(b.boek_id);
     if(b.boek_id == '83f13cbe-4133-4ac8-931f-153074e30743' && res1){
       res1 = false;
       b.status = 'gereserveerd';
-      getLogger().info('fffffffffffffff');
       boek_kopieen_res.push(b.id?b.id:'onmogelijk');
     } else if (b.boek_id == '769bc105-e65e-497e-9780-df9d6b774486' && res2){
       res2 = false;
@@ -271,7 +268,6 @@ async function main() {
   const boekId_kopie1 : string= boek_kopieen_res[0]?boek_kopieen_res[0]:'onmogelijk';
   const boekId_kopie2 : string= boek_kopieen_res[1]?boek_kopieen_res[1]:'onmogelijk';
   const boekId_kopie3 : string= boek_kopieen_res[2]?boek_kopieen_res[2]:'onmogelijk';
-  getLogger().info(boekId_kopie1);
   await prisma.reservatie.createMany({
     data: [
       {
