@@ -10,28 +10,28 @@ const GebruikerPaneel = () => {
   const zichtbare_kolommen = ['id','voornaam','achternaam','geboortedatum','email','rol',
     'aangemaakt','laatst aangepast'];
   const {
-    data: boeken = [],
+    data: gebruikers = [],
     isLoading,
     error,
   } = useSWR('gebruikers', API.getAll);
   // om datums leesbaar te maken
-  let filteredBoeken = useMemo(() => {
+  let filteredgebruikers = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
-    return [...boeken].map((boek) => {
+    return [...gebruikers].map((geb) => {
       // eslint-disable-next-line @stylistic/max-len
-      const formattedDatePublicatie = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(boek.publicatie_datum));
-      const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boek.aangemaakt));
-      const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boek.upgedate));
+      const formattedDateGeboortedatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(geb.geboortedatum));
+      const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(geb.aangemaakt));
+      const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(geb.upgedate));
       // eslint-disable-next-line @stylistic/max-len
-      return { ...boek, publicatie_datum_display: formattedDatePublicatie,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
+      return { ...geb, geboortedatum_display: formattedDateGeboortedatum,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
     });
-  }, [boeken]);
-  const [zoekveld, setZoekVeld] = useState('titel');
+  }, [gebruikers]);
+  const [zoekveld, setZoekVeld] = useState('voornaam');
   const [order, setOrder] = useState('asc');
-  filteredBoeken =useMemo(() => {
-    const string_zoekvelden = ['id','ISBN','titel','genre','taal','cover'];
-    return [...filteredBoeken].sort((a,b) => {
+  filteredgebruikers =useMemo(() => {
+    const string_zoekvelden = ['id','voornaam','achternaam','email','rol'];
+    return [...filteredgebruikers].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         if (a[zoekveld] > b[zoekveld]) return order === 'asc' ? 1 : -1; 
         if (a[zoekveld] < b[zoekveld]) return order === 'asc' ? -1 : 1;
@@ -39,9 +39,6 @@ const GebruikerPaneel = () => {
       }else{
         let parsed_zoekveld;
         switch (zoekveld) { // dit is echt een mess maar ik weet anders niet hoe
-          case 'gepubliceerd':
-            parsed_zoekveld = 'publicatie_datum';
-            break;
           case 'laatst aangepast':
             parsed_zoekveld = 'upgedate';
             break;
@@ -60,7 +57,7 @@ const GebruikerPaneel = () => {
       }
     
     });
-  }, [filteredBoeken, zoekveld,order]);
+  }, [filteredgebruikers, zoekveld,order]);
   const handleSorteren = (nieuw_zoekveld) => {
     if(zoekveld == nieuw_zoekveld){
       setOrder(order == 'asc'?'desc':'asc');
@@ -87,7 +84,7 @@ const GebruikerPaneel = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredBoeken.map((row, rowIndex) => (
+              {filteredgebruikers.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
                     <td key={colIndex}>{row[col]}</td>
