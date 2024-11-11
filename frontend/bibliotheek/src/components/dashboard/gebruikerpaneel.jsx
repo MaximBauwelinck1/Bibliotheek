@@ -9,6 +9,7 @@ const GebruikerPaneel = () => {
   const [search, setSearch] = useState('');
   const [categorieFilter, setCategorieFilter] = useState('voornaam');
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('voornaam');
+  let menu_toggle = false;
 
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
     'aangemaakt_display','upgedate_display'];
@@ -75,6 +76,24 @@ const GebruikerPaneel = () => {
     setZoekVeld(nieuw_zoekveld);
   
   };
+
+  function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu_toggle = menu_toggle?false:true;
+    menu.style.display = menu_toggle ? 'block' : 'none';
+    console.log(menu_toggle);
+  }
+  
+  function editItem(id) {
+    //TODO
+    toggleMenu(); 
+  }
+  
+  function deleteItem(id) {
+    //TODO
+    toggleMenu();
+  }
+  
   return (
     <div>
       <h2>Gebruikers</h2>
@@ -103,9 +122,7 @@ const GebruikerPaneel = () => {
           </button>
           <span
             style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-            onClick={() => {
-              // setText('');        
-              // setCategorieFilter('');          
+            onClick={() => {         
               setSearch('');      
               setSearchCategorieFilter('');       
             }}
@@ -133,7 +150,21 @@ const GebruikerPaneel = () => {
               {filteredgebruikers.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
-                    <td key={colIndex}>{row[col]}</td>
+                    <td key={colIndex}>
+                      <>
+                        {row[col]}
+                        {colIndex === 0 && (
+                          <div className={styles.menu_container}>
+                            <button className={styles.menu_button} onClick={() => toggleMenu(row['id'])}>⋮</button>
+                            <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
+                              <button onClick={() => editItem(row['id'])}>Edit</button>
+                              <button onClick={() => deleteItem(row['id'])}>Delete</button>
+                              <button >Bekijken</button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    </td>
                   ))}
                 </tr>
               ))}

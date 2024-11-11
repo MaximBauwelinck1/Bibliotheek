@@ -7,7 +7,7 @@ const BoekListItem = (props) => {
     console.log(verkorte_titel);
   }
   return (
-    <Link className={styles.link_uitgezet} to={`/boeken/${props.id}`}>
+    <Link className='link_uitgezet' to={`/boeken/${props.id}`}>
       <div className={styles.boek_card}>
         <div className={styles.cover_container}>
           {props.cover_uri ? (

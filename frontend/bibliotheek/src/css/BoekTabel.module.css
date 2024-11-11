@@ -50,3 +50,41 @@ th.down {
   background-repeat: no-repeat;
   background-position: center left;
 }
+
+.menu_container {
+  position: relative;
+  display: inline-block;
+  right: 1em;
+}
+
+.menu_button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.menu_options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 1em;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.menu_options button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu_options button:hover {
+  background-color: #f0f0f0;
+}

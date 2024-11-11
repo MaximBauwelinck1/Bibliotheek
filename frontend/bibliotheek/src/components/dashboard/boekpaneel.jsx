@@ -86,12 +86,12 @@ const BoekPaneel = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredBoeken.map((row, rowIndex) => (
+              {filteredBoeken.map((row, rowIndex) => (         
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
                     <td key={colIndex}>{row[col]}</td>
                   ))}
-                </tr>
+                </tr>     
               ))}
             </tbody>
           </table>
