@@ -5,9 +5,10 @@ import type { UUID } from 'crypto';
 import type { BibliotheekAppContext, BibliotheekAppState, KoaContext, KoaRouter } from '../types/koa';
 // eslint-disable-next-line @stylistic/max-len
 import type { CreateBoekRequest, CreateBoekResponse, GetAllBoekenResponse, GetBoekByIdResponse, UpdateBoekRequest, UpdateBoekResponse } from '../types/boek';
-import type { IdParams } from '../types/common';
+import type { DoubleIdParams, IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
+import type { GetAllBoekkopieennResponse, GetBoekkopieByIdResponse } from '../types/boek_kopie';
 
 const getAllBoeken = async (ctx: KoaContext<GetAllBoekenResponse>) => {
   const  genre = ctx.query.genre;
@@ -21,6 +22,14 @@ getAllBoeken.validationScheme = {
     genre: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())).optional(),
   },
 };
+
+const getAllBoekkopieen = async (ctx: KoaContext<GetAllBoekkopieennResponse>) => {
+  ctx.body = {
+    items: await boekenService.getAllBoekKopieen(),
+  };
+  getLogger().info('Alle boek kopieên zijn opgevraagd.');
+};
+getAllBoekkopieen.validationScheme = null;
 
 const createBoek = async (ctx: KoaContext<CreateBoekResponse, void, CreateBoekRequest>) => {
   const nieuwBoek = await boekenService.create({
@@ -111,6 +120,35 @@ getBoekById.validationScheme = {
     id: Joi.string().uuid(),
   },
 };
+const getAllBoekKopieenFromBoek = async (ctx: KoaContext<GetAllBoekkopieennResponse, IdParams>) => {
+  const id : UUID = ctx.params.id;
+  const opt_res =await  boekenService.getAllBoekKopieenFromBoek(id);
+  ctx.body= {
+    items: opt_res,
+  };
+  getLogger().info(`alle boek kopieen van boek:${ctx.params.id} zijn geretourneerd.`);
+};
+
+getAllBoekKopieenFromBoek.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+};
+
+const getBoekKopieById = async (ctx: KoaContext<GetBoekkopieByIdResponse, DoubleIdParams>) => {
+  const id : UUID = ctx.params.id;
+  const boekKopieId : UUID = ctx.params.id2;
+  const opt_res =await  boekenService.getBoekKopieById(id,boekKopieId);
+  ctx.body = opt_res;
+  getLogger().info(`boek kopie met id:${ctx.params.id} is geretourneerd.`);
+};
+
+getBoekKopieById.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+    boekKopieId: Joi.string().uuid(),
+  },
+};
 const updateBoekById = async( ctx: KoaContext<UpdateBoekResponse, IdParams, UpdateBoekRequest>) => {
   const id : UUID = ctx.params.id;
   const opt_res =await  boekenService.updateById(id, {...ctx.request.body});
@@ -189,6 +227,8 @@ export default (parent: KoaRouter) => {
   router.get('/:id',  validate(getBoekById.validationScheme), getBoekById);
   router.delete('/:id',validate(deleteBoekById.validationScheme), deleteBoekById);
   router.put('/:id',validate(updateBoekById.validationScheme),updateBoekById);
-
+  router.put('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
+  router.put('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
+  router.put('/:id/kopieen/:id',validate(getBoekKopieById.validationScheme),getBoekKopieById);
   parent.use(router.routes()).use(router.allowedMethods());
 };

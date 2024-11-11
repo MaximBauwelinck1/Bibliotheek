@@ -11,3 +11,7 @@ export interface ListResponse<T> {
 export interface IdParams {
   id: UUID;
 }
+export interface DoubleIdParams {
+  id: UUID;
+  id2: UUID;
+}

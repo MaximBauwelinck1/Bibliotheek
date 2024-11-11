@@ -5,6 +5,7 @@ import ServiceError from '../core/serviceError';
 import handleDBError from './_handleDBError';
 import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
+import type { BoekKopie } from '../types/boek_kopie';
 
 const BOEKEN_SELECT = {
   id: true,
@@ -33,7 +34,42 @@ const BOEKEN_SELECT = {
     },
   },
 };
-
+const BOEK_KOPIE_SELECT = {
+  id: true,
+  status: true,
+  extra_informatie: true,
+  aangemaakt: true,
+  upgedate: true,
+  boek: {
+    select: {
+      id: true,
+      ISBN: true,
+      titel: true,
+      genre: true,
+      publicatie_datum: true,
+      taal: true,
+      paginas: true,
+      vrije_kopieen: true,
+      totale_kopieen: true,
+      beschrijving: true,
+      cover_uri: true,
+      aangemaakt: true,
+      upgedate: true,
+      auteur: {
+        select: {
+          id: true,
+          voornaam: true,
+          achternaam: true,
+          geboortedatum: true,
+          nationaliteit: true,
+          biografie: true,
+          aangemaakt: true,
+          upgedate: true,
+        },
+      },
+    },
+  },
+};
 export const getAll = async (genre?: string  | string[]): Promise<Boek[]> => {
   if(!genre){
     return await prisma.boek.findMany({
@@ -47,6 +83,36 @@ export const getAll = async (genre?: string  | string[]): Promise<Boek[]> => {
     });
   }
   
+};
+
+export const getAllBoekKopieen = async ():Promise<BoekKopie[]> =>{
+  return await prisma.boekKopie.findMany({
+    select:BOEK_KOPIE_SELECT,
+  });
+};
+
+export const getAllBoekKopieenFromBoek = async (boek_id : string):Promise<BoekKopie[]> =>{
+  return await prisma.boekKopie.findMany({
+    select:BOEK_KOPIE_SELECT,
+    where:{
+      boek_id,
+    },
+  });
+};
+
+export const getBoekKopieById = async (boekId : string,boekKopieId : string) : Promise<BoekKopie> =>{
+  const opt_res = await prisma.boekKopie.findUnique({
+    select:BOEK_KOPIE_SELECT,
+    where:{
+      id:boekKopieId,
+      boek_id:boekId,
+    },
+  });
+  if (!opt_res) {
+    throw ServiceError.notFound(`Boek kopie met id:${boekKopieId} van boek:${boekId} bestaat niet.`);
+  }
+
+  return opt_res;
 };
 
 export const getById = async (id: UUID): Promise<Boek>  => {

@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
+import { useNavigate } from 'react-router';
 const BoekPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -10,6 +11,7 @@ const BoekPaneel = () => {
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('ISBN');
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
+  const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
     'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt_display','upgedate_display'];
@@ -101,6 +103,9 @@ const BoekPaneel = () => {
     //TODO
     toggleMenu();
   }
+  function bekijkItem(id) {
+    navigate(`/dashboard/boeken/${id}`);
+  }
   
   return (
     <div>
@@ -167,7 +172,7 @@ const BoekPaneel = () => {
                           <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
                             <button onClick={() => editItem(row['id'])}>Edit</button>
                             <button onClick={() => deleteItem(row['id'])}>Delete</button>
-                            <button >Bekijken</button>
+                            <button onClick={() => bekijkItem(row['id'])} >Bekijken</button>
                           </div>
                         </div>
                       )}

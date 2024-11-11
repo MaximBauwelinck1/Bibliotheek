@@ -8,6 +8,7 @@
     margin: 20px;
     margin-top: 8em;
   }
+
   
   h2 {
     color: #333;
@@ -47,7 +48,13 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
   }
-  
+  .auteur {
+    background-color: #e2e2e2;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
   .boek_kopie p {
     font-size: 14px;
     margin: 5px 0;
@@ -86,3 +93,47 @@
   .ga_naar_button:hover {
     background-color: #45a049;
   }
+  .cover_img {
+    max-width: 80%;
+    height: 20%;
+    max-height: 15em;
+    border-radius: 4px;
+    object-fit: contain;
+    margin-right: 1em;
+    float: right;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    justify-content:start;
+  }
+  
+  .updateButton {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-right: 5em;
+  }
+  
+  .updateButton:hover {
+    background-color: #45a049;
+  }
+  
+  .deleteButton {
+    padding: 8px 12px;
+    background-color: #f44336; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .deleteButton:hover {
+    background-color: #e53935;
+  }
+  

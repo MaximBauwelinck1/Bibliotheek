@@ -10,7 +10,7 @@ import LayoutUser from './pages/LayouUser.jsx';
 import { Navigate } from 'react-router-dom';
 import Dashbord from './pages/admin/dashbord.jsx';
 import LayoutAdmin from './pages/LayoutAdmin.jsx';
-import GebruikerDetailAdmin from './components/gebruikers/gebruikerDetailAdmin.jsx';
+import BoekDetailAdmin from './pages/admin/BoekDetail';
 import GebruikerDetail from './pages/admin/GebruikerDetail.jsx';
 import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
 const router = createBrowserRouter([
@@ -73,7 +73,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ':id',
-                element: <GebruikerDetailAdmin />,
+                element: <BoekDetailAdmin />,
               },
             ],
           },
