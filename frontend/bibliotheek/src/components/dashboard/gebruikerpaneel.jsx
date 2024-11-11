@@ -109,6 +109,9 @@ const GebruikerPaneel = () => {
     <div>
       <h2>Gebruikers</h2>
       <div className='d-flex justify-content-center'>
+        <small style={{marginTop:10, marginRight:15}}>
+          {filteredgebruikers.length} zoekresultaten
+        </small>
         <div className='input-group mb-3 w-50'>
           <input
             type='search'

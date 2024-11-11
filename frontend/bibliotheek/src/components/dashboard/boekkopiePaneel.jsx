@@ -22,7 +22,7 @@ const BoekKopiePaneel = () => {
     error,
   } = useSWR('boeken/kopieen', API.getAll);
   // om datums leesbaar te maken
-  let filteredgebruikers = useMemo(() => {
+  let filteredBoekKopieen = useMemo(() => {
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...boekkopieen].filter((bk)=>{
       return  (search && searchcategorieFilter) ?
@@ -39,10 +39,10 @@ const BoekKopiePaneel = () => {
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   console.log(zoekveld);
-  filteredgebruikers =useMemo(() => {
+  filteredBoekKopieen =useMemo(() => {
     let parsed_zoekveld;
     const string_zoekvelden = ['id','boek id','status','extra informatie'];
-    return [...filteredgebruikers].sort((a,b) => {
+    return [...filteredBoekKopieen].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
           case 'boek id':
@@ -79,7 +79,7 @@ const BoekKopiePaneel = () => {
       }
     
     });
-  }, [filteredgebruikers, zoekveld,order]);
+  }, [filteredBoekKopieen, zoekveld,order]);
   const handleSorteren = (nieuw_zoekveld) => {
     if(zoekveld == nieuw_zoekveld){
       setOrder(order == 'asc'?'desc':'asc');
@@ -118,6 +118,9 @@ const BoekKopiePaneel = () => {
     <div>
       <h2>Boek Kopieën</h2>
       <div className='d-flex justify-content-center'>
+        <small style={{marginTop:10, marginRight:15}}>
+          {filteredBoekKopieen.length} zoekresultaten
+        </small>
         <div className='input-group mb-3 w-50'>
           <input
             type='search'
@@ -167,7 +170,7 @@ const BoekKopiePaneel = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredgebruikers.map((row, rowIndex) => (
+              {filteredBoekKopieen.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
                     <td key={colIndex}>
