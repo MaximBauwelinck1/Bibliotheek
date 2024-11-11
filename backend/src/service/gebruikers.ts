@@ -24,7 +24,7 @@ export const getAll = async (): Promise<Gebruiker[]> => {
 
 export const getById = async (id: UUID): Promise<Gebruiker>  => {
 
-  const gebruiker = await prisma.boek.findUnique({
+  const gebruiker = await prisma.gebruiker.findUnique({
     select: GEBRUIKER_SELECT,
     where: {
       id,

@@ -1,0 +1,76 @@
+
+.reservatie_container {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    margin-top: 8em;
+  }
+  
+  .h2Title {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .h3Title {
+    color: #444;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+   
+  .paragraph {
+    color: #555;
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .gebruiker {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  
+  .gebruikerParagraph {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .boek_kopie {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  
+  .boek_kopieParagraph {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+
+  .reservatie_tatus {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .reservatie_tatusParagraph {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .strongLabel {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .gebruiker, .boek_kopie, .reservatie_status {
+    margin-bottom: 20px;
+  }
+  

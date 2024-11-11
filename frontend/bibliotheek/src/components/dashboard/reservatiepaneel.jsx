@@ -3,8 +3,16 @@ import useSWR from 'swr';
 import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const ReservatiePaneel = () => {
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState('');
+  const [categorieFilter, setCategorieFilter] = useState('id');
+  const [searchcategorieFilter, setSearchCategorieFilter] = useState('id');
+  const [menu_toggle,setMenu_toggle] = useState(false);
+  const [huidigeMenu,setHuidigeMenu] = useState('');
+  const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','boek_kopie_id','gebruiker_id','startdatum_display','einddatum_display','status'];
   const zichtbare_kolommen = ['id','boek kopie id','gebruiker id','startdatum reservatie','einddatum reservatie'
@@ -17,13 +25,17 @@ const ReservatiePaneel = () => {
   // om datums leesbaar te maken
   let filteredReservaties = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
-    return [...reservaties].map((res) => {
+    return [...reservaties].filter((geb)=>{
+      return  (search && searchcategorieFilter) ?
+        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
+    },
+    ).map((res) => {
       const formattedDateStartdatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.startdatum));
       const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum)); 
       // eslint-disable-next-line @stylistic/max-len
       return { ...res,boek_kopie_id:res.boek_kopie.id, gebruiker_id:res.gebruiker.id,startdatum_display: formattedDateStartdatum,einddatum_display:formattedDateEinddatum }; 
     });
-  }, [reservaties]);
+  }, [reservaties, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredReservaties =useMemo(() => {
@@ -73,9 +85,69 @@ const ReservatiePaneel = () => {
     setZoekVeld(nieuw_zoekveld);
   
   };
+
+  function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    if(huidigeMenu === id){
+      setHuidigeMenu('');
+      setMenu_toggle(false);
+      menu.style.display = 'none';
+    } else if(!menu_toggle) {
+      setHuidigeMenu(id);
+      setMenu_toggle(menu_toggle?false:true);
+      menu.style.display = 'block';
+    }
+  }
+  
+  function editItem(id) {
+    //TODO
+    toggleMenu(); 
+  }
+  
+  function deleteItem(id) {
+    //TODO
+    toggleMenu();
+  }
+  function bekijkItem(id) {
+    navigate(`/dashboard/reservaties/${id}`);
+  }
   return (
     <div>
       <h2>Reservaties</h2>
+      <div className='d-flex justify-content-center'>
+        <div className='input-group mb-3 w-50'>
+          <input
+            type='search'
+            id='search'
+            className='form-control'
+            placeholder='doorzoeken...'
+            onChange={(e) => setText(e.target.value)}
+          />
+          <select id="book-genre" name="genre" onChange={(e) => {
+            setCategorieFilter(e.target.value);
+          }}>
+            <option value="id">id</option>
+            <option  value="boek_kopie_id">boek kopie id</option>
+            <option value="gebruiker_id">gebruiker</option>
+            <option value="status">status</option>
+          </select>
+          <button type='button' className='btn btn-outline-primary' onClick={() => {
+            setSearch(text);
+            setSearchCategorieFilter(categorieFilter);
+          }}>
+            Filter toepassen
+          </button>
+          <span
+            style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+            onClick={() => {         
+              setSearch('');      
+              setSearchCategorieFilter('');       
+            }}
+          >
+            Alle filters verwijderen
+          </span>
+        </div>
+      </div>
       <AsyncData loading={isLoading} error={error}> 
         <div className={styles.table_container}>
           <table>
@@ -95,7 +167,19 @@ const ReservatiePaneel = () => {
               {filteredReservaties.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
-                    <td key={colIndex}>{row[col]}</td>
+                    <td key={colIndex}>
+                      {row[col]}
+                      {colIndex === 0 && (
+                        <div className={styles.menu_container}>
+                          <button className={styles.menu_button} onClick={() => toggleMenu(row['id'])}>⋮</button>
+                          <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
+                            <button onClick={() => editItem(row['id'])}>Edit</button>
+                            <button onClick={() => deleteItem(row['id'])}>Delete</button>
+                            <button onClick={()=> bekijkItem(row['id'])}>Bekijken</button>
+                          </div>
+                        </div>
+                      )}
+                    </td>
                   ))}
                 </tr>
               ))}

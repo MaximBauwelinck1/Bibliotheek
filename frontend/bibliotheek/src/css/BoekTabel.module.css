@@ -5,7 +5,8 @@
     overflow-x: auto;          
     border: 1px solid #ccc;
     border-radius: 8px;
-    max-width: 100vw
+    max-width: 100vw;
+    min-height: 50vh;
   }
   
   table {
@@ -51,6 +52,7 @@ th.down {
   background-position: center left;
 }
 
+
 .menu_container {
   position: relative;
   display: inline-block;
@@ -62,17 +64,18 @@ th.down {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  z-index: 3;
 }
 
 .menu_options {
   display: none;
-  position: absolute;
+  position:absolute;
   top: 100%;
   left: 1em;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 2;
+  z-index: 999;
 }
 
 .menu_options button {

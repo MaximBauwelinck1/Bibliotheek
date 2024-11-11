@@ -3,13 +3,16 @@ import useSWR from 'swr';
 import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const GebruikerPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
   const [categorieFilter, setCategorieFilter] = useState('voornaam');
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('voornaam');
-  let menu_toggle = false;
+  const [menu_toggle,setMenu_toggle] = useState(false);
+  const [huidigeMenu,setHuidigeMenu] = useState('');
+  const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
     'aangemaakt_display','upgedate_display'];
@@ -25,7 +28,6 @@ const GebruikerPaneel = () => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...gebruikers].filter((geb)=>{
-      console.log(searchcategorieFilter);
       return  (search && searchcategorieFilter) ?
         geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
     },
@@ -79,9 +81,15 @@ const GebruikerPaneel = () => {
 
   function toggleMenu(id) {
     const menu = document.getElementById(id);
-    menu_toggle = menu_toggle?false:true;
-    menu.style.display = menu_toggle ? 'block' : 'none';
-    console.log(menu_toggle);
+    if(huidigeMenu === id){
+      setHuidigeMenu('');
+      setMenu_toggle(false);
+      menu.style.display = 'none';
+    } else if(!menu_toggle) {
+      setHuidigeMenu(id);
+      setMenu_toggle(menu_toggle?false:true);
+      menu.style.display = 'block';
+    }
   }
   
   function editItem(id) {
@@ -92,6 +100,9 @@ const GebruikerPaneel = () => {
   function deleteItem(id) {
     //TODO
     toggleMenu();
+  }
+  function bekijkItem(id) {
+    navigate(`/dashboard/gebruikers/${id}`);
   }
   
   return (
@@ -159,7 +170,7 @@ const GebruikerPaneel = () => {
                             <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
                               <button onClick={() => editItem(row['id'])}>Edit</button>
                               <button onClick={() => deleteItem(row['id'])}>Delete</button>
-                              <button >Bekijken</button>
+                              <button onClick={()=>  bekijkItem(row['id'])}>Bekijken</button>
                             </div>
                           </div>
                         )}

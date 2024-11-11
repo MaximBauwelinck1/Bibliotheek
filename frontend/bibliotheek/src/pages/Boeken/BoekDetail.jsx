@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import styles from '../../css/BoekDetail.module.css';
 import boek_suggesties from '../../css/BoekSuggestie.module.css';
 import { Link } from 'react-router-dom';
 import * as API from '../../api/index';
@@ -10,7 +9,6 @@ import SuggestionsBar from '../../components/boeken/SuggestionBar';
 
 const BoekDetail = () => {
   const { id } = useParams();
-
   const {
     data: boek,
     isLoading,
@@ -26,7 +24,7 @@ const BoekDetail = () => {
   suggestions = suggestions.filter((a)=>a.titel != boek.titel);
   return (
     <>
-      <Link to={'/boeken'}> <button className={styles.top_left_button} >Terugkeren</button></Link>    
+      <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
       <AsyncData loading={isLoading} error={error}> 
         <Boek key={id} {...boek}/>
         { suggestions.length > 1 && <>  {/* Moet 1 zijn omdat het boek zelf ook een suggestion is.*/}

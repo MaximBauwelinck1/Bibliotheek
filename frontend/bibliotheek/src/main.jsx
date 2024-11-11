@@ -10,6 +10,9 @@ import LayoutUser from './pages/LayouUser.jsx';
 import { Navigate } from 'react-router-dom';
 import Dashbord from './pages/admin/dashbord.jsx';
 import LayoutAdmin from './pages/LayoutAdmin.jsx';
+import GebruikerDetailAdmin from './components/gebruikers/gebruikerDetailAdmin.jsx';
+import GebruikerDetail from './pages/admin/GebruikerDetail.jsx';
+import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -43,7 +46,51 @@ const router = createBrowserRouter([
       },
       { 
         path: '/dashboard',
-        element: <Dashbord/>,
+        children:[
+          {
+            index:true,
+            element: <Dashbord/>,
+          },
+          {
+            path:'gebruikers',
+            children: [
+              {
+                index: true,
+                element: <Dashbord init_menu='gebruikers'  />,
+              },
+              {
+                path: ':id',
+                element: <GebruikerDetail />,
+              },
+            ],
+          },
+          {
+            path:'boeken',
+            children: [
+              {
+                index: true,
+                element: <Dashbord init_menu='boeken'  />,
+              },
+              {
+                path: ':id',
+                element: <GebruikerDetailAdmin />,
+              },
+            ],
+          },
+          {
+            path:'reservaties',
+            children: [
+              {
+                index: true,
+                element: <Dashbord init_menu='reservaties'  />,
+              },
+              {
+                path: ':id',
+                element: <ReservatieDetail />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: '/boeken',
