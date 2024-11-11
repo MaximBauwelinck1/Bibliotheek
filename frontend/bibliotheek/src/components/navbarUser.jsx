@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
-const Navbar = () => {
+const NavbarUser = () => {
   return (
     <nav className={styles.navbar}>
       <NavLink to="/boeken" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Boeken</NavLink>
@@ -9,4 +9,4 @@ const Navbar = () => {
   );
 };
   
-export default Navbar;
+export default NavbarUser;

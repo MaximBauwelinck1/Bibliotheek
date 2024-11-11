@@ -1,10 +1,10 @@
 import { Outlet,ScrollRestoration } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import NavbarUser from '../components/navbarUser';
 
-export default function Layout() {
+export default function LayoutUser() {
   return (
     <div>
-      <Navbar />
+      <NavbarUser />
       <Outlet />
       <ScrollRestoration/>
     </div>
