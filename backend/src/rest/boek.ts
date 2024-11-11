@@ -222,13 +222,13 @@ export default (parent: KoaRouter) => {
     prefix: '/boeken',
   });
 
+  router.get('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
+  router.get('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
+  router.get('/:id/kopieen/:id',validate(getBoekKopieById.validationScheme),getBoekKopieById);
   router.get('/',validate(getAllBoeken.validationScheme), getAllBoeken);
   router.post('/',validate(createBoek.validationScheme), createBoek);
   router.get('/:id',  validate(getBoekById.validationScheme), getBoekById);
   router.delete('/:id',validate(deleteBoekById.validationScheme), deleteBoekById);
   router.put('/:id',validate(updateBoekById.validationScheme),updateBoekById);
-  router.put('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
-  router.put('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
-  router.put('/:id/kopieen/:id',validate(getBoekKopieById.validationScheme),getBoekKopieById);
   parent.use(router.routes()).use(router.allowedMethods());
 };

@@ -90,6 +90,19 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path:'boekkopieen',
+            children: [
+              {
+                index: true,
+                element: <Dashbord init_menu='boekkopieen'  />,
+              },
+              {
+                path: ':id',
+                element: <ReservatieDetail />,
+              },
+            ],
+          },
         ],
       },
       {

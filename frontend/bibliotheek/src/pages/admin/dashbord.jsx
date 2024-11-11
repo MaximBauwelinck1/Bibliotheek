@@ -4,6 +4,7 @@ import GebruikersPaneel from '../../components/dashboard/gebruikerpaneel';
 import * as dashboard from './../../css/Dashboard.module.css';
 import DashboardMenu from '../../components/dashboard/dashboardMenu';
 import { useState } from 'react';
+import BoekKopiePaneel from '../../components/dashboard/boekkopiePaneel';
 
 const Dashbord = ({init_menu='boeken'}) => {
   
@@ -19,6 +20,7 @@ const Dashbord = ({init_menu='boeken'}) => {
         {menu === 'boeken' && <BoekPaneel />}
         {menu === 'gebruikers' && <GebruikersPaneel />}
         {menu === 'reservaties' && <ReservatiesPaneel />}
+        {menu === 'boekkopieen' && <BoekKopiePaneel />}
       </div>
     </>
   );
