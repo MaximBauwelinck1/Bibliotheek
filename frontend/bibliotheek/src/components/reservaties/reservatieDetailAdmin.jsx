@@ -1,9 +1,10 @@
 import * as styles from '../../css/ReservatieDetail.module.css';
-
+import { useNavigate } from 'react-router';
 const ReservatieDetailAdmin = ( reservatie ) => {
-  console.log(reservatie);
+  const navigate = useNavigate();
   const { gebruiker, boek_kopie, startdatum, einddatum, status } = reservatie;
-
+  const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+ 
   const {
     id: gebruikerId,
     voornaam,
@@ -37,16 +38,20 @@ const ReservatieDetailAdmin = ( reservatie ) => {
         <p><strong>Geboortedatum:</strong> {new Date(geboortedatum).toLocaleDateString()}</p>
         <p><strong>Aangemaakt:</strong> {new Date(gebruikerAangemaakt).toLocaleDateString()}</p>
         <p><strong>Upgedate:</strong> {new Date(gebruikerUpgedate).toLocaleDateString()}</p>
+        <button className={styles.ga_naar_button} 
+          onClick={()=>navigate(`/dashboard/gebruikers/${gebruikerId}`)} >
+          Ga naar gebruiker
+        </button>
       </div>
 
       <div className={styles.boek_kopie}>
         <h3>Boek Kopie</h3>
         <p><strong>ID:</strong> {boekKopieId}</p>
-        <p><strong>Boek:</strong> {/* Voeg hier de boek details toe */}</p>
-        {/* Vul de extra boek velden aan, bijvoorbeeld: */}
+        <p><strong>Boek:</strong> </p>
+        
         <p><strong>Boek Titel:</strong> {boek.titel}</p>
         <p><strong>Boek Auteur:</strong> {boek.auteur.voornaam}</p>
-        {/* Voeg hier de overige 8 velden toe */}
+        
         <p><strong>Status:</strong> {boekKopieStatus}</p>
         <p><strong>Extra Informatie:</strong> {extra_informatie}</p>
         <p><strong>Aangemaakt:</strong> {new Date(boekKopieAangemaakt).toLocaleDateString()}</p>

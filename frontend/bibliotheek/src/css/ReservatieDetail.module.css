@@ -9,19 +9,19 @@
     margin-top: 8em;
   }
   
-  .h2Title {
+  h2 {
     color: #333;
     font-size: 24px;
     margin-bottom: 20px;
   }
   
-  .h3Title {
+  h3 {
     color: #444;
     font-size: 20px;
     margin-bottom: 10px;
   }
    
-  .paragraph {
+  p {
     color: #555;
     font-size: 16px;
     margin: 5px 0;
@@ -35,7 +35,7 @@
     margin-bottom: 20px;
   }
   
-  .gebruikerParagraph {
+  .gebruiker p {
     font-size: 14px;
     margin: 5px 0;
   }
@@ -48,7 +48,7 @@
     margin-bottom: 20px;
   }
   
-  .boek_kopieParagraph {
+  .boek_kopie p {
     font-size: 14px;
     margin: 5px 0;
   }
@@ -60,12 +60,12 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
   
-  .reservatie_tatusParagraph {
+  .reservatie_status p {
     font-size: 14px;
     margin: 5px 0;
   }
   
-  .strongLabel {
+  p strong {
     color: #333;
     font-weight: bold;
   }
@@ -73,4 +73,16 @@
   .gebruiker, .boek_kopie, .reservatie_status {
     margin-bottom: 20px;
   }
+  .ga_naar_button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
   
+  .ga_naar_button:hover {
+    background-color: #45a049;
+  }
