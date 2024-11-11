@@ -5,6 +5,7 @@ import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 
 const ReservatiePaneel = () => {
+
   const werkelijke_kolommen = ['id','boek_kopie_id','gebruiker_id','startdatum_display','einddatum_display','status'];
   const zichtbare_kolommen = ['id','boek kopie id','gebruiker id','startdatum reservatie','einddatum reservatie'
     ,'status'];
@@ -17,10 +18,8 @@ const ReservatiePaneel = () => {
   let filteredReservaties = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     return [...reservaties].map((res) => {
-       
       const formattedDateStartdatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.startdatum));
-      const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum));
-       
+      const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum)); 
       // eslint-disable-next-line @stylistic/max-len
       return { ...res,boek_kopie_id:res.boek_kopie.id, gebruiker_id:res.gebruiker.id,startdatum_display: formattedDateStartdatum,einddatum_display:formattedDateEinddatum }; 
     });

@@ -5,6 +5,11 @@ import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 
 const GebruikerPaneel = () => {
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState('');
+  const [categorieFilter, setCategorieFilter] = useState('voornaam');
+  const [searchcategorieFilter, setSearchCategorieFilter] = useState('voornaam');
+
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
     'aangemaakt_display','upgedate_display'];
   const zichtbare_kolommen = ['id','voornaam','achternaam','geboortedatum','email','rol',
@@ -18,7 +23,12 @@ const GebruikerPaneel = () => {
   let filteredgebruikers = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
-    return [...gebruikers].map((geb) => {
+    return [...gebruikers].filter((geb)=>{
+      console.log(searchcategorieFilter);
+      return  (search && searchcategorieFilter) ?
+        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
+    },
+    ).map((geb) => {
       // eslint-disable-next-line @stylistic/max-len
       const formattedDateGeboortedatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(geb.geboortedatum));
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(geb.aangemaakt));
@@ -26,7 +36,7 @@ const GebruikerPaneel = () => {
       // eslint-disable-next-line @stylistic/max-len
       return { ...geb, geboortedatum_display: formattedDateGeboortedatum,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
     });
-  }, [gebruikers]);
+  }, [gebruikers, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('voornaam');
   const [order, setOrder] = useState('asc');
   filteredgebruikers =useMemo(() => {
@@ -68,6 +78,42 @@ const GebruikerPaneel = () => {
   return (
     <div>
       <h2>Gebruikers</h2>
+      <div className='d-flex justify-content-center'>
+        <div className='input-group mb-3 w-50'>
+          <input
+            type='search'
+            id='search'
+            className='form-control'
+            placeholder='doorzoeken...'
+            onChange={(e) => setText(e.target.value)}
+          />
+          <select id="book-genre" name="genre" onChange={(e) => {
+            setCategorieFilter(e.target.value);
+          }}>
+            <option  value="voornaam">Voornaam</option>
+            <option value="achternaam">Achternaam</option>
+            <option value="id">id</option>
+            <option value="email">email</option>
+          </select>
+          <button type='button' className='btn btn-outline-primary' onClick={() => {
+            setSearch(text);
+            setSearchCategorieFilter(categorieFilter);
+          }}>
+            Filter toepassen
+          </button>
+          <span
+            style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+            onClick={() => {
+              // setText('');        
+              // setCategorieFilter('');          
+              setSearch('');      
+              setSearchCategorieFilter('');       
+            }}
+          >
+            Alle filters verwijderen
+          </span>
+        </div>
+      </div>
       <AsyncData loading={isLoading} error={error}> 
         <div className={styles.table_container}>
           <table>
