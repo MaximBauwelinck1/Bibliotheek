@@ -110,8 +110,8 @@ const BoekKopiePaneel = () => {
     //TODO
     toggleMenu();
   }
-  function bekijkItem(id) {
-    navigate(`/dashboard/boekkopieen/${id}`);
+  function bekijkItem(boekId,BoekKopieId) {
+    navigate(`/dashboard/boekkopieen/${boekId}/${BoekKopieId}`);
   }
   
   return (
@@ -119,7 +119,8 @@ const BoekKopiePaneel = () => {
       <h2>Boek Kopieën</h2>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
-          {filteredBoekKopieen.length} zoekresultaten
+          {filteredBoekKopieen.length>1?`${filteredBoekKopieen.length} zoekresultaten`:
+            filteredBoekKopieen.length==1?`${filteredBoekKopieen.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
         <div className='input-group mb-3 w-50'>
           <input
@@ -182,7 +183,7 @@ const BoekKopiePaneel = () => {
                             <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
                               <button onClick={() => editItem(row['id'])}>Edit</button>
                               <button onClick={() => deleteItem(row['id'])}>Delete</button>
-                              <button onClick={()=>  bekijkItem(row['id'])}>Bekijken</button>
+                              <button onClick={()=>  bekijkItem(row['boek_id'],row['id'])}>Bekijken</button>
                             </div>
                           </div>
                         )}

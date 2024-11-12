@@ -5,7 +5,7 @@ import type { UUID } from 'crypto';
 import type { BibliotheekAppContext, BibliotheekAppState, KoaContext, KoaRouter } from '../types/koa';
 // eslint-disable-next-line @stylistic/max-len
 import type { CreateBoekRequest, CreateBoekResponse, GetAllBoekenResponse, GetBoekByIdResponse, UpdateBoekRequest, UpdateBoekResponse } from '../types/boek';
-import type { DoubleIdParams, IdParams } from '../types/common';
+import type { BoekKopieIdParams, IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
 import type { GetAllBoekkopieennResponse, GetBoekkopieByIdResponse } from '../types/boek_kopie';
@@ -135,17 +135,17 @@ getAllBoekKopieenFromBoek.validationScheme = {
   },
 };
 
-const getBoekKopieById = async (ctx: KoaContext<GetBoekkopieByIdResponse, DoubleIdParams>) => {
-  const id : UUID = ctx.params.id;
-  const boekKopieId : UUID = ctx.params.id2;
-  const opt_res =await  boekenService.getBoekKopieById(id,boekKopieId);
+const getBoekKopieById = async (ctx: KoaContext<GetBoekkopieByIdResponse, BoekKopieIdParams>) => {
+  const boekId : UUID = ctx.params.boekId;
+  const boekKopieid : UUID = ctx.params.boekKopieId;
+  const opt_res =await  boekenService.getBoekKopieById(boekId,boekKopieid);
   ctx.body = opt_res;
-  getLogger().info(`boek kopie met id:${ctx.params.id} is geretourneerd.`);
+  getLogger().info(`boek kopie met id:${ctx.params.boekKopieId} is geretourneerd.`);
 };
 
 getBoekKopieById.validationScheme = {
   params: {
-    id: Joi.string().uuid(),
+    boekId: Joi.string().uuid(),
     boekKopieId: Joi.string().uuid(),
   },
 };
@@ -224,7 +224,7 @@ export default (parent: KoaRouter) => {
 
   router.get('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
   router.get('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
-  router.get('/:id/kopieen/:id',validate(getBoekKopieById.validationScheme),getBoekKopieById);
+  router.get('/:boekId/kopieen/:boekKopieId',validate(getBoekKopieById.validationScheme),getBoekKopieById);
   router.get('/',validate(getAllBoeken.validationScheme), getAllBoeken);
   router.post('/',validate(createBoek.validationScheme), createBoek);
   router.get('/:id',  validate(getBoekById.validationScheme), getBoekById);

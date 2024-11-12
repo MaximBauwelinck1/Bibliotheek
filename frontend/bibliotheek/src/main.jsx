@@ -13,6 +13,8 @@ import LayoutAdmin from './pages/LayoutAdmin.jsx';
 import BoekDetailAdmin from './pages/admin/BoekDetail';
 import GebruikerDetail from './pages/admin/GebruikerDetail.jsx';
 import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
+import BoekKopieAdmin from './components/boek_kopie/BoekKopieAdmin.jsx';
+import BoekKopieDetailAdmin from './pages/admin/BoekKopieDetail.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -98,8 +100,8 @@ const router = createBrowserRouter([
                 element: <Dashbord init_menu='boekkopieen'  />,
               },
               {
-                path: ':id',
-                element: <ReservatieDetail />,
+                path: ':boekId/:id',
+                element: <BoekKopieDetailAdmin />,
               },
             ],
           },

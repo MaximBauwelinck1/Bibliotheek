@@ -112,7 +112,8 @@ const BoekPaneel = () => {
       <h2>Boeken</h2>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
-          {filteredBoeken.length} zoekresultaten
+          {filteredBoeken.length>1?`${filteredBoeken.length} zoekresultaten`:
+            filteredBoeken.length==1?`${filteredBoeken.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
         <div className='input-group mb-3 w-50'>
           <input

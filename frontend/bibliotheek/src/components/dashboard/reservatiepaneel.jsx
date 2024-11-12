@@ -116,7 +116,8 @@ const ReservatiePaneel = () => {
       <h2>Reservaties</h2>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
-          {filteredReservaties.length} zoekresultaten
+          {filteredReservaties.length>1?`${filteredReservaties.length} zoekresultaten`:
+            filteredReservaties.length==1?`${filteredReservaties.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
         <div className='input-group mb-3 w-50'>
           <input
