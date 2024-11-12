@@ -56,7 +56,7 @@ const ReservatieDetailAdmin = ( reservatie ) => {
   } = auteur;
 
   const tijdverschil =  Math.round((new Date(einddatum).getTime()
-   - new Date(startdatum).getTime()) / (1000 * 3600 * 24));
+   - new Date().getTime()) / (1000 * 3600 * 24));
 
   return (
     <div className={styles.reservatie_container}>
@@ -142,7 +142,7 @@ const ReservatieDetailAdmin = ( reservatie ) => {
         </p>
         <p><strong>Einddatum:</strong> {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(einddatum))}</p>
         <p><strong>Vervalt binnen:</strong>
-          {tijdverschil} dagen
+          {tijdverschil>0?tijdverschil>1?`${tijdverschil} dagen`:`${tijdverschil} dag`:'Reservatie is al verlopen'} 
         </p>
         <p><strong>Status:</strong> {status}</p>
       </div>
