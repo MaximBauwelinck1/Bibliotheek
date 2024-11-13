@@ -1,6 +1,7 @@
 import * as styles from '../../css/ReservatieDetail.module.css';
-
-const BoekAdmin = (boek) =>{
+import ToonBevestiging from '../ToonBevestiging';
+import { useState } from 'react';
+const BoekAdmin = ({onDelete,...boek}) =>{
   const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
    
   const {
@@ -32,6 +33,11 @@ const BoekAdmin = (boek) =>{
     upgedate: auteurUpgedate,
 
   } = auteur;
+
+  const handelDelete = ()=>{
+    onDelete(boekId);
+  };
+  const [toonBevesteging, setToonBevesteging] = useState(false);
   return(<div style={{marginTop:100}} className={styles.reservatie_container}>
     <h3>Boek</h3>
     <img className={styles.cover_img} src={cover} alt={`cover van ${boekTitel}`} />
@@ -68,9 +74,17 @@ const BoekAdmin = (boek) =>{
     </div>
     <div className={styles.buttonGroup}>
       <button className={styles.updateButton} >Update</button>
-      <button className={styles.deleteButton}>Delete</button>
+      <button className={styles.deleteButton} onClick={() =>setToonBevesteging(true)}>Delete</button>
     </div>
-  </div>);
+    <ToonBevestiging
+      isOpen={toonBevesteging}
+      onClose={() => setToonBevesteging(false)}
+      onConfirm={handelDelete}
+      title="Bevestig verwijdering"
+      message="Wil je zeker dit boek verwijderen?"
+    />
+  </div>
+  );
 };
 
 export default BoekAdmin;

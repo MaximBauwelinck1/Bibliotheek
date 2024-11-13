@@ -38,6 +38,10 @@ yarn set version berry
 ```bash
 yarn install
 ```
+- maak een ``.env`` file aan in de root van het project met volgende inhoud
+```
+VITE_API_URL='http://localhost:9000/api'
+```
 - en dan tot slot om de applicatie te starten voer je het volgende commando uit.
 ```bash
 yarn dev
