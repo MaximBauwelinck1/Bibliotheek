@@ -4,6 +4,8 @@ import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
+import ToonBevestiging from '../ToonBevestiging';
+import useSWRMutation from 'swr/mutation';
 const BoekPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -11,6 +13,8 @@ const BoekPaneel = () => {
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('ISBN');
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
+  const [toonBevesteging, setToonBevesteging] = useState(false);
+  const [boekIdTodelete,setboekIdTodelete] = useState('');
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
@@ -81,7 +85,7 @@ const BoekPaneel = () => {
   
   };
 
-  function toggleMenu(id) {
+  async function toggleMenu(id) {
     const menu = document.getElementById(id);
     if(huidigeMenu === id){
       setHuidigeMenu('');
@@ -100,13 +104,18 @@ const BoekPaneel = () => {
   }
   
   function deleteItem(id) {
-    //TODO
+    setboekIdTodelete(id);
     toggleMenu();
+    setToonBevesteging(true);
   }
   function bekijkItem(id) {
     navigate(`/dashboard/boeken/${id}`);
   }
   
+  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
+    'boeken',
+    API.deleteById,
+  );
   return (
     <div>
       <h2>Boeken</h2>
@@ -149,7 +158,7 @@ const BoekPaneel = () => {
           </span>
         </div>
       </div>
-      <AsyncData loading={isLoading} error={error}> 
+      <AsyncData loading={isLoading} error={error || deleteError}> 
         <div className={styles.table_container}>
           <table>
             <thead>
@@ -188,6 +197,16 @@ const BoekPaneel = () => {
           </table>
         </div>
       </AsyncData>
+      <ToonBevestiging
+        isOpen={toonBevesteging}
+        onClose={() => setToonBevesteging(false)}
+        onConfirm={() =>{
+          deleteBoek(boekIdTodelete);
+          setToonBevesteging(false);
+        }}
+        title="Bevestig verwijdering"
+        message="Wil je zeker dit boek verwijderen?"
+      />
     </div>
   );
 };
