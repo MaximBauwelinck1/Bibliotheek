@@ -105,7 +105,7 @@ const BoekPaneel = () => {
   
   function deleteItem(id) {
     setboekIdTodelete(id);
-    toggleMenu();
+    toggleMenu(id);
     setToonBevesteging(true);
   }
   function bekijkItem(id) {
