@@ -4,6 +4,8 @@ import * as API from '../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
+import ToonBevestiging from '../ToonBevestiging';
+import useSWRMutation from 'swr/mutation';
 
 const BoekKopiePaneel = () => {
   const [text, setText] = useState('');
@@ -12,6 +14,8 @@ const BoekKopiePaneel = () => {
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('id');
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
+  const [toonBevesteging, setToonBevesteging] = useState(false);
+  const [boekKopieIdTodeleter,setBoekKopieIdTodelete] = useState('');
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display','upgedate_display'];
@@ -107,12 +111,17 @@ const BoekKopiePaneel = () => {
   }
   
   function deleteItem(id) {
-    //TODO
-    toggleMenu();
+    setBoekKopieIdTodelete(id);
+    toggleMenu(id);
+    setToonBevesteging(true);
   }
   function bekijkItem(boekId,BoekKopieId) {
     navigate(`/dashboard/boekkopieen/${boekId}/${BoekKopieId}`);
   }
+  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
+    'boeken/',//TODO
+    API.deleteById,
+  );
   
   return (
     <div>

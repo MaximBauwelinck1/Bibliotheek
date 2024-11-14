@@ -4,6 +4,8 @@ import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
+import useSWRMutation from 'swr/mutation';
+import ToonBevestiging from '../ToonBevestiging';
 
 const GebruikerPaneel = () => {
   const [text, setText] = useState('');
@@ -12,6 +14,8 @@ const GebruikerPaneel = () => {
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('voornaam');
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
+  const [toonBevesteging, setToonBevesteging] = useState(false);
+  const [gebruikerIdTodeleter,setGebruikerIdTodelete] = useState('');
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
@@ -98,12 +102,17 @@ const GebruikerPaneel = () => {
   }
   
   function deleteItem(id) {
-    //TODO
-    toggleMenu();
+    setGebruikerIdTodelete(id);
+    toggleMenu(id);
+    setToonBevesteging(true);
   }
   function bekijkItem(id) {
     navigate(`/dashboard/gebruikers/${id}`);
   }
+  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
+    'gebruikers',
+    API.deleteById,
+  );
   
   return (
     <div>
@@ -146,7 +155,7 @@ const GebruikerPaneel = () => {
           </span>
         </div>
       </div>
-      <AsyncData loading={isLoading} error={error}> 
+      <AsyncData loading={isLoading} error={error || deleteError}> 
         <div className={styles.table_container}>
           <table>
             <thead>
@@ -187,6 +196,16 @@ const GebruikerPaneel = () => {
           </table>
         </div>
       </AsyncData>
+      <ToonBevestiging
+        isOpen={toonBevesteging}
+        onClose={() => setToonBevesteging(false)}
+        onConfirm={() =>{
+          deleteBoek(gebruikerIdTodeleter);
+          setToonBevesteging(false);
+        }}
+        title="Bevestig verwijdering"
+        message="Wil je zeker deze gebruiker verwijderen?"
+      />
     </div>
   );
 };

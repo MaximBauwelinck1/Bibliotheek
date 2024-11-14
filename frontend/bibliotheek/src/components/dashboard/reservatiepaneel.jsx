@@ -4,6 +4,8 @@ import * as API from './../../api/index';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
+import useSWRMutation from 'swr/mutation';
+import ToonBevestiging from '../ToonBevestiging';
 
 const ReservatiePaneel = () => {
   const [text, setText] = useState('');
@@ -12,6 +14,8 @@ const ReservatiePaneel = () => {
   const [searchcategorieFilter, setSearchCategorieFilter] = useState('id');
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
+  const [toonBevesteging, setToonBevesteging] = useState(false);
+  const [gebruikeIdTodeleter,setGebruikerIdTodelete] = useState('');
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','boek_kopie_id','gebruiker_id','startdatum_display','einddatum_display','status'];
@@ -105,12 +109,18 @@ const ReservatiePaneel = () => {
   }
   
   function deleteItem(id) {
-    //TODO
-    toggleMenu();
+    setGebruikerIdTodelete(id);
+    toggleMenu(id);
+    setToonBevesteging(true);
   }
   function bekijkItem(id) {
     navigate(`/dashboard/reservaties/${id}`);
   }
+  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
+    'reservaties',
+    API.deleteById,
+  );
+  
   return (
     <div>
       <h2>Reservaties</h2>
@@ -152,7 +162,7 @@ const ReservatiePaneel = () => {
           </span>
         </div>
       </div>
-      <AsyncData loading={isLoading} error={error}> 
+      <AsyncData loading={isLoading} error={error || deleteError}> 
         <div className={styles.table_container}>
           <table>
             <thead>
@@ -191,6 +201,16 @@ const ReservatiePaneel = () => {
           </table>
         </div>
       </AsyncData>
+      <ToonBevestiging
+        isOpen={toonBevesteging}
+        onClose={() => setToonBevesteging(false)}
+        onConfirm={() =>{
+          deleteBoek(gebruikeIdTodeleter);
+          setToonBevesteging(false);
+        }}
+        title="Bevestig verwijdering"
+        message="Wil je zeker deze reservatie verwijderen?"
+      />
     </div>
   );
 };
