@@ -1,10 +1,15 @@
 import * as styles from '../../css/ReservatieDetail.module.css';
 import { useNavigate } from 'react-router';
-const ReservatieDetailAdmin = ( reservatie ) => {
+import ToonBevestiging from '../ToonBevestiging';
+import { useState } from 'react';
+const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
   const navigate = useNavigate();
   const { gebruiker, boek_kopie, startdatum, einddatum, status } = reservatie;
   const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
- 
+  const handelDelete = ()=>{
+    onDelete(reservatie.id);
+  };
+  const [toonBevesteging, setToonBevesteging] = useState(false);
   const {
     id: gebruikerId,
     voornaam,
@@ -133,10 +138,15 @@ const ReservatieDetailAdmin = ( reservatie ) => {
         <p><strong>Upgedate:</strong>
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekKopieUpgedate))}
         </p>
+        <button className={styles.ga_naar_button} 
+          onClick={()=>navigate(`/dashboard/boekkopieen/${boekId}/${boekKopieId}`)} >
+          Ga naar boek kopie
+        </button>
       </div>
 
       <div className={styles.reservatie_status}>
         <h3>Reservatie</h3>
+        <p><strong>ID:</strong>{reservatie.id}</p>
         <p><strong>Startdatum:</strong>
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(startdatum))}
         </p>
@@ -148,8 +158,15 @@ const ReservatieDetailAdmin = ( reservatie ) => {
       </div>
       <div className={styles.buttonGroup}>
         <button className={styles.updateButton} >Update</button>
-        <button className={styles.deleteButton}>Delete</button>
+        <button className={styles.deleteButton} onClick={()=> setToonBevesteging(true)}>Delete</button>
       </div>
+      <ToonBevestiging
+        isOpen={toonBevesteging}
+        onClose={() => setToonBevesteging(false)}
+        onConfirm={handelDelete}
+        title="Bevestig verwijdering"
+        message="Wil je zeker deze reservatie verwijderen?"
+      />
     </div>
   );
 };
