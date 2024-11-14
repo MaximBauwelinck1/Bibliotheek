@@ -80,11 +80,13 @@ yarn install
 ```
 NODE_ENV=production
 DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek"
+AANTAL_KOPIEEN_P_BOEK=5
 ```
 - en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
 ```
 NODE_ENV=testing
 DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek_test"
+AANTAL_KOPIEEN_P_BOEK=5
 ```
 ## mysql
 - maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
