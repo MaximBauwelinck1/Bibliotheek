@@ -14,6 +14,8 @@ import BoekDetailAdmin from './pages/admin/BoekDetail';
 import GebruikerDetail from './pages/admin/GebruikerDetail.jsx';
 import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
 import BoekKopieDetailAdmin from './pages/admin/BoekKopieDetail.jsx';
+import GebruikerForm from './components/gebruikers/gebruikerForm.jsx';
+import AddOrEditGebruiker from './pages/admin/AddOrEditGebruiker.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -62,6 +64,14 @@ const router = createBrowserRouter([
               {
                 path: ':id',
                 element: <GebruikerDetail />,
+              },
+              {
+                path: 'add',
+                element: <AddOrEditGebruiker />,
+              },
+              {
+                path: 'edit/:id',
+                element: <AddOrEditGebruiker />,
               },
             ],
           },

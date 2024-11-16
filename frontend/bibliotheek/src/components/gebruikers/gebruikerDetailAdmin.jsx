@@ -1,7 +1,7 @@
 import * as styles from '../../css/GebruikerDetail.module.css';
 import { useState } from 'react';
 import ToonBevestiging from '../ToonBevestiging';
-const GebruikerDetailAdmin = ({onDelete,...gebruiker}) =>{
+const GebruikerDetailAdmin = ({onDelete,onUpdate,...gebruiker}) =>{
   const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
   const handelDelete = ()=>{
     onDelete(gebruiker.id);
@@ -23,7 +23,7 @@ const GebruikerDetailAdmin = ({onDelete,...gebruiker}) =>{
         </p>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.updateButton} >Update</button>
+        <button className={styles.updateButton}onClick={()=>onUpdate(gebruiker.id)}>  Update</button>
         <button className={styles.deleteButton} onClick={() => setToonBevesteging(true)}>Delete</button>
       </div>
       <ToonBevestiging

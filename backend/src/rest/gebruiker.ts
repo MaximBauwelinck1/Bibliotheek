@@ -73,11 +73,11 @@ updateGebruikerById.validationScheme = {
   },
   body: {            
     voornaam: Joi.string(),            
-    achternaam: Joi.date(),                
+    achternaam: Joi.string(),                
     geboortedatum: Joi.date().max('now'),          
     email: Joi.string().email(),    
     rol: Joi.string().valid('user','admin'),   
-    wachtwoord: Joi.string(),     
+    hashed_password: Joi.string(),     
   },
 };
 

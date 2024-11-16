@@ -94,7 +94,6 @@ export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput):
   if(opt_gebruiker instanceof Error){
     return opt_gebruiker;
   } else{
-        
     const upgedate_gebruiker = await prisma.gebruiker.update({
       where: {
         id,

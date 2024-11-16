@@ -16,3 +16,11 @@ export async function getById(url) {
 export const deleteById = async (url, { arg: id }) => {
   await axios.delete(`${baseUrl}/${url}/${id}`); 
 };
+
+export const save = async (url, { arg: { id, ...data } }) => {
+  await axios({
+    method: id ? 'PUT' : 'POST',
+    url: `${baseUrl}/${url}/${id ?? ''}`,
+    data:data.values,
+  });
+};

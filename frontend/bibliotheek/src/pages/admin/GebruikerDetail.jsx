@@ -18,6 +18,9 @@ const GebruikerDetail = () =>{
   const redirectToDashboard = () =>{
     navigate('/dashboard/gebruikers');
   };
+  const redirectToEditPage = (id) =>{
+    navigate(`/dashboard/gebruikers/edit/${id}`);
+  };
   const { trigger: deleteGebruiker, error: deleteError } = useSWRMutation(
     'gebruikers',
     API.deleteById,
@@ -27,7 +30,7 @@ const GebruikerDetail = () =>{
     <>
       <Link to={'/dashboard/gebruikers'}> <button className='top_left_button' >Terugkeren</button></Link>
       <AsyncData loading={isLoading} error={error || deleteError}> 
-        <GebruikerDetailAdmin key={id} {...user} onDelete={deleteGebruiker}/>
+        <GebruikerDetailAdmin key={id} {...user} onUpdate={redirectToEditPage} onDelete={deleteGebruiker}/>
       </AsyncData>
     </>
   );

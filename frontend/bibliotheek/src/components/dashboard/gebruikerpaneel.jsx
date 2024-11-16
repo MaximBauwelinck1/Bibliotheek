@@ -97,7 +97,7 @@ const GebruikerPaneel = () => {
   }
   
   function editItem(id) {
-    //TODO
+    navigate(`/dashboard/gebruikers/edit/${id}`);
     toggleMenu(); 
   }
   

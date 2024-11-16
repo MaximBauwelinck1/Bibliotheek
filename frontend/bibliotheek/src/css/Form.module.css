@@ -1,0 +1,47 @@
+.formContainer {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 0 auto;
+  }
+  
+  .inputGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .inputLabel {
+    font-weight: 600;
+    color: #343a40;
+  }
+  
+  .textInput,
+  .selectInput {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    padding: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .textInput:focus,
+  .selectInput:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButton:hover {
+    background-color: #0b5ed7;
+  }
+  
