@@ -14,12 +14,21 @@ const LEEG_BOEK = {
   beschrijving: undefined,
   cover_uri: undefined,
   voornaam: undefined,
-  achternaam: undefined,
-  geboortedatum: undefined,
-  nationaliteit: undefined,
-  biografie: undefined,
+  auteur:{
+    achternaam: undefined,
+    geboortedatum: undefined,
+    nationaliteit: undefined,
+    biografie: undefined,
+  },
 };
-
+const genres = [
+  'Fictie', 'Non Fictie', 'Mysterie', 'Fantasie', 
+  'Science fiction', 'Biografie', 'Romantiek', 
+  'Geschiedenis', 'Dystopisch', 'Southern-gothic', 
+  'Post-apocalyptisch', 'Anti-war', 'Tragedie', 
+  'Avontuur', 'Memoir', 'Thriller',
+];
+const talen = [ 'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees'];
 export default function BoekForm({ boek = LEEG_BOEK, saveGebruiker }) {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { isValid }, reset } = useForm({
@@ -108,16 +117,29 @@ export default function BoekForm({ boek = LEEG_BOEK, saveGebruiker }) {
         />
       </div>
       <div className={styles.inputGroup}>
-        <label htmlFor="genre" className={styles.inputLabel}>Genre:</label>
-        <input
-          {...register('genre', { required: true })}
+        <label htmlFor="genre" className={styles.inputLabel}>
+          Genre:
+        </label>
+        <select
+          {...register('genre', {
+            required: true,
+            validate: (val) => genres.includes(val),
+          })}
           id="genre"
           name="genre"
-          type="text"
-          className={styles.textInput}
-          readOnly={!!boek?.id}
+          className={styles.selectInput}
+          disabled={!!boek?.id}
           required
-        />
+        >
+          <option value="" disabled>
+            -- Kies een genre --
+          </option>
+          {genres.map((genre) => (
+            <option key={genre} value={genre}>
+              {genre}
+            </option>
+          ))}
+        </select>
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="publicatie_datum" className={styles.inputLabel}>Publicatiedatum:</label>
@@ -132,16 +154,41 @@ export default function BoekForm({ boek = LEEG_BOEK, saveGebruiker }) {
         />
       </div>
       <div className={styles.inputGroup}>
-        <label htmlFor="taal" className={styles.inputLabel}>Taal:</label>
+        <label htmlFor="titel" className={styles.inputLabel}>Titel:</label>
         <input
-          {...register('taal', { required: true })}
-          id="taal"
-          name="taal"
+          {...register('titel', { required: true })}
+          id="titel"
+          name="titel"
           type="text"
           className={styles.textInput}
           readOnly={!!boek?.id}
           required
         />
+      </div>
+      <div className={styles.inputGroup}>
+        <label htmlFor="taal" className={styles.inputLabel}>
+          Taal:
+        </label>
+        <select
+          {...register('taal', {
+            required: true,
+            validate: (val) => talen.includes(val),
+          })}
+          id="taal"
+          name="taal"
+          className={styles.selectInput}
+          disabled={!!boek?.id}
+          required
+        >
+          <option value="" disabled>
+            -- Kies een taal --
+          </option>
+          {talen.map((taal) => (
+            <option key={taal} value={taal}>
+              {taal}
+            </option>
+          ))}
+        </select>
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="paginas" className={styles.inputLabel}>Paginas:</label>
