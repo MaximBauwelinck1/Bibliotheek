@@ -6,7 +6,7 @@ import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
 import useSWRMutation from 'swr/mutation';
 import ToonBevestiging from '../ToonBevestiging';
-
+import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
 const GebruikerPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -109,7 +109,7 @@ const GebruikerPaneel = () => {
   function bekijkItem(id) {
     navigate(`/dashboard/gebruikers/${id}`);
   }
-  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
+  const { trigger: deleteGebruiker, error: deleteError } = useSWRMutation(
     'gebruikers',
     API.deleteById,
   );
@@ -117,6 +117,9 @@ const GebruikerPaneel = () => {
   return (
     <div>
       <h2>Gebruikers</h2>
+      <button className={AdminNavbarStyles.blue_button} onClick={() => navigate('/dashboard/gebruikers/add')}>
+        Gebruiker aanmaken
+      </button>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
           {filteredgebruikers.length>1?`${filteredgebruikers.length} zoekresultaten`:
@@ -200,7 +203,7 @@ const GebruikerPaneel = () => {
         isOpen={toonBevesteging}
         onClose={() => setToonBevesteging(false)}
         onConfirm={() =>{
-          deleteBoek(gebruikerIdTodeleter);
+          deleteGebruiker(gebruikerIdTodeleter);
           setToonBevesteging(false);
         }}
         title="Bevestig verwijdering"

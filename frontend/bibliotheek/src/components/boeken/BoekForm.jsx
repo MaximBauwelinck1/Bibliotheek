@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as styles from '../../css/Form.module.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -30,6 +31,10 @@ const genres = [
 ];
 const talen = [ 'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees'];
 export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
+  const [totale_kopieen,setTotale_kopieen] = useState(0);
+  const handleUpdate = (event) => {
+    setTotale_kopieen(event.target.value); 
+  };
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { isValid }, reset } = useForm({
     mode: 'onBlur',
@@ -210,6 +215,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
           name="vrije_kopieen"
           type="number"
           className={styles.textInput}
+          value={totale_kopieen}
+          readOnly={!boek?.id}
           required
         />
       </div>
@@ -221,6 +228,7 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
           name="totale_kopieen"
           type="number"
           className={styles.textInput}
+          onChange={handleUpdate}
           required
         />
       </div>

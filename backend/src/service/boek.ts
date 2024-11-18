@@ -7,6 +7,7 @@ import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
 import type { BoekKopie } from '../types/boek_kopie';
 import { getLogger } from '../core/logging';
+import { Prisma } from '@prisma/client';
 
 const BOEKEN_SELECT = {
   id: true,
@@ -206,28 +207,56 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
     throw ServiceError.conflict('boek met ISBN code of titel bestaat al!');
   }
 
-  const auteurId = (await createAuteurIndienNietBestaat(
-    new_boek.auteur)).id;
+  const auteurId = (await createAuteurIndienNietBestaat(new_boek.auteur)).id;
+
   try {
-    return await prisma.boek.create({
-      data: {
-        id: randomUUID(),
-        ISBN: new_boek.ISBN,
-        titel: new_boek.titel,
-        genre: new_boek.genre,
-        publicatie_datum: new Date(new_boek.publicatie_datum),
-        taal: new_boek.taal,
-        paginas: new_boek.paginas,
-        vrije_kopieen: new_boek.vrije_kopieen,
-        totale_kopieen: new_boek.totale_kopieen,
-        beschrijving: new_boek.beschrijving,
-        cover_uri: new_boek.cover_uri,
-        aangemaakt:new Date(),
-        upgedate:new Date(),
-        auteur_id: auteurId,
-      },
-      select:BOEKEN_SELECT,
-    });
+    const boekId = randomUUID();
+
+    const maak_boek = async (new_boek: any) => {
+      const result = await prisma.$transaction(async (tx) => {
+        const [createdboek] = await Promise.all([
+          tx.boek.create({
+            data: {
+              id: boekId,
+              ISBN: new_boek.ISBN,
+              titel: new_boek.titel,
+              genre: new_boek.genre,
+              publicatie_datum: new Date(new_boek.publicatie_datum),
+              taal: new_boek.taal,
+              paginas: new_boek.paginas,
+              vrije_kopieen: new_boek.totale_kopieen,
+              totale_kopieen: new_boek.totale_kopieen,
+              beschrijving: new_boek.beschrijving,
+              cover_uri: new_boek.cover_uri,
+              aangemaakt: new Date(),
+              upgedate: new Date(),
+              auteur_id: auteurId,
+            },
+            select: BOEKEN_SELECT,
+          })]);
+
+        const lijst =[];
+        for (let i = 0; i < new_boek.totale_kopieen; i++) {
+          lijst.push( await tx.boekKopie.create({
+            data: {
+              id: randomUUID(),
+              boek_id: boekId,
+              status: 'Beschikbaar', 
+              extra_informatie: null,
+              aangemaakt: new Date(),
+              upgedate: new Date(),
+            },
+          }));
+            
+        }
+        return createdboek;
+      }, {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      });
+
+      return result;
+    };
+    return await maak_boek(new_boek);
   }catch (error: any) {
     throw handleDBError(error);
   }

@@ -29,7 +29,8 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
     if (!isValid) return;
     await saveKopie({
       id: kopie?.id,
-      values: kopie?.id?formattedData:values}, {
+      values: kopie?.id?formattedData:values,
+    }, {
       throwOnError: false,
       onSuccess: () =>{
         reset();

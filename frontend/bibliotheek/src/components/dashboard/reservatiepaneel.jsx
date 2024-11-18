@@ -6,6 +6,7 @@ import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
 import useSWRMutation from 'swr/mutation';
 import ToonBevestiging from '../ToonBevestiging';
+import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
 
 const ReservatiePaneel = () => {
   const [text, setText] = useState('');
@@ -124,6 +125,9 @@ const ReservatiePaneel = () => {
   return (
     <div>
       <h2>Reservaties</h2>
+      <button className={AdminNavbarStyles.blue_button} onClick={() => navigate('/dashboard/reservaties/add')}>
+        Reservatie aanmaken
+      </button>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
           {filteredReservaties.length>1?`${filteredReservaties.length} zoekresultaten`:

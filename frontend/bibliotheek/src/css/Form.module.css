@@ -45,11 +45,7 @@
     background-color: #0b5ed7;
   }
   
-  input:read-only{
-    color: gray;
-    background-color: rgba(128, 128, 128, 0.1);
-  }
-  select:disabled{
+  input:read-only, select:disabled{
     color: gray;
     background-color: rgba(128, 128, 128, 0.1);
   }

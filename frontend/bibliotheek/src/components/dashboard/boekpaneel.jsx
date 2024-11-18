@@ -6,6 +6,7 @@ import { useMemo,useState } from 'react';
 import { useNavigate } from 'react-router';
 import ToonBevestiging from '../ToonBevestiging';
 import useSWRMutation from 'swr/mutation';
+import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
 const BoekPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -119,6 +120,9 @@ const BoekPaneel = () => {
   return (
     <div>
       <h2>Boeken</h2>
+      <button className={AdminNavbarStyles.blue_button} onClick={() => navigate('/dashboard/boeken/add')}>
+        Boek toevoegen
+      </button>
       <div className='d-flex justify-content-center'>
         <small style={{marginTop:10, marginRight:15}}>
           {filteredBoeken.length>1?`${filteredBoeken.length} zoekresultaten`:
