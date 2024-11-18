@@ -5,6 +5,9 @@ import {  useNavigate } from 'react-router';
 const LEGE_KOPIE = {
   status: undefined,
   extra_informatie: undefined,
+  boek:{
+    id:undefined,
+  },
 };
 
 export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
@@ -14,14 +17,19 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
     defaultValues: {
       status:kopie.status,
       extra_informatie:kopie.extra_informatie,
+      boek_id: kopie.boek.id,
     },
   });
 
   const onSubmit = async (values) => {
+    const formattedData = {
+      status: values.status,
+      extra_informatie: values.extra_informatie,
+    };
     if (!isValid) return;
     await saveKopie({
       id: kopie?.id,
-      values}, {
+      values: kopie?.id?formattedData:values}, {
       throwOnError: false,
       onSuccess: () =>{
         reset();
@@ -31,6 +39,20 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`${styles.formContainer} w-50 mb-3`}>
+      <div className={styles.inputGroup}>
+        <label htmlFor="boek_id" className={styles.inputLabel}>
+          Boek ID:
+        </label>
+        <input
+          {...register('boek_id',{required:true})}
+          id="boek_id"
+          name="boek_id"
+          type="text"
+          className={styles.textInput}
+          readOnly={!!kopie?.id}
+          required
+        />
+      </div>
       <div className={styles.inputGroup}>
         <label htmlFor="status" className={styles.inputLabel}>
           Status:
