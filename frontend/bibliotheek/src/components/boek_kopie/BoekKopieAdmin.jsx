@@ -1,12 +1,15 @@
 import * as styles from '../../css/ReservatieDetail.module.css';
 import { useNavigate } from 'react-router';
+import ToonBevestiging from '../ToonBevestiging';
+import { useState } from 'react';
 
-const BoekKopieAdmin = (boekkopie) =>{
+const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
   const navigate = useNavigate();
+  const handelDelete = ()=>{
+    onDelete(boekkopieId);
+  };
+  const [toonBevesteging, setToonBevesteging] = useState(false);
   const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
-  console.log(boekkopie);
-  console.log(boekkopie);
-  console.log(boekkopie);
   const {
     id: boekkopieId,
     status:boekKopieStatus,
@@ -98,9 +101,18 @@ const BoekKopieAdmin = (boekkopie) =>{
         </p>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.updateButton} >Update</button>
-        <button className={styles.deleteButton}>Delete</button>
+        <button className={styles.updateButton} onClick={()=>navigate(`/dashboard/boekkopieen/edit/${boekkopieId}`)} >
+          Update
+        </button>
+        <button className={styles.deleteButton} onClick={()=>setToonBevesteging(true)} >Delete</button>
       </div>
+      <ToonBevestiging
+        isOpen={toonBevesteging}
+        onClose={() => setToonBevesteging(false)}
+        onConfirm={handelDelete}
+        title="Bevestig verwijdering"
+        message="Wil je zeker dit boek verwijderen?"
+      />
     </div>
   );
 };

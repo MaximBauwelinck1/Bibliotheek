@@ -3,6 +3,7 @@ import installGebruikerRouter from './gebruiker';
 import installHealthRouter from './health';
 import installBoekenRouter from './boek';
 import installReservatiesRouter from './reservatie';
+import installKopieRouter from './kopie';
 import type { BibliotheekAppContext, BibliotheekAppState, KoaApplication } from '../types/koa';
 
 export default (app: KoaApplication) => {
@@ -14,6 +15,7 @@ export default (app: KoaApplication) => {
   installHealthRouter(router);
   installBoekenRouter(router);
   installReservatiesRouter(router);
+  installKopieRouter(router);
 
   app.use(router.routes()).use(router.allowedMethods());
 };

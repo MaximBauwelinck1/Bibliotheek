@@ -15,7 +15,7 @@ const BoekKopiePaneel = () => {
   const [menu_toggle,setMenu_toggle] = useState(false);
   const [huidigeMenu,setHuidigeMenu] = useState('');
   const [toonBevesteging, setToonBevesteging] = useState(false);
-  const [boekKopieIdTodeleter,setBoekKopieIdTodelete] = useState('');
+  const [boekKopieIdTodelete,setBoekKopieIdTodelete] = useState('');
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display','upgedate_display'];
@@ -24,7 +24,7 @@ const BoekKopiePaneel = () => {
     data: boekkopieen = [],
     isLoading,
     error,
-  } = useSWR('boeken/kopieen', API.getAll);
+  } = useSWR('kopieen', API.getAll);
   // om datums leesbaar te maken
   let filteredBoekKopieen = useMemo(() => {
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
@@ -106,7 +106,7 @@ const BoekKopiePaneel = () => {
   }
   
   function editItem(id) {
-    //TODO
+    navigate(`/dashboard/boekkopieen/edit/${id}`);
     toggleMenu(); 
   }
   
@@ -118,9 +118,10 @@ const BoekKopiePaneel = () => {
   function bekijkItem(boekId,BoekKopieId) {
     navigate(`/dashboard/boekkopieen/${boekId}/${BoekKopieId}`);
   }
-  const { trigger: deleteBoek, error: deleteError } = useSWRMutation(
-    'boeken/',//TODO
+  const { trigger: deletekopie, error: deleteError } = useSWRMutation(
+    'kopieen',
     API.deleteById,
+    {onSuccess:()=>navigate('/dashboard/boekkopieen')},
   );
   
   return (
@@ -164,7 +165,7 @@ const BoekKopiePaneel = () => {
           </span>
         </div>
       </div>
-      <AsyncData loading={isLoading} error={error}> 
+      <AsyncData loading={isLoading} error={error || deleteError}> 
         <div className={styles.table_container}>
           <table>
             <thead>
@@ -204,6 +205,16 @@ const BoekKopiePaneel = () => {
             </tbody>
           </table>
         </div>
+        <ToonBevestiging
+          isOpen={toonBevesteging}
+          onClose={() => setToonBevesteging(false)}
+          onConfirm={() =>{
+            deletekopie(boekKopieIdTodelete);
+            setToonBevesteging(false);
+          }}
+          title="Bevestig verwijdering"
+          message="Wil je zeker dit boek verwijderen?"
+        />
       </AsyncData>
     </div>
   );

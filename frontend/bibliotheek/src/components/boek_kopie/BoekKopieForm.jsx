@@ -7,7 +7,7 @@ const LEGE_KOPIE = {
   extra_informatie: undefined,
 };
 
-export default function BoekKopieForm({gebruiker: kopie=LEGE_KOPIE,saveGebruiker}) {
+export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
   const navigate = useNavigate();
   const { register, handleSubmit,formState: {isValid }, reset } = useForm({
     mode: 'onBlur',
@@ -19,7 +19,7 @@ export default function BoekKopieForm({gebruiker: kopie=LEGE_KOPIE,saveGebruiker
 
   const onSubmit = async (values) => {
     if (!isValid) return;
-    await saveGebruiker({
+    await saveKopie({
       id: kopie?.id,
       values}, {
       throwOnError: false,
@@ -35,14 +35,22 @@ export default function BoekKopieForm({gebruiker: kopie=LEGE_KOPIE,saveGebruiker
         <label htmlFor="status" className={styles.inputLabel}>
           Status:
         </label>
-        <input
-          {...register('status',{required:true})}
+        <select
+          {...register('status', {
+            required: true,
+            validate: (val) => val === 'beschikbaar' || val ==='gereserveerd',
+          })}
           id="status"
           name="status"
-          type="text"
-          className={styles.textInput}
+          className={styles.selectInput}
           required
-        />
+        >
+          <option value="" disabled>
+            -- Kies een optie --
+          </option>
+          <option value="beschikbaar">beschikbaar</option>
+          <option value="gereserveerd">gereserveerd</option>
+        </select>
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="extra_informatie" className={styles.inputLabel}>

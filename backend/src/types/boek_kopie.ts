@@ -17,3 +17,9 @@ export interface BoekkopieCreateInput {
 export interface BoekkopieUpdateInput extends BoekkopieCreateInput {}
 export interface GetAllBoekkopieennResponse extends ListResponse<BoekKopie> {}
 export interface GetBoekkopieByIdResponse extends BoekKopie {}
+
+export interface CreateBoekKopieRequest extends BoekkopieCreateInput {}
+export interface UpdateBoekKopieRequest extends BoekkopieUpdateInput {}
+
+export interface CreateBoekKopieResponse extends GetBoekkopieByIdResponse {}
+export interface UpdateBoekKopieResponse extends GetBoekkopieByIdResponse {}

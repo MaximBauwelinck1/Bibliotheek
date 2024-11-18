@@ -24,7 +24,7 @@ export default function AddOrEditBoek() {
       <Link to={'/dashboard/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>
       <AsyncData error={saveError|| boekError} loading={boekisLoading}>
         <BoekForm boek={boek}
-          saveGebruiker={saveboek} />  
+          saveBoek={saveboek} />  
       </AsyncData>
     </>
   );

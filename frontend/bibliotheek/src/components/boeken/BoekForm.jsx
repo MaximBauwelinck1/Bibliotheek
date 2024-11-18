@@ -29,7 +29,7 @@ const genres = [
   'Avontuur', 'Memoir', 'Thriller',
 ];
 const talen = [ 'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees'];
-export default function BoekForm({ boek = LEEG_BOEK, saveGebruiker }) {
+export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { isValid }, reset } = useForm({
     mode: 'onBlur',
@@ -77,7 +77,7 @@ export default function BoekForm({ boek = LEEG_BOEK, saveGebruiker }) {
       },
     };
     if (!isValid) return;
-    await saveGebruiker({
+    await saveBoek({
       id: boek?.id,
       values:formattedData,
     }, {

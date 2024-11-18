@@ -13,7 +13,7 @@ const LEGE_RESERVATIE = {
   einddatum: undefined,
 };
 
-export default function ReservatieForm({reservatie=LEGE_RESERVATIE,saveGebruiker}) {
+export default function ReservatieForm({reservatie=LEGE_RESERVATIE,saveReservatie}) {
   const navigate = useNavigate();
   const { register, handleSubmit,formState: {isValid }, reset } = useForm({
     mode: 'onBlur',
@@ -34,7 +34,7 @@ export default function ReservatieForm({reservatie=LEGE_RESERVATIE,saveGebruiker
     }:values;
     console.log(values.einddatum);
     if (!isValid) return;
-    await saveGebruiker({
+    await saveReservatie({
       id: reservatie?.id,
       values:formattedData}, {
       throwOnError: false,
