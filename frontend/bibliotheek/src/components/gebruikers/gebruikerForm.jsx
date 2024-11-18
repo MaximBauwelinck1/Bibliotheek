@@ -127,7 +127,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
       <button type="submit" className={styles.submitButton}>
         {gebruiker?.id
           ? 'Werk Gebruiker bij'
-          : 'Maak nieuwe gebruiker aan'}
+          : 'Maak een nieuwe gebruiker aan'}
       </button>
     </form>
   );

@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router';
 import * as styles from '../../css/ReservatieDetail.module.css';
 import ToonBevestiging from '../ToonBevestiging';
 import { useState } from 'react';
 const BoekAdmin = ({onDelete,...boek}) =>{
+  const navigate = useNavigate();
   const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
    
   const {
@@ -73,7 +75,7 @@ const BoekAdmin = ({onDelete,...boek}) =>{
       </p>
     </div>
     <div className={styles.buttonGroup}>
-      <button className={styles.updateButton} >Update</button>
+      <button className={styles.updateButton} onClick={()=>navigate(`/dashboard/boeken/edit/${boekId}`)}>Update</button>
       <button className={styles.deleteButton} onClick={() =>setToonBevesteging(true)}>Delete</button>
     </div>
     <ToonBevestiging

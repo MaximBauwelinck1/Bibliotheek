@@ -6,6 +6,7 @@ import handleDBError from './_handleDBError';
 import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
 import type { BoekKopie } from '../types/boek_kopie';
+import { getLogger } from '../core/logging';
 
 const BOEKEN_SELECT = {
   id: true,
@@ -139,7 +140,7 @@ const createAuteurIndienNietBestaat = async (auteur: AuteurCreateInput) : Promis
       achternaam: auteur.achternaam,
     },
   });
-
+ 
   if (!opt_auteur) {
     return auteur = await prisma.auteur.create({
       data: {
@@ -154,7 +155,18 @@ const createAuteurIndienNietBestaat = async (auteur: AuteurCreateInput) : Promis
       },
     });
   } else{
-    return opt_auteur;
+    return auteur = await prisma.auteur.update({
+      where:{
+        auteurID:{
+          voornaam: auteur.voornaam,
+          achternaam: auteur.achternaam,
+        },
+      },
+      data: {
+        biografie: auteur.biografie,
+        upgedate: new Date(),
+      },
+    });
   }
 };
 
@@ -238,6 +250,7 @@ export const deleteById = async (id: UUID): Promise<void> => {
 };
 
 export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promise<Boek> => {
+  getLogger().info(JSON.stringify(updated_boek));
   const opt_boek = await getById(id);
   if(opt_boek instanceof Error){
     return opt_boek;

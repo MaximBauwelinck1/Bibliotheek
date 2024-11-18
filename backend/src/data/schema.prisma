@@ -23,7 +23,8 @@ model Auteur {
   biografie     String?  
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt
-  
+
+  @@unique(name: "auteurID", [voornaam, achternaam])
   Boeken       Boek[]    @relation("BoekAuteur")
 }
 

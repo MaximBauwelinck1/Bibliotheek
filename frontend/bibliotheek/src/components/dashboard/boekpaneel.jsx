@@ -99,7 +99,7 @@ const BoekPaneel = () => {
   }
   
   function editItem(id) {
-    //TODO
+    navigate(`/dashboard/boeken/edit/${id}`);
     toggleMenu(); 
   }
   
