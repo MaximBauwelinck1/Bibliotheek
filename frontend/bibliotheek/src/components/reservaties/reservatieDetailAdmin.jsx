@@ -157,7 +157,9 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
         <p><strong>Status:</strong> {status}</p>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.updateButton} >Update</button>
+        <button className={styles.updateButton} onClick={()=>navigate(`/dashboard/reservaties/edit/${reservatie.id}`)} >
+          Update
+        </button>
         <button className={styles.deleteButton} onClick={()=> setToonBevesteging(true)}>Delete</button>
       </div>
       <ToonBevestiging

@@ -30,7 +30,7 @@ createReservatie.validationScheme = {
   body: {           
     boek_kopie_id: Joi.string().uuid(),          
     gebruiker_id: Joi.string().uuid(),    
-    einddatum: Joi.date().greater('now'),   
+    einddatum: Joi.date().min(new Date().setHours(0,0,0,0)),   
     status: Joi.string().valid('actief','niet-actief'),     
   },
 };
@@ -70,7 +70,7 @@ updateBoekById.validationScheme = {
     id: Joi.string().uuid(),
   },
   body: {   
-    einddatum: Joi.date().greater('now').optional(),   
+    einddatum: Joi.date().min(new Date().setHours(0,0,0,0)).optional(),   
     status: Joi.string().valid('actief','niet-actief'),  
   },
 };

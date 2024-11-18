@@ -263,12 +263,6 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
         id,
       },
       data: {
-        ISBN: updated_boek.ISBN,
-        titel: updated_boek.titel,
-        genre: updated_boek.genre,
-        publicatie_datum: new Date(updated_boek.publicatie_datum),
-        taal: updated_boek.taal,
-        paginas: updated_boek.paginas,
         vrije_kopieen: updated_boek.vrije_kopieen,
         totale_kopieen: updated_boek.totale_kopieen,
         beschrijving: updated_boek.beschrijving,

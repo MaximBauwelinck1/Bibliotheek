@@ -104,7 +104,7 @@ const ReservatiePaneel = () => {
   }
   
   function editItem(id) {
-    //TODO
+    navigate(`/dashboard/reservaties/edit/${id}`);
     toggleMenu(); 
   }
   

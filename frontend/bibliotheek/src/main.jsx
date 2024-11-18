@@ -16,6 +16,7 @@ import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
 import BoekKopieDetailAdmin from './pages/admin/BoekKopieDetail.jsx';
 import AddOrEditGebruiker from './pages/admin/AddOrEditGebruiker.jsx';
 import AddOrEditBoek from './pages/admin/AddOrEditBoek.jsx';
+import AddOrEditReservaties from './pages/admin/AddOrEditReservatie.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -106,6 +107,13 @@ const router = createBrowserRouter([
               {
                 path: ':id',
                 element: <ReservatieDetail />,
+              },{
+                path: 'add',
+                element: <AddOrEditReservaties />,
+              },
+              {
+                path: 'edit/:id',
+                element: <AddOrEditReservaties />,
               },
             ],
           },
