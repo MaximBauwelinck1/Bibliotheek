@@ -17,6 +17,7 @@ const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
     aangemaakt:boekKopieAangemaakt,
     upgedate: boekKopieUpgedate,
     boek,
+    actief:kopieActief,
   }= boekkopie;
 
   const {
@@ -33,6 +34,7 @@ const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
     cover_uri:cover,
     aangemaakt: boekAangemaakt,
     upgedate: boekUpgedate,
+    actief:boekActief,
     auteur,
 
   } = boek;
@@ -61,6 +63,7 @@ const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
       <p><strong>Aantal bladzijden:</strong> {boekPaginas}</p>
       <p><strong>Aantal vrije kopieën:</strong> {boekAantalVrij} van de {boekTotaalAantal}</p>
       <p><strong>Beschrijving:</strong> {boekBeschrijving}</p>
+      <p><strong>Archivering:</strong> {boekActief?'Actief':'Gearchiveerd'}</p>
       <p><strong>Link naar cover:</strong> {cover}</p>
       <p><strong>Aangemaakt:</strong> 
         {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekAangemaakt))}
@@ -93,6 +96,7 @@ const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
         <p><strong>ID:</strong> {boekkopieId}</p>
         <p><strong>Status:</strong> {boekKopieStatus}</p>
         <p><strong>Extra informatie:</strong> {boekKopieExatrInformatie}</p>
+        <p><strong>Archivering:</strong> {kopieActief?'Actief':'Gearchiveerd'}</p>
         <p><strong>Aangemaakt:</strong> 
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekKopieAangemaakt))}
         </p>

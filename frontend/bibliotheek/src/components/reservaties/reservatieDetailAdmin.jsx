@@ -19,6 +19,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
     geboortedatum,
     aangemaakt: gebruikerAangemaakt,
     upgedate: gebruikerUpgedate,
+    actief:gebruikerActief,
   } = gebruiker;
 
   const {
@@ -28,6 +29,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
     extra_informatie,
     aangemaakt: boekKopieAangemaakt,
     upgedate: boekKopieUpgedate,
+    actief:kopieActief,
   } = boek_kopie;
 
   const {
@@ -44,6 +46,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
     cover_uri:cover,
     aangemaakt: boekAangemaakt,
     upgedate: boekUpgedate,
+    actief: boekActief,
     auteur,
 
   } = boek;
@@ -74,6 +77,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Rol:</strong> {rol}</p>
         <p><strong>Geboortedatum:</strong> {new Date(geboortedatum).toLocaleDateString()}</p>
+        <p><strong>Archivering:</strong> {gebruikerActief?'Actief':'Gearchiveerd'}</p>
         <p><strong>Aangemaakt:</strong>  
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(gebruikerAangemaakt))}
         </p>
@@ -98,6 +102,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
         <p><strong>Aantal bladzijden:</strong> {boekPaginas}</p>
         <p><strong>Aantal vrije kopieën:</strong> {boekAantalVrij} van de {boekTotaalAantal}</p>
         <p><strong>Beschrijving:</strong> {boekBeschrijving}</p>
+        <p><strong>Archivering:</strong> {boekActief?'Actief':'Gearchiveerd'}</p>
         <p><strong>Link naar cover:</strong> {cover}</p>
         <p><strong>Aangemaakt:</strong> 
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekAangemaakt))}
@@ -132,6 +137,7 @@ const ReservatieDetailAdmin = ( {onDelete,...reservatie} ) => {
         <p><strong>Boek ID:</strong> {boekId}</p>
         <p><strong>Status:</strong> {boekKopieStatus}</p>
         <p><strong>Extra Informatie:</strong> {extra_informatie}</p>
+        <p><strong>Archivering:</strong> {kopieActief?'Actief':'Gearchiveerd'}</p>
         <p><strong>Aangemaakt:</strong> 
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekKopieAangemaakt))}
         </p>

@@ -23,6 +23,7 @@ const BOEKEN_SELECT = {
   cover_uri: true,
   aangemaakt: true,
   upgedate: true,
+  actief:true,
   auteur: {
     select: {
       id: true,
@@ -41,6 +42,7 @@ const BOEK_KOPIE_SELECT = {
   status: true,
   extra_informatie: true,
   aangemaakt: true,
+  actief:true,
   upgedate: true,
   boek: {
     select: {
@@ -55,6 +57,7 @@ const BOEK_KOPIE_SELECT = {
       totale_kopieen: true,
       beschrijving: true,
       cover_uri: true,
+      actief:true,
       aangemaakt: true,
       upgedate: true,
       auteur: {
@@ -227,6 +230,7 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
               vrije_kopieen: new_boek.totale_kopieen,
               totale_kopieen: new_boek.totale_kopieen,
               beschrijving: new_boek.beschrijving,
+              actief:true,
               cover_uri: new_boek.cover_uri,
               aangemaakt: new Date(),
               upgedate: new Date(),
@@ -243,6 +247,7 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
               boek_id: boekId,
               status: 'Beschikbaar', 
               extra_informatie: null,
+              actief:true,
               aangemaakt: new Date(),
               upgedate: new Date(),
             },

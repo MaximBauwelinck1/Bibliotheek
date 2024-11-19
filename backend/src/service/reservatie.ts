@@ -14,6 +14,7 @@ const RESERVATIES_SELECT = {
       status: true,
       extra_informatie: true,
       aangemaakt: true,
+      actief:true,
       upgedate: true,
       boek: {
         select: {
@@ -28,6 +29,7 @@ const RESERVATIES_SELECT = {
           totale_kopieen: true,
           beschrijving: true,
           cover_uri: true,
+          actief:true,
           aangemaakt: true,
           upgedate: true,
           auteur: {
@@ -53,6 +55,7 @@ const RESERVATIES_SELECT = {
       achternaam: true,
       geboortedatum: true,
       email: true,
+      actief:true,
       rol: true,
       hashed_password: true,
       salt: true,

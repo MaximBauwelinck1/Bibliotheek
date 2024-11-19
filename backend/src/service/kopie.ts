@@ -20,6 +20,7 @@ const KOPIE_SELECT = {
       totale_kopieen: true,
       beschrijving: true,
       cover_uri: true,
+      actief:true,
       aangemaakt: true,
       upgedate: true,
       auteur: {
@@ -39,6 +40,7 @@ const KOPIE_SELECT = {
   status: true,
   extra_informatie: true,
   aangemaakt: true,
+  actief:true,
   upgedate: true,
 };
 
@@ -75,6 +77,7 @@ export const create = async (new_kopie: BoekkopieCreateInput): Promise<BoekKopie
         extra_informatie: new_kopie.extra_informatie,
         aangemaakt:new Date(),
         upgedate:new Date(),
+        actief:true,
         boek_id: new_kopie.boek_id,
       },
       select:KOPIE_SELECT,

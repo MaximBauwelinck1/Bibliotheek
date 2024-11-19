@@ -13,6 +13,7 @@ const GEBRUIKER_SELECT = { //moet nog veranderen
   email:true,
   rol:true,
   salt:true,
+  actief:true,
   hashed_password:true,
   aangemaakt:true,
   upgedate:true,
@@ -62,6 +63,7 @@ export const create = async (new_gebruiker: gebruikerCreateInput): Promise<Gebru
         geboortedatum: new_gebruiker.geboortedatum,
         email: new_gebruiker.email,
         rol: new_gebruiker.rol,
+        actief:true,
         hashed_password:new_gebruiker.hashed_password,//TODO HASHING
         salt:'TODOOOOOO',
         aangemaakt:new Date(),

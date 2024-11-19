@@ -19,9 +19,9 @@ const GebruikerPaneel = () => {
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
-    'aangemaakt_display','upgedate_display'];
+    'aangemaakt_display','upgedate_display','formattedActief'];
   const zichtbare_kolommen = ['id','voornaam','achternaam','geboortedatum','email','rol',
-    'aangemaakt','laatst aangepast'];
+    'aangemaakt','laatst aangepast','Archivering'];
   const {
     data: gebruikers = [],
     isLoading,
@@ -40,18 +40,28 @@ const GebruikerPaneel = () => {
       const formattedDateGeboortedatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(geb.geboortedatum));
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(geb.aangemaakt));
       const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(geb.upgedate));
+      const formattedActief = geb.actief?'Actief':'Gearchiveerd';
       // eslint-disable-next-line @stylistic/max-len
-      return { ...geb, geboortedatum_display: formattedDateGeboortedatum,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
+      return { ...geb, geboortedatum_display: formattedDateGeboortedatum,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     });
   }, [gebruikers, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('voornaam');
   const [order, setOrder] = useState('asc');
   filteredgebruikers =useMemo(() => {
-    const string_zoekvelden = ['id','voornaam','achternaam','email','rol'];
+    let parsed_zoekveld;
+    const string_zoekvelden = ['id','voornaam','achternaam','email','rol','Archivering'];
     return [...filteredgebruikers].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
-        if (a[zoekveld] > b[zoekveld]) return order === 'asc' ? 1 : -1; 
-        if (a[zoekveld] < b[zoekveld]) return order === 'asc' ? -1 : 1;
+        switch (zoekveld) {
+          case 'Archivering':
+            parsed_zoekveld = 'formattedActief';
+            break;
+          default:
+            parsed_zoekveld = zoekveld;
+            break;
+        }
+        if (a[parsed_zoekveld] > b[parsed_zoekveld]) return order === 'asc' ? 1 : -1; 
+        if (a[parsed_zoekveld] < b[parsed_zoekveld]) return order === 'asc' ? -1 : 1;
         return 0;
       }else{
         let parsed_zoekveld;

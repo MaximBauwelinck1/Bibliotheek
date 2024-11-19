@@ -19,9 +19,9 @@ const BoekPaneel = () => {
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
-    'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt_display','upgedate_display'];
+    'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt_display','upgedate_display','formattedActief'];
   const zichtbare_kolommen = ['id','ISBN','titel','genre','gepubliceerd','taal','paginas',
-    'aantal beschikbaar','totaal','cover','aangemaakt','laatst aangepast'];
+    'aantal beschikbaar','totaal','cover','aangemaakt','laatst aangepast','Archivering'];
   const {
     data: boeken = [],
     isLoading,
@@ -38,20 +38,40 @@ const BoekPaneel = () => {
     ).map((boek) => {
       // eslint-disable-next-line @stylistic/max-len
       const formattedDatePublicatie = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(boek.publicatie_datum));
+      const formattedActief = boek.actief?'Actief':'Gearchiveerd';
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boek.aangemaakt));
       const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boek.upgedate));
       // eslint-disable-next-line @stylistic/max-len
-      return { ...boek, publicatie_datum_display: formattedDatePublicatie,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
+      return { ...boek, publicatie_datum_display: formattedDatePublicatie,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     });
   }, [boeken, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('titel');
   const [order, setOrder] = useState('asc');
   filteredBoeken =useMemo(() => {
-    const string_zoekvelden = ['id','ISBN','titel','genre','taal','cover'];
+    let parsed_zoekveld;
+    const string_zoekvelden = ['id','ISBN','titel','genre','taal','cover','Archivering',
+      'aantal beschikbaar','totaal','cover'];
     return [...filteredBoeken].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
-        if (a[zoekveld] > b[zoekveld]) return order === 'asc' ? 1 : -1; 
-        if (a[zoekveld] < b[zoekveld]) return order === 'asc' ? -1 : 1;
+        switch (zoekveld) {
+          case 'Archivering':
+            parsed_zoekveld = 'formattedActief';
+            break;
+          case 'aantal beschikbaar':
+            parsed_zoekveld = 'vrije_kopieen';
+            break;
+          case 'totaal':
+            parsed_zoekveld = 'totale_kopieen';
+            break;
+          case 'cover':
+            parsed_zoekveld = 'cover_uri';
+            break;
+          default:
+            parsed_zoekveld = zoekveld;
+            break;
+        }
+        if (a[parsed_zoekveld] > b[parsed_zoekveld]) return order === 'asc' ? 1 : -1; 
+        if (a[parsed_zoekveld] < b[parsed_zoekveld]) return order === 'asc' ? -1 : 1;
         return 0;
       }else{
         let parsed_zoekveld;
@@ -69,6 +89,7 @@ const BoekPaneel = () => {
             parsed_zoekveld = zoekveld;
             break;
         }
+        console.log(parsed_zoekveld);
         const dateA = new Date(a[parsed_zoekveld]);
         const dateB = new Date(b[parsed_zoekveld]);
         if (dateA > dateB) return order === 'asc' ? 1 : -1;

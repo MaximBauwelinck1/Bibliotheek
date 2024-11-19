@@ -19,8 +19,10 @@ const BoekKopiePaneel = () => {
   const [boekKopieIdTodelete,setBoekKopieIdTodelete] = useState('');
   const navigate = useNavigate();
 
-  const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display','upgedate_display'];
-  const zichtbare_kolommen = ['id','boek id','status','extra informatie','aangemaakt','laatst aangepast'];
+  const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display',
+    'upgedate_display','formattedActief'];
+  const zichtbare_kolommen = ['id','boek id','status','extra informatie',
+    'aangemaakt','laatst aangepast','Archivering'];
   const {
     data: boekkopieen = [],
     isLoading,
@@ -34,11 +36,11 @@ const BoekKopiePaneel = () => {
         bk[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
     },
     ).map((bk) => {
-       
+      const formattedActief = bk.actief?'Actief':'Gearchiveerd';
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(bk.aangemaakt));
       const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(bk.upgedate));
       // eslint-disable-next-line @stylistic/max-len
-      return { ...bk,boek_id:bk.boek.id, aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate }; 
+      return { ...bk,boek_id:bk.boek.id, aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     });
   }, [boekkopieen, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('id');
@@ -46,8 +48,9 @@ const BoekKopiePaneel = () => {
   console.log(zoekveld);
   filteredBoekKopieen =useMemo(() => {
     let parsed_zoekveld;
-    const string_zoekvelden = ['id','boek id','status','extra informatie'];
+    const string_zoekvelden = ['id','boek id','status','extra informatie','Archivering'];
     return [...filteredBoekKopieen].sort((a,b) => {
+      console.log(zoekveld);
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
           case 'boek id':
@@ -55,6 +58,9 @@ const BoekKopiePaneel = () => {
             break;
           case 'extra informatie':
             parsed_zoekveld = 'extra_informatie';
+            break;
+          case 'Archivering':
+            parsed_zoekveld = 'formattedActief';
             break;
           default:
             parsed_zoekveld = zoekveld;

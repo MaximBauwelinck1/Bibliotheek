@@ -15,6 +15,7 @@ const GebruikerDetailAdmin = ({onDelete,onUpdate,...gebruiker}) =>{
         <p><strong>Email:</strong> {gebruiker.email}</p>
         <p><strong>Geboortedatum:</strong> {new Date(gebruiker.geboortedatum).toLocaleDateString()}</p>
         <p><strong>Rol:</strong> {gebruiker.rol}</p>
+        <p><strong>Archivering:</strong> {gebruiker.actief?'Actief':'Gearchiveerd'}</p>
         <p><strong>Aangemaakt:</strong> 
           {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(gebruiker.aangemaakt))}
         </p>

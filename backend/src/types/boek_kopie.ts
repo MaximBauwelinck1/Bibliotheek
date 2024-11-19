@@ -5,7 +5,8 @@ export interface BoekKopie extends Entity {
   status: string;      
   extra_informatie: string | null;            
   aangemaakt: Date;         
-  upgedate: Date;           
+  upgedate: Date; 
+  actief: boolean            
 }
 
 export interface BoekkopieCreateInput {

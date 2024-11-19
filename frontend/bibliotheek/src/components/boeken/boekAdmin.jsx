@@ -20,6 +20,7 @@ const BoekAdmin = ({onDelete,...boek}) =>{
     cover_uri:cover,
     aangemaakt: boekAangemaakt,
     upgedate: boekUpgedate,
+    actief,
     auteur,
 
   } = boek;
@@ -52,6 +53,7 @@ const BoekAdmin = ({onDelete,...boek}) =>{
     <p><strong>Aantal bladzijden:</strong> {boekPaginas}</p>
     <p><strong>Aantal vrije kopieën:</strong> {boekAantalVrij} van de {boekTotaalAantal}</p>
     <p><strong>Beschrijving:</strong> {boekBeschrijving}</p>
+    <p><strong>Archivering:</strong> {actief?'Actief':'Gearchiveerd'}</p>
     <p><strong>Link naar cover:</strong> {cover}</p>
     <p><strong>Aangemaakt:</strong> 
       {new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(boekAangemaakt))}

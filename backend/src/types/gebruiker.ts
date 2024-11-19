@@ -9,7 +9,8 @@ export interface Gebruiker extends Entity {
   hashed_password: string;          
   salt: string;           
   aangemaakt: Date;         
-  upgedate: Date;           
+  upgedate: Date;   
+  actief: boolean        
 }
 
 export interface gebruikerCreateInput {

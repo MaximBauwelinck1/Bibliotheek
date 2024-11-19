@@ -42,6 +42,7 @@ model Boek {
   cover_uri     String?   @db.VarChar(255)
   aangemaakt    DateTime @default(now())
   upgedate      DateTime @updatedAt
+  actief        Boolean
 
   auteur_id     String    @db.Uuid
   auteur        Auteur    @relation("BoekAuteur", fields: [auteur_id], references: [id])
@@ -56,7 +57,7 @@ model BoekKopie {
   extra_informatie String? @db.VarChar(255)
   aangemaakt     DateTime  @default(now())
   upgedate       DateTime  @updatedAt
-
+  actief        Boolean
   boek           Boek      @relation(fields: [boek_id], references: [id])
 
   Reservaties    Reservatie[]
@@ -73,7 +74,7 @@ model Gebruiker {
   salt           String    @db.VarChar(255)
   aangemaakt     DateTime  @default(now())
   upgedate       DateTime  @updatedAt
-
+  actief        Boolean
   Reservaties    Reservatie[]
 }
 
