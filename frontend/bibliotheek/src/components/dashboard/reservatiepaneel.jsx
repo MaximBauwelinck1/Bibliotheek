@@ -30,15 +30,14 @@ const ReservatiePaneel = () => {
   // om datums leesbaar te maken
   let filteredReservaties = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
-    return [...reservaties].filter((geb)=>{
-      return  (search && searchcategorieFilter) ?
-        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
-    },
-    ).map((res) => {
+    return [...reservaties].map((res) => {
       const formattedDateStartdatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.startdatum));
       const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum)); 
       // eslint-disable-next-line @stylistic/max-len
       return { ...res,boek_kopie_id:res.boek_kopie.id, gebruiker_id:res.gebruiker.id,startdatum_display: formattedDateStartdatum,einddatum_display:formattedDateEinddatum }; 
+    }).filter((geb)=>{
+      return  (search && searchcategorieFilter) ?
+        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
     });
   }, [reservaties, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('id');

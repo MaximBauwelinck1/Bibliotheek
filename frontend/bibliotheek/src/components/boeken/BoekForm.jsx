@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as styles from '../../css/Form.module.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-
+import { useEffect } from 'react';
 const LEEG_BOEK = {
   ISBN: undefined,
   titel: undefined,
@@ -31,12 +31,31 @@ const genres = [
 ];
 const talen = [ 'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees'];
 export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
-  const [totale_kopieen,setTotale_kopieen] = useState(0);
-  const handleUpdate = (event) => {
-    setTotale_kopieen(event.target.value); 
+  const aantalGereserveerd = boek.totale_kopieen-boek.vrije_kopieen;
+  const [vrijeKopieen, setVrijeKopieen] = useState(0);
+  const [totaleKopieen, setTotaleKopieen] = useState(0);
+  
+  useEffect(() => {
+    if (boek?.id) {
+      setVrijeKopieen(boek.vrije_kopieen || 0);
+      setTotaleKopieen(boek.totale_kopieen || 0);
+    }
+  }, [boek]);
+  
+  const handleTotaleKopieenChange = (e) => {
+    const value = e.target.valueAsNumber;
+    setTotaleKopieen(value);
+    if (!boek?.id) {
+      setVrijeKopieen(value);
+    }
+  };
+  
+  const handleVrijeKopieenChange = (e) => {
+    const value = e.target.valueAsNumber;
+    setVrijeKopieen(value);
   };
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { isValid }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors,isValid }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       ISBN: boek.ISBN,
@@ -93,7 +112,6 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
       },
     });
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`${styles.formContainer} w-50 mb-3`}>
       <h2>Boek</h2>
@@ -215,7 +233,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
           name="vrije_kopieen"
           type="number"
           className={styles.textInput}
-          value={totale_kopieen}
+          value={vrijeKopieen}
+          onChange={handleVrijeKopieenChange}
           readOnly={!boek?.id}
           required
         />
@@ -223,15 +242,22 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
       <div className={styles.inputGroup}>
         <label htmlFor="totale_kopieen" className={styles.inputLabel}>Totale kopieën:</label>
         <input
-          {...register('totale_kopieen', { required: true })}
+          {...register('totale_kopieen', { required: true ,  min: {
+            value: aantalGereserveerd,
+            message: `Waarde moet minstens ${ aantalGereserveerd} zijn.`,
+          }})}
           id="totale_kopieen"
           name="totale_kopieen"
           type="number"
           className={styles.textInput}
-          onChange={handleUpdate}
+          value={totaleKopieen}
+          onChange={handleTotaleKopieenChange}
           required
         />
       </div>
+      {errors.totale_kopieen && (
+        <b className={styles.errorMessage}>{errors.totale_kopieen.message}</b>
+      )}
       <div className={styles.inputGroup}>
         <label htmlFor="beschrijving" className={styles.inputLabel}>Beschrijving:</label>
         <textarea

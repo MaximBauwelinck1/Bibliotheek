@@ -6,7 +6,6 @@ import handleDBError from './_handleDBError';
 import type { Boek, BoekCreateInput, BoekUpdateInput } from '../types/boek';
 import type { Auteur, AuteurCreateInput } from '../types/auteur';
 import type { BoekKopie } from '../types/boek_kopie';
-import { getLogger } from '../core/logging';
 import { Prisma } from '@prisma/client';
 
 const BOEKEN_SELECT = {
@@ -271,11 +270,54 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
 export const deleteById = async (id: UUID): Promise<void> => {
   const opt_boek = await getById(id);
   if (opt_boek) {
+
+    const delete_boek = async (id: any) => {
+      const result = await prisma.$transaction(async (tx) => {
+        const [createdboek] = await Promise.all([
+          tx.boek.update({
+            where:{
+              id,
+            },
+            data: {
+              actief:false,
+            },
+            select: BOEKEN_SELECT,
+          })]);
+
+        await tx.boekKopie.updateMany({
+          where:{
+            boek_id:id,
+          },
+          data:{
+            actief:false,
+          },
+        });
+
+        await tx.reservatie.updateMany({
+          where:{
+            boek_kopie:{
+              boek_id:id,
+            },
+          },
+          data:{
+            status:'niet-actief',
+          },
+        });
+        return createdboek;
+      }, {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      });
+
+      return result;
+    };
+    /*
     await prisma.boek.delete({
       where:{
         id,
       },
     });
+    */
+    await  delete_boek(id);
     await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
   } else {
     throw ServiceError.conflict(`Boek met id:${id} bestaat niet.`);
@@ -284,30 +326,82 @@ export const deleteById = async (id: UUID): Promise<void> => {
 };
 
 export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promise<Boek> => {
-  getLogger().info(JSON.stringify(updated_boek));
   const opt_boek = await getById(id);
   if(opt_boek instanceof Error){
     return opt_boek;
   } else{
-    const auteurId = (await createAuteurIndienNietBestaat(
-      updated_boek.auteur)).id;
+    const auteurId = (await createAuteurIndienNietBestaat(updated_boek.auteur)).id;
+    const verschil = updated_boek.totale_kopieen - opt_boek.totale_kopieen;  
+    const update_boek = async (id: any) => {
+      const result = await prisma.$transaction(async (tx) => {
         
-    const upgedate_boek = await prisma.boek.update({
-      where: {
-        id,
-      },
-      data: {
-        vrije_kopieen: updated_boek.vrije_kopieen,
-        totale_kopieen: updated_boek.totale_kopieen,
-        beschrijving: updated_boek.beschrijving,
-        cover_uri: updated_boek.cover_uri,
-        upgedate:new Date(),
-        auteur_id: auteurId,
-      },
-      select: BOEKEN_SELECT,
-    });
-    await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
-    return upgedate_boek;
+        if(verschil>0){
+          for (let i = 0; i < verschil; i++) {
+            await tx.boekKopie.create({
+              data: {
+                id: randomUUID(),
+                boek_id: id,
+                status: 'Beschikbaar', 
+                extra_informatie: null,
+                actief:true,
+                aangemaakt: new Date(),
+                upgedate: new Date(),
+              },
+            });
+                
+          }
+        }else{
+          const boekKopieenToUpdate = await tx.boekKopie.findMany({
+            where: {
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+            take: Math.abs(verschil),
+          });
+          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
+            await tx.boekKopie.update({
+              where: { id: boekKopie.id },
+              data: { actief: false },
+            }),
+          );
+          
+          await Promise.all(updatePromises);
+        }
+        const [updatedBoek] = await Promise.all([
+          tx.boek.update({
+            where: {
+              id,
+            },
+            data: {
+              vrije_kopieen: await tx.boekKopie.count({
+                where:{
+                  status:'beschikbaar',
+                  actief:true,
+                  boek_id:id,
+                },
+              }),
+              totale_kopieen:  await tx.boekKopie.count({
+                where:{
+                  actief:true,
+                  boek_id:id,
+                },
+              }),
+              beschrijving: updated_boek.beschrijving,
+              cover_uri: updated_boek.cover_uri,
+              upgedate:new Date(),
+              auteur_id: auteurId,
+            },
+            select: BOEKEN_SELECT,
+          })]);
+        return updatedBoek;
+      }, {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      });
+
+      return result;
+    };
+    return await update_boek(id);
   }
   
 };

@@ -31,26 +31,24 @@ const BoekKopiePaneel = () => {
   // om datums leesbaar te maken
   let filteredBoekKopieen = useMemo(() => {
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
-    return [...boekkopieen].filter((bk)=>{
-      return  (search && searchcategorieFilter) ?
-        bk[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
-    },
-    ).map((bk) => {
+    return [...boekkopieen].map((bk) => {
       const formattedActief = bk.actief?'Actief':'Gearchiveerd';
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(bk.aangemaakt));
       const formattedDateUpgedate = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(bk.upgedate));
       // eslint-disable-next-line @stylistic/max-len
       return { ...bk,boek_id:bk.boek.id, aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
+    }).filter((bk)=>{
+      console.log(bk[searchcategorieFilter]);
+      return  (search && searchcategorieFilter) ?
+        bk[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
     });
   }, [boekkopieen, search, searchcategorieFilter]);
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
-  console.log(zoekveld);
   filteredBoekKopieen =useMemo(() => {
     let parsed_zoekveld;
     const string_zoekvelden = ['id','boek id','status','extra informatie','Archivering'];
     return [...filteredBoekKopieen].sort((a,b) => {
-      console.log(zoekveld);
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
           case 'boek id':
