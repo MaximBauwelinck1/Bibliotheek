@@ -94,7 +94,7 @@ const BoekenList = () => {
                 const matchedTitel = search ? a.titel.toLowerCase().includes(search.toLowerCase()) : true;
                 const MatchedGenre = searchcategorie.length > 0 ? searchcategorie.includes(a.genre) : true;
                 const MatchedTaal =  searchtaal.length > 0 ? searchtaal.includes(a.taal) : true;
-                return matchedTitel && MatchedGenre && MatchedTaal;
+                return matchedTitel && MatchedGenre && MatchedTaal && a.actief;
               })
               .map((p) => (       
                 <Boek key={p.id}  {...p} />

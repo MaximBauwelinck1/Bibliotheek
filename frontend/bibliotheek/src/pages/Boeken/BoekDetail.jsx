@@ -21,7 +21,7 @@ const BoekDetail = () => {
     errorSuges,
   }  = useSWR(() => (boek ? `boeken?genre=${boek.genre}` : null), API.getAll);
   let suggestions = suggestieboeken || [];
-  suggestions = suggestions.filter((a)=>a.titel != boek.titel);
+  suggestions = suggestions.filter((a)=>a.titel != boek.titel&& a.actief);
   return (
     <>
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
