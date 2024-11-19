@@ -61,7 +61,7 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
         <select
           {...register('status', {
             required: true,
-            validate: (val) => val === 'beschikbaar' || val ==='gereserveerd',
+            validate: (val) => val === 'beschikbaar' || val ==='gereserveerd' || val ==='niet-beschikbaar',
           })}
           id="status"
           name="status"

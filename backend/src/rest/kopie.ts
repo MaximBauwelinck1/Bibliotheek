@@ -29,7 +29,7 @@ const createKopie = async (ctx: KoaContext<CreateBoekKopieResponse, void, Create
 createKopie.validationScheme = {
   body: {            
     boek_id: Joi.string().uuid(),            
-    status: Joi.string().valid('beschikbaar','gereserveerd'),                
+    status: Joi.string().valid('beschikbaar','gereserveerd','niet-beschikbaar'),                
     extra_informatie: Joi.string(),          
   },
 };
@@ -69,7 +69,7 @@ updateKopieById.validationScheme = {
     id: Joi.string().uuid(),
   },
   body: {                    
-    status: Joi.string().valid('beschikbaar','gereserveerd').optional(),                
+    status: Joi.string().valid('beschikbaar','gereserveerd','niet-beschikbaar').optional(),                
     extra_informatie: Joi.string().optional(),      
   },
 };

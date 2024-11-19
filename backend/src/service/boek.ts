@@ -332,16 +332,91 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
   } else{
     const auteurId = (await createAuteurIndienNietBestaat(updated_boek.auteur)).id;
     const verschil = updated_boek.totale_kopieen - opt_boek.totale_kopieen;  
+    const AantalVKMinder = updated_boek.vrije_kopieen != updated_boek.totale_kopieen &&
+     opt_boek.vrije_kopieen != updated_boek.vrije_kopieen? opt_boek.vrije_kopieen - updated_boek.vrije_kopieen:0;
+    console.log(opt_boek.vrije_kopieen +'f' +updated_boek.vrije_kopieen);
     const update_boek = async (id: any) => {
       const result = await prisma.$transaction(async (tx) => {
+        if(AantalVKMinder>0){
+          console.log('test1'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
+          const boekKopieenToUpdate = await tx.boekKopie.findMany({
+            where: {
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+            take: AantalVKMinder,
+          });
+          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
+            await tx.boekKopie.update({
+              where: { id: boekKopie.id },
+              data: {
+                status:'niet-beschikbaar',
+              },
+            }),
+          );
+          await Promise.all(updatePromises);
+          console.log('test1'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
+        } else{
+          console.log('test2'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
+          const boekKopieenToUpdate = await tx.boekKopie.findMany({
+            where: {
+              boek_id: id,
+              status: 'niet-beschikbaar',
+              actief: true,
+            },
+            take: Math.abs(AantalVKMinder),
+          });
+          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
+            await tx.boekKopie.update({
+              where: { id: boekKopie.id },
+              data: {
+                status:'beschikbaar',
+              },
+            }),
+          );
+          await Promise.all(updatePromises);
+          console.log('test2'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
+        }
         
         if(verschil>0){
+          console.log('test3'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
           for (let i = 0; i < verschil; i++) {
             await tx.boekKopie.create({
               data: {
                 id: randomUUID(),
                 boek_id: id,
-                status: 'Beschikbaar', 
+                status: 'beschikbaar', 
                 extra_informatie: null,
                 actief:true,
                 aangemaakt: new Date(),
@@ -350,7 +425,21 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
             });
                 
           }
+          console.log('test3'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
         }else{
+          console.log('test4'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
           const boekKopieenToUpdate = await tx.boekKopie.findMany({
             where: {
               boek_id: id,
@@ -367,6 +456,13 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
           );
           
           await Promise.all(updatePromises);
+          console.log('test4'+await tx.boekKopie.count({
+            where:{
+              boek_id: id,
+              status: 'beschikbaar',
+              actief: true,
+            },
+          }));
         }
         const [updatedBoek] = await Promise.all([
           tx.boek.update({

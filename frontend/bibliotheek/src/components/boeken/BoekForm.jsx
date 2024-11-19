@@ -45,7 +45,7 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
   const handleTotaleKopieenChange = (e) => {
     const value = e.target.valueAsNumber;
     setTotaleKopieen(value);
-    if (!boek?.id) {
+    if (!boek?.id || vrijeKopieen === totaleKopieen) {
       setVrijeKopieen(value);
     }
   };
@@ -66,8 +66,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
         : undefined,
       taal: boek.taal,
       paginas: boek.paginas,
-      vrije_kopieen: boek.vrije_kopieen,
-      totale_kopieen: boek.totale_kopieen,
+      vrije_kopieen: vrijeKopieen,
+      totale_kopieen: totaleKopieen,
       beschrijving: boek.beschrijving,
       cover_uri: boek.cover_uri,
       voornaam: boek.auteur.voornaam,
@@ -88,8 +88,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
       publicatie_datum: values.publicatie_datum,
       taal: values.taal,
       paginas: values.paginas,
-      vrije_kopieen: values.vrije_kopieen,
-      totale_kopieen: values.totale_kopieen,
+      vrije_kopieen: vrijeKopieen,
+      totale_kopieen: totaleKopieen,
       beschrijving: values.beschrijving,
       cover_uri: values.cover_uri,
       auteur: {
@@ -228,7 +228,10 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
       <div className={styles.inputGroup}>
         <label htmlFor="vrije_kopieen" className={styles.inputLabel}>Vrije kopieën:</label>
         <input
-          {...register('vrije_kopieen', { required: true })}
+          {...register('vrije_kopieen', { required: true,  max: {
+            value: totaleKopieen,
+            message: `Waarde moet minstens ${ totaleKopieen} zijn.`,
+          } })}
           id="vrije_kopieen"
           name="vrije_kopieen"
           type="number"
@@ -239,6 +242,9 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek }) {
           required
         />
       </div>
+      {errors.vrije_kopieen && (
+        <b className={styles.errorMessage}>{errors.vrije_kopieen.message}</b>
+      )}
       <div className={styles.inputGroup}>
         <label htmlFor="totale_kopieen" className={styles.inputLabel}>Totale kopieën:</label>
         <input
