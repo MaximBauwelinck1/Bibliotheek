@@ -1,7 +1,7 @@
 import { Outlet,ScrollRestoration } from 'react-router-dom';
 import NavbarAdmin from '../components/navbarAdmin';
 
-export default function LayoutUser() {
+export default function LayoutAdmin() {
   return (
     <div>
       <NavbarAdmin />

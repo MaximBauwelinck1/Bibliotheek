@@ -6,8 +6,11 @@ import Boek from '../../components/boeken/boek';
 import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr';
 import SuggestionsBar from '../../components/boeken/SuggestionBar';
+import { useTheme } from '../../contexts/theme';
 
 const BoekDetail = () => {
+  const { theme } = useTheme();
+  const className = theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light';
   const { id } = useParams();
   const {
     data: boek,
@@ -23,20 +26,22 @@ const BoekDetail = () => {
   let suggestions = suggestieboeken || [];
   suggestions = suggestions.filter((a)=>a.titel != boek.titel&& a.actief);
   return (
-    <>
+    <div className={className}>
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
       <AsyncData loading={isLoading} error={error}> 
-        <Boek key={id} {...boek}/>
-        { suggestions.length > 1 && <>  {/* Moet 1 zijn omdat het boek zelf ook een suggestion is.*/}
-          <div style={{textAlign:'center'}}>
-            <div id={boek_suggesties.suggestie_tekst}>Je zal mischien ook leuk vinden</div>
-          </div>
-          <AsyncData loading={isLoadingSuges} error={errorSuges}> 
-            <SuggestionsBar suggestions={suggestions}/>
-          </AsyncData>
-        </>}
+        <div style={{paddingTop:100}}>
+          <Boek key={id} {...boek} />
+          { suggestions.length > 1 && <>  {/* Moet 1 zijn omdat het boek zelf ook een suggestion is.*/}
+            <div style={{textAlign:'center'}}>
+              <div id={boek_suggesties.suggestie_tekst}>Je zal mischien ook leuk vinden</div>
+            </div>
+            <AsyncData loading={isLoadingSuges} error={errorSuges}> 
+              <SuggestionsBar suggestions={suggestions}/>
+            </AsyncData>
+          </>}
+        </div>
       </AsyncData>
-    </>
+    </div>
   );
 };
 

@@ -1,8 +1,10 @@
 import styles from '../../css/BoekDetail.module.css';
+import { useTheme } from '../../contexts/theme';
 const Boek = (props) => {
-  console.log(props.achternaam);
+  const { theme } = useTheme();
+  const className = theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light';
   return(
-    <div className={styles.boek_detail_container}>
+    <div className={styles.boek_detail_container +' ' +className}>
        
       <img src={props.cover_uri} alt={props.titel} className={styles.cover_img} />
 

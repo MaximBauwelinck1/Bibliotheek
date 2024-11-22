@@ -5,9 +5,7 @@ import * as dashboard from './../../css/Dashboard.module.css';
 import DashboardMenu from '../../components/dashboard/dashboardMenu';
 import { useState } from 'react';
 import BoekKopiePaneel from '../../components/dashboard/boekkopiePaneel';
-
 const Dashbord = ({init_menu='boeken'}) => {
-  
   const [menu,setMenu] = useState(init_menu);
   console.log(menu);
   const handlclick = (btn) =>{
@@ -16,7 +14,7 @@ const Dashbord = ({init_menu='boeken'}) => {
   return (
     <>
       <DashboardMenu onAction={handlclick} />
-      <div className={dashboard.dashboard}>  
+      <div className={dashboard.dashboard} >  
         {menu === 'boeken' && <BoekPaneel />}
         {menu === 'gebruikers' && <GebruikersPaneel />}
         {menu === 'reservaties' && <ReservatiesPaneel />}

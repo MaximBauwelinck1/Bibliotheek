@@ -18,6 +18,7 @@ import AddOrEditGebruiker from './pages/admin/AddOrEditGebruiker.jsx';
 import AddOrEditBoek from './pages/admin/AddOrEditBoek.jsx';
 import AddOrEditReservaties from './pages/admin/AddOrEditReservatie.jsx';
 import AddOrEditBoekKopie from './pages/admin/AddOrEditBoekKopie.jsx';
+import { ThemeProvider } from './contexts/Theme.contexts.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -162,6 +163,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>,
 );

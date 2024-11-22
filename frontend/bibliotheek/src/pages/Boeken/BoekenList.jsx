@@ -4,8 +4,10 @@ import styles from '../../css/Boek.module.css';
 import * as API from '../../api';
 import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr';
+import { useTheme } from '../../contexts/theme';
 
 const BoekenList = () => {
+  const { theme } = useTheme();
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
   const [categorie, setCategorie] = useState('');
@@ -18,9 +20,9 @@ const BoekenList = () => {
     isLoading,
     error,
   } = useSWR('boeken', API.getAll);
-
+  const className = theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light';
   return (
-    <>
+    <div className={className}>
       <div className='text-center'>Bibliotheek</div>
       <h1 className='text-center'>Temse</h1>
       <div className='d-flex justify-content-center'>
@@ -102,7 +104,7 @@ const BoekenList = () => {
           </div>
         </AsyncData>
       </div>
-    </>
+    </div>
     
   );
 };
