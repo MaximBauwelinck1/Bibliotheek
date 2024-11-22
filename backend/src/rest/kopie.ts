@@ -30,7 +30,7 @@ createKopie.validationScheme = {
   body: {            
     boek_id: Joi.string().uuid(),            
     status: Joi.string().valid('beschikbaar','gereserveerd','niet-beschikbaar'),                
-    extra_informatie: Joi.string(),          
+    extra_informatie: Joi.string().optional(),          
   },
 };
 

@@ -18,9 +18,15 @@ export const deleteById = async (url, { arg: id }) => {
 };
 
 export const save = async (url, { arg: { id, ...data } }) => {
+  console.log('tesfffffffffff');
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${baseUrl}/${url}/${id ?? ''}`,
     data:data.values,
   });
+};
+
+export const deleteRandomBeschikbaarExemplaar = async (url,{ arg: id }) => {
+  console.log(id);
+  await axios.delete(`${baseUrl}/${url}/${id.id}/deletebeschikbaarkopie`); 
 };

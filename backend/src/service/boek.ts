@@ -267,6 +267,51 @@ export const create = async (new_boek: BoekCreateInput): Promise<Boek> => {
 
 };
 
+export const deleteRandomBeschikbareKopie = async(boekId:UUID): Promise<void> =>{
+  const delete_random_kopie = async (id: any) => {
+    await prisma.$transaction(async (tx) => {
+      const eersteKopie = await tx.boekKopie.findFirst({
+        where:{
+          boek_id:boekId,
+          status:'beschikbaar',
+          actief:true,
+        },
+      });
+      if(!eersteKopie){
+        throw ServiceError.conflict('Er zijn geen beschikbare exemplaren meer om te verwijderen.');
+      }
+      await Promise.all([
+        await tx.boekKopie.update({
+          where:{
+            id:eersteKopie.id,
+          },
+          data: {
+            actief:false,
+          },
+        })]);
+
+      await tx.boek.update({
+        where:{
+          id,
+        },
+        data:{
+          totale_kopieen:{
+            decrement:1,
+          },
+          vrije_kopieen:{
+            decrement:1,
+          },
+        },
+      });
+     
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+    });
+   
+  };
+  await delete_random_kopie(boekId);
+};
+
 export const deleteById = async (id: UUID): Promise<void> => {
   const opt_boek = await getById(id);
   if (opt_boek) {
@@ -331,158 +376,14 @@ export const updateById = async (id: UUID, updated_boek: BoekUpdateInput): Promi
     return opt_boek;
   } else{
     const auteurId = (await createAuteurIndienNietBestaat(updated_boek.auteur)).id;
-    const verschil = updated_boek.totale_kopieen - opt_boek.totale_kopieen;  
-    const AantalVKMinder = updated_boek.vrije_kopieen != updated_boek.totale_kopieen &&
-     opt_boek.vrije_kopieen != updated_boek.vrije_kopieen? opt_boek.vrije_kopieen - updated_boek.vrije_kopieen:0;
-    console.log(opt_boek.vrije_kopieen +'f' +updated_boek.vrije_kopieen);
     const update_boek = async (id: any) => {
       const result = await prisma.$transaction(async (tx) => {
-        if(AantalVKMinder>0){
-          console.log('test1'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-          const boekKopieenToUpdate = await tx.boekKopie.findMany({
-            where: {
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-            take: AantalVKMinder,
-          });
-          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
-            await tx.boekKopie.update({
-              where: { id: boekKopie.id },
-              data: {
-                status:'niet-beschikbaar',
-              },
-            }),
-          );
-          await Promise.all(updatePromises);
-          console.log('test1'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-        } else{
-          console.log('test2'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-          const boekKopieenToUpdate = await tx.boekKopie.findMany({
-            where: {
-              boek_id: id,
-              status: 'niet-beschikbaar',
-              actief: true,
-            },
-            take: Math.abs(AantalVKMinder),
-          });
-          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
-            await tx.boekKopie.update({
-              where: { id: boekKopie.id },
-              data: {
-                status:'beschikbaar',
-              },
-            }),
-          );
-          await Promise.all(updatePromises);
-          console.log('test2'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-        }
-        
-        if(verschil>0){
-          console.log('test3'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-          for (let i = 0; i < verschil; i++) {
-            await tx.boekKopie.create({
-              data: {
-                id: randomUUID(),
-                boek_id: id,
-                status: 'beschikbaar', 
-                extra_informatie: null,
-                actief:true,
-                aangemaakt: new Date(),
-                upgedate: new Date(),
-              },
-            });
-                
-          }
-          console.log('test3'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-        }else{
-          console.log('test4'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-          const boekKopieenToUpdate = await tx.boekKopie.findMany({
-            where: {
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-            take: Math.abs(verschil),
-          });
-          const updatePromises = boekKopieenToUpdate.map(async (boekKopie) =>
-            await tx.boekKopie.update({
-              where: { id: boekKopie.id },
-              data: { actief: false },
-            }),
-          );
-          
-          await Promise.all(updatePromises);
-          console.log('test4'+await tx.boekKopie.count({
-            where:{
-              boek_id: id,
-              status: 'beschikbaar',
-              actief: true,
-            },
-          }));
-        }
         const [updatedBoek] = await Promise.all([
           tx.boek.update({
             where: {
               id,
             },
             data: {
-              vrije_kopieen: await tx.boekKopie.count({
-                where:{
-                  status:'beschikbaar',
-                  actief:true,
-                  boek_id:id,
-                },
-              }),
-              totale_kopieen:  await tx.boekKopie.count({
-                where:{
-                  actief:true,
-                  boek_id:id,
-                },
-              }),
               beschrijving: updated_boek.beschrijving,
               cover_uri: updated_boek.cover_uri,
               upgedate:new Date(),

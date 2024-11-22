@@ -148,6 +148,19 @@ getBoekKopieById.validationScheme = {
     boekKopieId: Joi.string().uuid(),
   },
 };
+
+const delRandomKopie = async (ctx: KoaContext< void,IdParams>) => {
+  const boekId : UUID = ctx.params.id;
+  await  boekenService.deleteRandomBeschikbareKopie(boekId);
+  ctx.status = 204;
+  getLogger().info('Een boek kopie is succesvol is verwijderd.');
+};
+
+delRandomKopie.validationScheme = {
+  params: {
+    id: Joi.string().uuid(),
+  },
+};
 const updateBoekById = async( ctx: KoaContext<UpdateBoekResponse, IdParams, UpdateBoekRequest>) => {
   const id : UUID = ctx.params.id;
   const opt_res =await  boekenService.updateById(id, {...ctx.request.body});
@@ -202,8 +215,6 @@ updateBoekById.validationScheme = {
       'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees',
     ).optional(),             
     paginas: Joi.number().integer().positive().optional(),          
-    vrije_kopieen: Joi.number().integer().min(0).optional(),    
-    totale_kopieen: Joi.number().integer().min(0).optional(),   
     beschrijving: Joi.string().optional(),     
     cover_uri: Joi.string().uri().allow(null).optional(),                
     auteur: Joi.object({
@@ -220,7 +231,7 @@ export default (parent: KoaRouter) => {
   const router = new Router<BibliotheekAppState, BibliotheekAppContext>({
     prefix: '/boeken',
   });
-
+  router.delete('/:id/deletebeschikbaarkopie',validate(delRandomKopie.validationScheme),delRandomKopie);
   router.get('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
   router.get('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
   router.get('/:boekId/kopieen/:boekKopieId',validate(getBoekKopieById.validationScheme),getBoekKopieById);
