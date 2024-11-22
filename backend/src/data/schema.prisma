@@ -71,7 +71,6 @@ model Gebruiker {
   email          String    @unique
   rol            String    @db.VarChar(50)
   hashed_password String   @db.VarChar(255)
-  salt           String    @db.VarChar(255)
   aangemaakt     DateTime  @default(now())
   upgedate       DateTime  @updatedAt
   actief        Boolean

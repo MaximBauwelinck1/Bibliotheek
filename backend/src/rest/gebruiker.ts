@@ -6,8 +6,9 @@ import type { IdParams } from '../types/common';
 import Joi from 'joi';
 import type { UUID } from 'crypto';
 import validate from '../core/validation';
+import roles from '../core/roles';
 // eslint-disable-next-line @stylistic/max-len
-import type { CreateGebruikerRequest, CreateGebruikerResponse, GetAllgebruikersResponse, GetGebruikerByIdResponse, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
+import type { CreateGebruikerRequest, CreateGebruikerResponse, GetAllgebruikersResponse, GetGebruikerByIdResponse, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
 
 const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
   ctx.body = {
@@ -17,23 +18,23 @@ const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
 };
 getAllGebruikers.validationScheme = null;
 
-const createGebruiker = async (ctx: KoaContext<CreateGebruikerResponse, void, CreateGebruikerRequest>) => {
-  const nieuwGebruiker = await gebruikerService.create({
+const registergebruiker = async (ctx: KoaContext<LoginResponse, void, RegisterGebruikerRequest>) => {
+  const token = await gebruikerService.register({
     ...ctx.request.body,
   });
-  ctx.body = nieuwGebruiker;
+  ctx.body = {token};
   ctx.status = 201;
-  getLogger().info(`gebruiker met id:${nieuwGebruiker.id} is succesvol aangemaakt.`);
+  getLogger().info(`gebruiker met token:${token} is succesvol aangemaakt.`);
 };
 
-createGebruiker.validationScheme = {
+registergebruiker.validationScheme = {
   body: {            
     voornaam: Joi.string(),            
     achternaam: Joi.string(),                
     geboortedatum: Joi.date().max('now'),          
     email: Joi.string().email(),    
-    rol: Joi.string().valid('user','admin'),   
-    hashed_password: Joi.string(),     
+    rol: Joi.string().valid(...Object.values(roles)),   
+    password: Joi.string().min(8).max(128),     
   },
 };
 
@@ -72,12 +73,12 @@ updateGebruikerById.validationScheme = {
     id: Joi.string().uuid(),
   },
   body: {            
-    voornaam: Joi.string(),            
-    achternaam: Joi.string(),                
-    geboortedatum: Joi.date().max('now'),          
-    email: Joi.string().email(),    
-    rol: Joi.string().valid('user','admin'),   
-    hashed_password: Joi.string(),     
+    voornaam: Joi.string().optional(),            
+    achternaam: Joi.string().optional(),                
+    geboortedatum: Joi.date().max('now').optional(),          
+    email: Joi.string().email().optional(),    
+    rol: Joi.string().valid(...Object.values(roles)).optional(),   
+    password: Joi.string().min(8).max(128).optional(),     
   },
 };
 
@@ -87,7 +88,7 @@ export default (parent: KoaRouter) => {
   });
 
   router.get('/',validate(getAllGebruikers.validationScheme), getAllGebruikers);
-  router.post('/',validate(createGebruiker.validationScheme), createGebruiker);
+  router.post('/',validate(registergebruiker.validationScheme), registergebruiker);
   router.get('/:id',  validate(getGebruikerById.validationScheme), getGebruikerById);
   router.delete('/:id',validate(deleteGebruikerById.validationScheme), deleteGebruikerById);
   router.put('/:id',validate(updateGebruikerById.validationScheme),updateGebruikerById);

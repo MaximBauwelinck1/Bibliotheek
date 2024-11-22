@@ -1,9 +1,11 @@
 import { randomUUID } from 'crypto';
 import {prisma} from '../data';
-import type { Gebruiker, gebruikerCreateInput, GebruikerUpdateInput } from '../types/gebruiker.js';
+import type { Gebruiker, GebruikerUpdateInput,PublicGebruiker, RegisterGebruikerRequest } from '../types/gebruiker.js';
+import { hashPassword,verifyPassword  } from '../core/password';
 import type {UUID} from 'crypto';
 import ServiceError from '../core/serviceError';
 import handleDBError from './_handleDBError';
+import { generateJWT } from '../core/jwt';
 
 const GEBRUIKER_SELECT = { //moet nog veranderen
   id:true,
@@ -12,18 +14,30 @@ const GEBRUIKER_SELECT = { //moet nog veranderen
   geboortedatum:true,
   email:true,
   rol:true,
-  salt:true,
   actief:true,
   hashed_password:true,
-  aangemaakt:true,
+  aangemaakt:true,                                
   upgedate:true,
 };
 
-export const getAll = async (): Promise<Gebruiker[]> => {
-  return await prisma.gebruiker.findMany();
+const makeExposedUser = (gebruiker: Gebruiker ): PublicGebruiker => ({
+  id:gebruiker.id, 
+  voornaam: gebruiker.voornaam,
+  achternaam: gebruiker.achternaam, 
+  email: gebruiker.email,
+  geboortedatum: gebruiker.geboortedatum,
+  aangemaakt: gebruiker.aangemaakt,
+  upgedate: gebruiker.upgedate,
+  actief: gebruiker.actief,
+  rol: gebruiker.rol,
+});
+
+export const getAll = async (): Promise<PublicGebruiker[]> => {
+  const users = await prisma.gebruiker.findMany();
+  return users.map((user) =>makeExposedUser(user));
 };
 
-export const getById = async (id: UUID): Promise<Gebruiker>  => {
+export const getById = async (id: UUID): Promise<PublicGebruiker>  => {
 
   const gebruiker = await prisma.gebruiker.findUnique({
     select: GEBRUIKER_SELECT,
@@ -36,11 +50,34 @@ export const getById = async (id: UUID): Promise<Gebruiker>  => {
     throw ServiceError.notFound(`gebruiker met id:${id} bestaat niet.`);
   }
 
-  return gebruiker;
+  return makeExposedUser(gebruiker);
 
 };
 
-export const create = async (new_gebruiker: gebruikerCreateInput): Promise<Gebruiker> => {
+export const login = async (
+  email: string,
+  password: string,
+): Promise<string> => {
+  const user = await prisma.gebruiker.findUnique({ where: { email } });
+
+  if (!user) {
+    throw ServiceError.unauthorized(
+      'Het gegeven wachtwoord en email kloppen niet.',
+    );
+  }
+
+  const passwordValid = await verifyPassword(password, user.hashed_password);
+
+  if (!passwordValid) {
+    throw ServiceError.unauthorized(
+      'Het gegeven wachtwoord en email kloppen niet.',
+    );
+  }
+
+  return await generateJWT(user); 
+};
+
+export const register = async (new_gebruiker: RegisterGebruikerRequest): Promise<string> => {
   const opt_boek = await prisma.gebruiker.findFirst({
     where: {
       AND:[
@@ -55,7 +92,8 @@ export const create = async (new_gebruiker: gebruikerCreateInput): Promise<Gebru
   }
 
   try {
-    return await prisma.gebruiker.create({
+    const passwordHash = await hashPassword(new_gebruiker.password);
+    const user = await prisma.gebruiker.create({
       data: {
         id: randomUUID(),
         voornaam: new_gebruiker.voornaam,
@@ -64,13 +102,18 @@ export const create = async (new_gebruiker: gebruikerCreateInput): Promise<Gebru
         email: new_gebruiker.email,
         rol: new_gebruiker.rol,
         actief:true,
-        hashed_password:new_gebruiker.hashed_password,//TODO HASHING
-        salt:'TODOOOOOO',
+        hashed_password:passwordHash,
         aangemaakt:new Date(),
         upgedate:new Date(),
       },
       select:GEBRUIKER_SELECT,
     });
+    if (!user) {
+      throw ServiceError.internalServerError(
+        'Er is een fout opgetreden bij het aanmaken van de gebruiker',
+      );
+    }
+    return  await generateJWT(user);
   }catch (error: any) {
     throw handleDBError(error);
   }
@@ -80,9 +123,12 @@ export const create = async (new_gebruiker: gebruikerCreateInput): Promise<Gebru
 export const deleteById = async (id: UUID): Promise<void> => {
   const opt_gebruiker = await getById(id);
   if (opt_gebruiker) {
-    await prisma.gebruiker.delete({
+    await prisma.gebruiker.update({
       where:{
         id,
+      },
+      data:{
+        actief:false,
       },
     });
   } else {
@@ -91,11 +137,12 @@ export const deleteById = async (id: UUID): Promise<void> => {
 
 };
 
-export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput): Promise<Gebruiker> => {
+export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput): Promise<PublicGebruiker> => {
   const opt_gebruiker = await getById(id);
   if(opt_gebruiker instanceof Error){
     return opt_gebruiker;
   } else{
+    const passwordHash = await hashPassword(new_gebruiker.password);
     const upgedate_gebruiker = await prisma.gebruiker.update({
       where: {
         id,
@@ -103,13 +150,12 @@ export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput):
       data: {
         email: new_gebruiker.email,
         rol: new_gebruiker.rol,
-        hashed_password:new_gebruiker.hashed_password,//TODO HASHING
-        salt:'TODOOOOOO',
+        hashed_password:passwordHash,
         upgedate:new Date(),
       },
       select: GEBRUIKER_SELECT,
     });
-    return upgedate_gebruiker;
+    return makeExposedUser(upgedate_gebruiker);
   }
   
 };

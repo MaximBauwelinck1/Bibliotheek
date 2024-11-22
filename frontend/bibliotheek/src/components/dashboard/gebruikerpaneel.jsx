@@ -16,6 +16,7 @@ const GebruikerPaneel = () => {
   const [huidigeMenu,setHuidigeMenu] = useState('');
   const [toonBevesteging, setToonBevesteging] = useState(false);
   const [gebruikerIdTodeleter,setGebruikerIdTodelete] = useState('');
+  const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
@@ -32,8 +33,9 @@ const GebruikerPaneel = () => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...gebruikers].filter((geb)=>{
-      return  (search && searchcategorieFilter) ?
-        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
+      return  ((search && searchcategorieFilter) ?
+        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true) &&
+        (geb.actief?true:toonVerwijderde ==true);
     },
     ).map((geb) => {
       // eslint-disable-next-line @stylistic/max-len
@@ -44,7 +46,7 @@ const GebruikerPaneel = () => {
       // eslint-disable-next-line @stylistic/max-len
       return { ...geb, geboortedatum_display: formattedDateGeboortedatum,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     });
-  }, [gebruikers, search, searchcategorieFilter]);
+  }, [gebruikers, search, searchcategorieFilter, toonVerwijderde]);
   const [zoekveld, setZoekVeld] = useState('voornaam');
   const [order, setOrder] = useState('asc');
   filteredgebruikers =useMemo(() => {
@@ -135,6 +137,17 @@ const GebruikerPaneel = () => {
           {filteredgebruikers.length>1?`${filteredgebruikers.length} zoekresultaten`:
             filteredgebruikers.length==1?`${filteredgebruikers.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
+        <div className='form-check' style={{ marginTop: 10, marginLeft: 15 }}>
+          <input
+            className='form-check-input'
+            type='checkbox'
+            id='toonVerwijderde'
+            onChange={(e) => setToonVerwijderde(e.target.checked)}
+          />
+          <label className='form-check-label' htmlFor='toonVerwijderde'>
+            Toon gearchiveerde gebruikers
+          </label>
+        </div>
         <div className='input-group mb-3 w-50'>
           <input
             type='search'

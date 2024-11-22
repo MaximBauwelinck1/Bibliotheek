@@ -6,12 +6,12 @@ export interface Gebruiker extends Entity {
   geboortedatum: Date;            
   email: string;   
   rol: string;             
-  hashed_password: string;          
-  salt: string;           
+  hashed_password: string;                   
   aangemaakt: Date;         
   upgedate: Date;   
   actief: boolean        
 }
+export interface PublicGebruiker extends Omit<Gebruiker, 'hashed_password'> {}
 
 export interface gebruikerCreateInput {
   voornaam: string;             
@@ -19,15 +19,30 @@ export interface gebruikerCreateInput {
   geboortedatum: Date;            
   email: string;   
   rol: string;             
-  hashed_password: string;                   
+  password: string;                   
 }
   
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+export interface RegisterGebruikerRequest {
+  voornaam: string;             
+  achternaam: string;            
+  geboortedatum: Date;            
+  email: string;   
+  rol: string;             
+  password: string;   
+}
+export interface LoginResponse {
+  token: string;
+}
 export interface GebruikerUpdateInput extends gebruikerCreateInput {}
 
 export interface CreateGebruikerRequest extends gebruikerCreateInput {}
 export interface UpdateGebruikerRequest extends gebruikerCreateInput {}
 
-export interface GetAllgebruikersResponse extends ListResponse<Gebruiker> {}
-export interface GetGebruikerByIdResponse extends Gebruiker {}
+export interface GetAllgebruikersResponse extends ListResponse<PublicGebruiker> {}
+export interface GetGebruikerByIdResponse extends PublicGebruiker {}
 export interface CreateGebruikerResponse extends GetGebruikerByIdResponse {}
 export interface UpdateGebruikerResponse extends GetGebruikerByIdResponse {}

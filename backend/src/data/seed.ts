@@ -3,6 +3,7 @@ import type { Prisma} from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import config from 'config';
+import Role from '../core/roles';
 
 const prisma = new PrismaClient(); 
 const AANTAL_KOPIEËN_P_BOEK : number = Number(config.get<number>('kopieen'));
@@ -248,10 +249,9 @@ async function main() {
         achternaam: 'Doe',
         geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
         email: 'john.doe@example.com',
-        rol: 'user',
+        rol: JSON.stringify(Role.USER),
         actief:true,
-        hashed_password: 'hashedpassword123',
-        salt: 'randomsaltvalue',
+        hashed_password: '$argon2id$v=19$m=131072,t=6,p=4$c4yGTzduMqVzDCGN2CzZEw$mCQCHpOSwNf2VNEB18UZ0owtIeBSj7h0k6wVx8WAmDw', // == gebruiker1
       },
       {
         id: 'f1a98976-2d4b-4e88-8a96-fc5d12b04564',
@@ -259,10 +259,9 @@ async function main() {
         achternaam: 'Smith',
         geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
         email: 'jane.smith@example.com',
-        rol: 'admin',
+        rol: JSON.stringify(Role.ADMIN),
         actief:true,
-        hashed_password: 'hashedpassword456',
-        salt: 'anotherrandomsaltvalue',
+        hashed_password: '$argon2id$v=19$m=131072,t=6,p=4$sAKaUpr6557w4SLcuViw4g$Z4TE662mF5eEUXcNHgJSrywu8CDHdXUPm5m8ka0pK+w',// == admin1
       }],
   });
    
