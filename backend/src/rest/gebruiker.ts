@@ -8,7 +8,7 @@ import type { UUID } from 'crypto';
 import validate from '../core/validation';
 import roles from '../core/roles';
 // eslint-disable-next-line @stylistic/max-len
-import type { CreateGebruikerRequest, CreateGebruikerResponse, GetAllgebruikersResponse, GetGebruikerByIdResponse, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
+import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
 
 const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
   ctx.body = {

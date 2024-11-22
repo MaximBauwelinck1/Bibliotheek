@@ -142,7 +142,6 @@ export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput):
   if(opt_gebruiker instanceof Error){
     return opt_gebruiker;
   } else{
-    const passwordHash = await hashPassword(new_gebruiker.password);
     const upgedate_gebruiker = await prisma.gebruiker.update({
       where: {
         id,
@@ -150,7 +149,9 @@ export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput):
       data: {
         email: new_gebruiker.email,
         rol: new_gebruiker.rol,
-        hashed_password:passwordHash,
+        ...(new_gebruiker.password && {
+          hashed_password: await hashPassword(new_gebruiker.password),
+        }),
         upgedate:new Date(),
       },
       select: GEBRUIKER_SELECT,
