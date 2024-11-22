@@ -73,6 +73,7 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
           </option>
           <option value="beschikbaar">beschikbaar</option>
           <option value="gereserveerd">gereserveerd</option>
+          <option value="niet-beschikbaar">Niet beschikbaar</option>
         </select>
       </div>
       <div className={styles.inputGroup}>
