@@ -180,10 +180,36 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
 export const deleteById = async (id: UUID): Promise<void> => {
   const opt_reservatie = await getById(id);
   if (opt_reservatie) {
-    await prisma.reservatie.delete({
-      where:{
-        id,
-      },
+    await prisma.$transaction(async (tx) => {
+      await Promise.all([
+        await prisma.reservatie.update({
+          where: {
+            id,
+          },
+          data: {
+            status:'niet-actief',
+          },
+        }),
+        await tx.boekKopie.update({
+          where:{
+            id:opt_reservatie.boek_kopie.id,
+          },
+          data:{
+            status:'beschikbaar',
+          },
+        }),
+        await tx.boek.update({
+          where:{
+            id:opt_reservatie.boek_kopie.boek.id,
+          },data:{
+            vrije_kopieen:{
+              increment:1,
+            },
+          },
+        }),
+      ]);
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
     });
   } else {
     throw ServiceError.conflict(`Reservatie met id:${id} bestaat niet.`);

@@ -17,6 +17,7 @@ const BoekKopiePaneel = () => {
   const [huidigeMenu,setHuidigeMenu] = useState('');
   const [toonBevesteging, setToonBevesteging] = useState(false);
   const [boekKopieIdTodelete,setBoekKopieIdTodelete] = useState('');
+  const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display',
@@ -38,11 +39,11 @@ const BoekKopiePaneel = () => {
       // eslint-disable-next-line @stylistic/max-len
       return { ...bk,boek_id:bk.boek.id, aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     }).filter((bk)=>{
-      console.log(bk[searchcategorieFilter]);
-      return  (search && searchcategorieFilter) ?
-        bk[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
+      return  ((search && searchcategorieFilter) ?
+        bk[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true)
+         && (bk.actief?true:toonVerwijderde ==true);
     });
-  }, [boekkopieen, search, searchcategorieFilter]);
+  }, [boekkopieen, search, searchcategorieFilter, toonVerwijderde]);
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredBoekKopieen =useMemo(() => {
@@ -140,6 +141,17 @@ const BoekKopiePaneel = () => {
           {filteredBoekKopieen.length>1?`${filteredBoekKopieen.length} zoekresultaten`:
             filteredBoekKopieen.length==1?`${filteredBoekKopieen.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
+        <div className='form-check' style={{ marginTop: 10, marginLeft: 15 }}>
+          <input
+            className='form-check-input'
+            type='checkbox'
+            id='toonVerwijderde'
+            onChange={(e) => setToonVerwijderde(e.target.checked)}
+          />
+          <label className='form-check-label' htmlFor='toonVerwijderde'>
+            Toon gearchiveerde exemplaren
+          </label>
+        </div>
         <div className='input-group mb-3 w-50'>
           <input
             type='search'

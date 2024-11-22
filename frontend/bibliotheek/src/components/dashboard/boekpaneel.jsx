@@ -16,6 +16,7 @@ const BoekPaneel = () => {
   const [huidigeMenu,setHuidigeMenu] = useState('');
   const [toonBevesteging, setToonBevesteging] = useState(false);
   const [boekIdTodelete,setboekIdTodelete] = useState('');
+  const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
 
   const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
@@ -31,9 +32,10 @@ const BoekPaneel = () => {
   let filteredBoeken = useMemo(() => {
     const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
-    return [...boeken].filter((geb)=>{
-      return  (search && searchcategorieFilter) ?
-        geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true;
+    return [...boeken].filter((boek)=>{
+      return  ((search && searchcategorieFilter) ?
+        boek[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true) &&
+         (boek.actief?true:toonVerwijderde ==true);
     },
     ).map((boek) => {
       // eslint-disable-next-line @stylistic/max-len
@@ -44,7 +46,7 @@ const BoekPaneel = () => {
       // eslint-disable-next-line @stylistic/max-len
       return { ...boek, publicatie_datum_display: formattedDatePublicatie,aangemaakt_display: formattedDateAangemaakt,upgedate_display:formattedDateUpgedate,formattedActief }; 
     });
-  }, [boeken, search, searchcategorieFilter]);
+  }, [boeken, search, searchcategorieFilter, toonVerwijderde]);
   const [zoekveld, setZoekVeld] = useState('titel');
   const [order, setOrder] = useState('asc');
   filteredBoeken =useMemo(() => {
@@ -149,6 +151,17 @@ const BoekPaneel = () => {
           {filteredBoeken.length>1?`${filteredBoeken.length} zoekresultaten`:
             filteredBoeken.length==1?`${filteredBoeken.length} zoekresultaat`:'geen zoekresultaten'} 
         </small>
+        <div className='form-check' style={{ marginTop: 10, marginLeft: 15 }}>
+          <input
+            className='form-check-input'
+            type='checkbox'
+            id='toonVerwijderde'
+            onChange={(e) => setToonVerwijderde(e.target.checked)}
+          />
+          <label className='form-check-label' htmlFor='toonVerwijderde'>
+            Toon gearchiveerde exemplaren
+          </label>
+        </div>
         <div className='input-group mb-3 w-50'>
           <input
             type='search'
