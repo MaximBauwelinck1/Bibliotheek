@@ -37,6 +37,9 @@ export interface RegisterGebruikerRequest {
 export interface LoginResponse {
   token: string;
 }
+export interface GetGebruikerRequest {
+  id: string | 'me'; 
+}
 export interface GebruikerUpdateInput extends gebruikerCreateInput {}
 
 export interface CreateGebruikerRequest extends gebruikerCreateInput {}

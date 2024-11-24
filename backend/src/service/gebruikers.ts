@@ -5,7 +5,10 @@ import { hashPassword,verifyPassword  } from '../core/password';
 import type {UUID} from 'crypto';
 import ServiceError from '../core/serviceError';
 import handleDBError from './_handleDBError';
-import { generateJWT } from '../core/jwt';
+import { generateJWT,verifyJWT } from '../core/jwt';
+import jwt from 'jsonwebtoken'; 
+import { getLogger } from '../core/logging';
+import type { SessionInfo } from '../types/auth';
 
 const GEBRUIKER_SELECT = { //moet nog veranderen
   id:true,
@@ -31,6 +34,52 @@ const makeExposedUser = (gebruiker: Gebruiker ): PublicGebruiker => ({
   actief: gebruiker.actief,
   rol: gebruiker.rol,
 });
+
+export const checkAndParseSession = async (
+  authHeader?: string,
+): Promise<SessionInfo> => {
+  if (!authHeader) {
+    throw ServiceError.unauthorized('Gebruiker is niet ingelogd');
+  }
+
+  if (!authHeader.startsWith('Bearer ')) {
+    throw ServiceError.unauthorized('ongeldige authenticatie token');
+  }
+
+  const authToken = authHeader.substring(7);
+
+  try {
+    const { role, sub } = await verifyJWT(authToken);
+
+    if (!sub) {
+      throw ServiceError.unauthorized('UserID is leeg');
+    }
+    return {
+      userId: sub,
+      role,
+    };
+  } catch (error: any) {
+    getLogger().error(error.message, { error });
+
+    if (error instanceof jwt.TokenExpiredError) {
+      throw ServiceError.unauthorized('De token is vervallen');
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      throw ServiceError.unauthorized(
+        `Ongeldige authenticatie token: ${error.message}`,
+      );
+    } else {
+      throw ServiceError.unauthorized(error.message);
+    }
+  }
+};
+
+export const checkRole = (nodigeRole: string, gebruikerRole: string): void => {
+  if (nodigeRole != gebruikerRole) {
+    throw ServiceError.forbidden(
+      'U mag dit deel van de applicatie niet bekijken',
+    );
+  }
+};
 
 export const getAll = async (): Promise<PublicGebruiker[]> => {
   const users = await prisma.gebruiker.findMany();

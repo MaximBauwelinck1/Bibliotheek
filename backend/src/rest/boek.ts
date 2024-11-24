@@ -9,6 +9,8 @@ import type { BoekKopieIdParams, IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
 import type { GetAllBoekkopieennResponse, GetBoekkopieByIdResponse } from '../types/boek_kopie';
+import { requireAuthentication,makeRequireRole } from '../core/auth';
+import roles from '../core/roles';
 
 const getAllBoeken = async (ctx: KoaContext<GetAllBoekenResponse>) => {
   const  genre = ctx.query.genre;
@@ -231,14 +233,25 @@ export default (parent: KoaRouter) => {
   const router = new Router<BibliotheekAppState, BibliotheekAppContext>({
     prefix: '/boeken',
   });
-  router.delete('/:id/deletebeschikbaarkopie',validate(delRandomKopie.validationScheme),delRandomKopie);
-  router.get('/kopieen',validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
-  router.get('/:id/kopieen',validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
-  router.get('/:boekId/kopieen/:boekKopieId',validate(getBoekKopieById.validationScheme),getBoekKopieById);
+
+  const requireAdmin = makeRequireRole(roles.ADMIN);
+  router.delete('/:id/deletebeschikbaarkopie',requireAuthentication, requireAdmin,
+    validate(delRandomKopie.validationScheme),delRandomKopie);//admin nodig om dit te deleten
+
+  router.get('/kopieen',requireAuthentication, validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
+  router.get('/:id/kopieen',requireAuthentication,
+    validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
+
+  router.get('/:boekId/kopieen/:boekKopieId',requireAuthentication,
+    validate(getBoekKopieById.validationScheme),getBoekKopieById);
+
   router.get('/',validate(getAllBoeken.validationScheme), getAllBoeken);
-  router.post('/',validate(createBoek.validationScheme), createBoek);
+  //moet niet ingelogd zijn om alle boeken te bekijken
+
+  router.post('/',requireAuthentication,requireAdmin, validate(createBoek.validationScheme), createBoek);
   router.get('/:id',  validate(getBoekById.validationScheme), getBoekById);
-  router.delete('/:id',validate(deleteBoekById.validationScheme), deleteBoekById);
-  router.put('/:id',validate(updateBoekById.validationScheme),updateBoekById);
+  //hiervoor moet je ook niet ingelogd zijn
+  router.delete('/:id',requireAuthentication,requireAdmin,validate(deleteBoekById.validationScheme), deleteBoekById);
+  router.put('/:id',requireAuthentication,requireAdmin,validate(updateBoekById.validationScheme),updateBoekById);
   parent.use(router.routes()).use(router.allowedMethods());
 };

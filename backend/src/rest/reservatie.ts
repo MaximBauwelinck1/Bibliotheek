@@ -6,8 +6,10 @@ import type { BibliotheekAppContext, BibliotheekAppState, KoaContext, KoaRouter 
 import type { IdParams } from '../types/common';
 import Joi from 'joi';
 import validate from '../core/validation';
+import { requireAuthentication,makeRequireRole } from '../core/auth';
 // eslint-disable-next-line @stylistic/max-len
 import type { CreateReservatieRequest, CreateReservatieResponse, GetAllReservatiesResponse, GetReservatieByIdResponse, UpdateReservatieRequest, UpdateReservatieResponse } from '../types/reservatie';
+import roles from '../core/roles';
 
 const getAllReservaties = async (ctx: KoaContext<GetAllReservatiesResponse>) => {
   ctx.body = {
@@ -58,14 +60,14 @@ getReservatieById.validationScheme = {
     id: Joi.string().uuid(),
   },
 };
-const updateBoekById = async( ctx: KoaContext<UpdateReservatieResponse, IdParams, UpdateReservatieRequest>) => {
+const updateReservatieyId = async( ctx: KoaContext<UpdateReservatieResponse, IdParams, UpdateReservatieRequest>) => {
   const id : UUID = ctx.params.id;
   const opt_res =await  reservatieService.updateById(id, {...ctx.request.body});
   ctx.body = opt_res;
   getLogger().info(`reservatie met id:${ctx.params.id} is succesvol geupdate.`);
 };
 
-updateBoekById.validationScheme = {
+updateReservatieyId.validationScheme = {
   params: {
     id: Joi.string().uuid(),
   },
@@ -80,11 +82,13 @@ export default (parent: KoaRouter) => {
     prefix: '/reservaties',
   });
 
-  router.get('/',validate(getAllReservaties.validationScheme), getAllReservaties);
+  const requireAdmin = makeRequireRole(roles.ADMIN);
+  router.use(requireAuthentication);
+  router.get('/',makeRequireRole, validate(getAllReservaties.validationScheme), getAllReservaties);
   router.post('/',validate(createReservatie.validationScheme), createReservatie);
   router.get('/:id',  validate(getReservatieById.validationScheme), getReservatieById);
-  router.delete('/:id',validate(deleteReservatieById.validationScheme), deleteReservatieById);
-  router.put('/:id',validate(updateBoekById.validationScheme),updateBoekById);
+  router.delete('/:id',requireAdmin, validate(deleteReservatieById.validationScheme), deleteReservatieById);
+  router.put('/:id',validate(updateReservatieyId.validationScheme),updateReservatieyId);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };

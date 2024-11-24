@@ -8,6 +8,8 @@ import type { UUID } from 'crypto';
 import validate from '../core/validation';
 // eslint-disable-next-line @stylistic/max-len
 import type { CreateBoekKopieRequest, CreateBoekKopieResponse, GetAllBoekkopieennResponse, GetBoekkopieByIdResponse, UpdateBoekKopieRequest, UpdateBoekKopieResponse } from '../types/boek_kopie';
+import { requireAuthentication,makeRequireRole } from '../core/auth';
+import roles from '../core/roles';
 
 const getAllKopieen = async (ctx: KoaContext<GetAllBoekkopieennResponse>) => {
   ctx.body = {
@@ -79,11 +81,13 @@ export default (parent: KoaRouter) => {
     prefix: '/kopieen',
   });
 
+  const requireAdmin = makeRequireRole(roles.ADMIN);
+  router.use(requireAuthentication);
   router.get('/',validate(getAllKopieen.validationScheme), getAllKopieen);
-  router.post('/',validate(createKopie.validationScheme), createKopie);
+  router.post('/',requireAdmin, validate(createKopie.validationScheme), createKopie);
   router.get('/:id',  validate(getKopieById.validationScheme), getKopieById);
-  router.delete('/:id',validate(deleteKopieById.validationScheme), deleteKopieById);
-  router.put('/:id',validate(updateKopieById.validationScheme),updateKopieById);
+  router.delete('/:id',requireAdmin,  validate(deleteKopieById.validationScheme), deleteKopieById);
+  router.put('/:id',requireAdmin, validate(updateKopieById.validationScheme),updateKopieById);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };

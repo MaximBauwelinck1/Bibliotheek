@@ -2,6 +2,7 @@ import Router from '@koa/router';
 import Joi from 'joi';
 import validate from '../core/validation';
 import * as gebruikerService from '../service/gebruikers';
+import { authDelay } from '../core/auth';
 import type {
   KoaContext,
   KoaRouter,
@@ -30,7 +31,7 @@ export default function installSessionRouter(parent: KoaRouter) {
     prefix: '/sessions',
   });
 
-  router.post('/', validate(login.validationScheme), login);
+  router.post('/',authDelay, validate(login.validationScheme), login);
 
   parent.use(router.routes()).use(router.allowedMethods());
 }

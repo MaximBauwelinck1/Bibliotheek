@@ -7,8 +7,24 @@ import Joi from 'joi';
 import type { UUID } from 'crypto';
 import validate from '../core/validation';
 import roles from '../core/roles';
+import { requireAuthentication, makeRequireRole,authDelay } from '../core/auth';
 // eslint-disable-next-line @stylistic/max-len
-import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
+import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, GetGebruikerRequest, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
+import type { Next } from 'koa';
+
+const checkUserId = (ctx: KoaContext<unknown, GetGebruikerRequest>, next: Next) => {
+  const { userId, role } = ctx.state.session;
+  const { id } = ctx.params;
+
+  if (id !== 'me' && id !== userId && role != roles.ADMIN) {
+    return ctx.throw(
+      403,
+      'Je mag de informatie van deze gebruiker niet bekijken.',
+      { code: 'FORBIDDEN' },
+    );
+  }
+  return next();
+};
 
 const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
   ctx.body = {
@@ -46,7 +62,10 @@ const deleteGebruikerById= async (ctx: KoaContext<void, IdParams>) => {
 };
 deleteGebruikerById.validationScheme = {
   params: {
-    id: Joi.string().uuid(),
+    id: Joi.alternatives().try(
+      Joi.string().uuid(),
+      Joi.string().valid('me'),
+    ),
   },
 };
 const getGebruikerById = async (ctx: KoaContext<GetGebruikerByIdResponse, IdParams>) => {
@@ -58,7 +77,10 @@ const getGebruikerById = async (ctx: KoaContext<GetGebruikerByIdResponse, IdPara
 
 getGebruikerById.validationScheme = {
   params: {
-    id: Joi.string().uuid(),
+    id: Joi.alternatives().try(
+      Joi.string().uuid(),
+      Joi.string().valid('me'),
+    ),
   },
 };
 const updateGebruikerById = async( ctx: KoaContext<UpdateGebruikerResponse, IdParams, UpdateGebruikerRequest>) => {
@@ -70,7 +92,10 @@ const updateGebruikerById = async( ctx: KoaContext<UpdateGebruikerResponse, IdPa
 
 updateGebruikerById.validationScheme = {
   params: {
-    id: Joi.string().uuid(),
+    id: Joi.alternatives().try(
+      Joi.string().uuid(),
+      Joi.string().valid('me'),
+    ),
   },
   body: {            
     voornaam: Joi.string().optional(),            
@@ -87,11 +112,17 @@ export default (parent: KoaRouter) => {
     prefix: '/gebruikers',
   });
 
-  router.get('/',validate(getAllGebruikers.validationScheme), getAllGebruikers);
-  router.post('/',validate(registergebruiker.validationScheme), registergebruiker);
-  router.get('/:id',  validate(getGebruikerById.validationScheme), getGebruikerById);
-  router.delete('/:id',validate(deleteGebruikerById.validationScheme), deleteGebruikerById);
-  router.put('/:id',validate(updateGebruikerById.validationScheme),updateGebruikerById);
+  router.post('/',authDelay,validate(registergebruiker.validationScheme), registergebruiker);
+
+  const requireAdmin = makeRequireRole(roles.ADMIN);
+  
+  router.get('/', requireAuthentication,requireAdmin,validate(getAllGebruikers.validationScheme), getAllGebruikers);
+  router.get('/:id', requireAuthentication,checkUserId, validate(getGebruikerById.validationScheme), getGebruikerById);
+  router.delete('/:id',requireAuthentication,checkUserId,
+    validate(deleteGebruikerById.validationScheme), deleteGebruikerById);
+
+  router.put('/:id',requireAuthentication,checkUserId,
+    validate(updateGebruikerById.validationScheme),updateGebruikerById);
 
   parent.use(router.routes()).use(router.allowedMethods());
 };
