@@ -6,7 +6,6 @@ import BoekenList from './pages/Boeken/BoekenList.jsx';
 import About from './pages/About/About.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
 import BoekDetail from './pages/Boeken/BoekDetail.jsx';
-import LayoutUser from './pages/LayouUser.jsx';
 import { Navigate } from 'react-router-dom';
 import Dashbord from './pages/admin/dashbord.jsx';
 import LayoutAdmin from './pages/LayoutAdmin.jsx';
@@ -21,34 +20,8 @@ import AddOrEditBoekKopie from './pages/admin/AddOrEditBoekKopie.jsx';
 import { ThemeProvider } from './contexts/Theme.contexts.jsx';
 import { AuthProvider } from './contexts/Auth.context';
 import LoginPage from './pages/LoginPage.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 const router = createBrowserRouter([
-  {
-    element: <LayoutUser />, 
-    children: [
-      { 
-        path: '/',
-        element: <Navigate replace to='/boeken' />,
-      },
-      {
-        path: '/login',
-        element: <LoginPage/>,
-      },
-      {
-        path: '/boeken',
-        children: [
-          {
-            index: true,
-            element: <BoekenList />,
-          },
-          {
-            path: ':id',
-            element: <BoekDetail />,
-          },
-        ],
-      },
-      { path: 'about', element: <About /> }, 
-      { path: '*', element: <NotFound /> },
-    ]},
   {
     element: <LayoutAdmin />, 
     children: [
@@ -60,7 +33,7 @@ const router = createBrowserRouter([
         path: '/login',
         element: <LoginPage/>,
       },
-      { 
+      { element: <PrivateRoute permissie='admin'/>,
         path: '/dashboard',
         children:[
           {

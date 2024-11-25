@@ -1,9 +1,8 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'; 
 import { useAuth } from '../contexts/auth';
 
-// 👇 1
-export default function PrivateRoute() {
-  const { ready, isAuthed } = useAuth();
+export default function PrivateRoute({permissie}) {
+  const { ready, isAuthed,user } = useAuth();
   const { pathname } = useLocation(); 
   
   if (!ready) {
@@ -20,10 +19,18 @@ export default function PrivateRoute() {
         </div>
       </div>
     );
-  }
-
-  if (isAuthed) {
-    return <Outlet />;
+  }else{
+    if(user){
+      console.log(permissie+'rr' +user.rol );
+    }
+    if(user && user.rol != permissie){
+      return(
+        <p>Niet geldige permissie</p>
+      );
+    }
+    if (isAuthed) {
+      return <Outlet />;
+    }
   }
 
   return <Navigate replace to={`/login?redirect=${pathname}`} />; 
