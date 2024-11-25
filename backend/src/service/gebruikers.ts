@@ -50,7 +50,6 @@ export const checkAndParseSession = async (
 
   try {
     const { role, sub } = await verifyJWT(authToken);
-
     if (!sub) {
       throw ServiceError.unauthorized('UserID is leeg');
     }
@@ -86,7 +85,7 @@ export const getAll = async (): Promise<PublicGebruiker[]> => {
   return users.map((user) =>makeExposedUser(user));
 };
 
-export const getById = async (id: UUID): Promise<PublicGebruiker>  => {
+export const getById = async (id: UUID | string): Promise<PublicGebruiker>  => {
 
   const gebruiker = await prisma.gebruiker.findUnique({
     select: GEBRUIKER_SELECT,
@@ -114,7 +113,6 @@ export const login = async (
       'Het gegeven wachtwoord en email kloppen niet.',
     );
   }
-
   const passwordValid = await verifyPassword(password, user.hashed_password);
 
   if (!passwordValid) {

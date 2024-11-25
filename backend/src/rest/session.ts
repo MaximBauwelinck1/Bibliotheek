@@ -13,6 +13,7 @@ import type { LoginResponse, LoginRequest } from '../types/gebruiker';
 
 const login = async (ctx: KoaContext<LoginResponse, void, LoginRequest>) => {
   const { email, password } = ctx.request.body;
+  console.log(password);
   const token = await gebruikerService.login(email, password); 
 
   ctx.status = 200;

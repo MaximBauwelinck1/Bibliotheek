@@ -84,7 +84,7 @@ export default (parent: KoaRouter) => {
 
   const requireAdmin = makeRequireRole(roles.ADMIN);
   router.use(requireAuthentication);
-  router.get('/',makeRequireRole, validate(getAllReservaties.validationScheme), getAllReservaties);
+  router.get('/',requireAdmin, validate(getAllReservaties.validationScheme), getAllReservaties);
   router.post('/',validate(createReservatie.validationScheme), createReservatie);
   router.get('/:id',  validate(getReservatieById.validationScheme), getReservatieById);
   router.delete('/:id',requireAdmin, validate(deleteReservatieById.validationScheme), deleteReservatieById);

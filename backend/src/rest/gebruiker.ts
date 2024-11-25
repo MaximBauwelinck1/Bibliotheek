@@ -70,7 +70,7 @@ deleteGebruikerById.validationScheme = {
 };
 const getGebruikerById = async (ctx: KoaContext<GetGebruikerByIdResponse, IdParams>) => {
   const id : UUID = ctx.params.id;
-  const opt_res =await  gebruikerService.getById(id);
+  const opt_res =await  gebruikerService.getById( ctx.params.id.toString() === 'me' ? ctx.state.session.userId : id);
   ctx.body = opt_res;
   getLogger().info(`gebruiker met id:${ctx.params.id} is geretourneerd.`);
 };

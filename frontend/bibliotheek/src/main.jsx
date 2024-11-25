@@ -19,6 +19,8 @@ import AddOrEditBoek from './pages/admin/AddOrEditBoek.jsx';
 import AddOrEditReservaties from './pages/admin/AddOrEditReservatie.jsx';
 import AddOrEditBoekKopie from './pages/admin/AddOrEditBoekKopie.jsx';
 import { ThemeProvider } from './contexts/Theme.contexts.jsx';
+import { AuthProvider } from './contexts/Auth.context';
+import LoginPage from './pages/LoginPage.jsx';
 const router = createBrowserRouter([
   {
     element: <LayoutUser />, 
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
       { 
         path: '/',
         element: <Navigate replace to='/boeken' />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage/>,
       },
       {
         path: '/boeken',
@@ -49,6 +55,10 @@ const router = createBrowserRouter([
       { 
         path: '/',
         element: <Navigate replace to='/boeken' />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage/>,
       },
       { 
         path: '/dashboard',
@@ -163,8 +173,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </AuthProvider>
   </StrictMode>,
 );

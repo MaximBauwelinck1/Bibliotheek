@@ -5,10 +5,6 @@ import { useTheme } from '../../contexts/theme';
 const BoekListItem = (props) => {
   const { theme } = useTheme();
   const className = theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light';
-  if(props.titel.length>=20){
-    const verkorte_titel = props.titel.substring(0, 20);;
-    console.log(verkorte_titel);
-  }
   return (
     <Link className='link_uitgezet' to={`/boeken/${props.id}`}>
       <div className={styles.boek_card +' ' +className}>

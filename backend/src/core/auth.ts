@@ -16,7 +16,6 @@ export const requireAuthentication = async (ctx: KoaContext, next: Next) => {
 export const makeRequireRole =
   (nodigeRole: string) => async (ctx: KoaContext, next: Next) => {
     const { role } = ctx.state.session;
-
     userService.checkRole(nodigeRole, role);
 
     return next();

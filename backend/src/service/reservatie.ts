@@ -58,7 +58,6 @@ const RESERVATIES_SELECT = {
       actief:true,
       rol: true,
       hashed_password: true,
-      salt: true,
       aangemaakt: true,
       upgedate: true,
     },
