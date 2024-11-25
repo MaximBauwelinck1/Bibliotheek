@@ -18,7 +18,6 @@ export const deleteById = async (url, { arg: id }) => {
 };
 
 export const save = async (url, { arg: { id, ...data } }) => {
-  console.log('tesfffffffffff');
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${baseUrl}/${url}/${id ?? ''}`,
@@ -27,6 +26,10 @@ export const save = async (url, { arg: { id, ...data } }) => {
 };
 
 export const deleteRandomBeschikbaarExemplaar = async (url,{ arg: id }) => {
-  console.log(id);
   await axios.delete(`${baseUrl}/${url}/${id.id}/deletebeschikbaarkopie`); 
+};
+
+export const post = async (url, { arg }) => {
+  const { data } = await axios.post(`${baseUrl}/${url}`, arg);
+  return data;
 };
