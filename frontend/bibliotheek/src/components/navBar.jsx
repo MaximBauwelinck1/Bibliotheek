@@ -27,14 +27,14 @@ const NavBar = () => {
       
           <div  style={{marginLeft:'auto'}}  onClick={()=>setDropdownVisible(!isDropdownVisible)} 
             className={styles.gebruiker_container}> 
-            <FaUser color='white' className={styles.gebruiker_icon}/>
+            <FaUser  className={styles.gebruiker_icon}/>
             {isDropdownVisible && <DropdownMenu />}
           </div>
         ) : (
         
           <div  style={{marginLeft:'auto'}}  className={styles.gebruiker_container}>
             <Link className='nav-link' to='/login'>
-              <FaUser color='white' className={styles.gebruiker_icon}/>
+              <FaUser  className={styles.gebruiker_icon}/>
             </Link>
           </div>
         )

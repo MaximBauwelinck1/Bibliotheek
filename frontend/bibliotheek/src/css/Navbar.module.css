@@ -26,7 +26,11 @@
   .gebruiker_icon{
     min-height: 50px;
     min-width: 50px;
-   
+   color: white;
+  }
+  .gebruiker_icon:hover{
+    color: black;
+    
   }
   .gebruiker_container{
    margin-right: 4em;

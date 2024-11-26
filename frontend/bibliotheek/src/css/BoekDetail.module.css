@@ -30,6 +30,41 @@
     margin-top: 20px;
     font-size: 1rem;
   }
+
+  .reserveer_container{
+    grid-area: b;
+    align-self: center;
+    margin-top: 5em;
+  }
+  .reserveer_knop{
+    background-color: green;
+    padding: 1em;
+    border-radius: 10px;
+    border: none;
+    width: 10em;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .niet_ingelogd_knop{
+    background-color: red;
+    padding: 1em;
+    border-radius: 10px;
+    border: none;
+    width: 10em;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  .niet_ingelogd_knop:hover{
+    background-color: rgb(187, 0, 0);
+    
+  }
+  .reserveer_knop:hover{
+    background-color: rgb(0, 90, 0);
+    
+  }
   .boek_info{
     grid-area: a;
   }
