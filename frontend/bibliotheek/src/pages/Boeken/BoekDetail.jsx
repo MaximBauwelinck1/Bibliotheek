@@ -7,6 +7,8 @@ import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr';
 import SuggestionsBar from '../../components/boeken/SuggestionBar';
 import { useTheme } from '../../contexts/theme';
+import useSWRMutation from 'swr/mutation';
+import { mutate } from 'swr';
 
 const BoekDetail = () => {
   const { theme } = useTheme();
@@ -18,6 +20,14 @@ const BoekDetail = () => {
     error,
   } = useSWR( id?`boeken/${id}`: null, API.getById);
 
+  const { trigger: saveReservatie, error: saveErrorReservatie } = useSWRMutation(
+    'reservaties',
+    API.save,
+    {onSuccess:()=>{
+      mutate(`boeken/${id}`);
+    }},
+  );
+
   const {
     data: suggestieboeken,
     isLoadingSuges,
@@ -28,7 +38,7 @@ const BoekDetail = () => {
   return (
     <div className={className}>
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
-      <AsyncData loading={isLoading} error={error}> 
+      <AsyncData loading={isLoading} error={error || saveErrorReservatie}> 
         <div style={{paddingTop:100}}>
           <Boek key={id} {...boek} />
           { suggestions.length > 1 && <>  {/* Moet 1 zijn omdat het boek zelf ook een suggestion is.*/}

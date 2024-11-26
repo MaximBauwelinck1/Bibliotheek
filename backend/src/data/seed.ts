@@ -249,7 +249,7 @@ async function main() {
         achternaam: 'Doe',
         geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
         email: 'john.doe@example.com',
-        rol: JSON.stringify(Role.USER),
+        rol: JSON.stringify(Role.USER).replaceAll('"',''),
         actief:true,
         hashed_password: '$argon2id$v=19$m=131072,t=6,p=4$c4yGTzduMqVzDCGN2CzZEw$mCQCHpOSwNf2VNEB18UZ0owtIeBSj7h0k6wVx8WAmDw', // == gebruiker1
       },
@@ -259,7 +259,7 @@ async function main() {
         achternaam: 'Smith',
         geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
         email: 'jane.smith@example.com',
-        rol: JSON.stringify(Role.ADMIN),
+        rol: JSON.stringify(Role.ADMIN).replaceAll('"',''),
         actief:true,
         hashed_password: '$argon2id$v=19$m=131072,t=6,p=4$sAKaUpr6557w4SLcuViw4g$Z4TE662mF5eEUXcNHgJSrywu8CDHdXUPm5m8ka0pK+w',// == admin1
       }],

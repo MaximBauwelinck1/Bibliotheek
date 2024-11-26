@@ -1,7 +1,6 @@
 import AsyncData from '../AsyncData';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
-import * as dashboard from './../../css/Dashboard.module.css';
 const ReservatieLijst = ({reservaties, actieve, isLoading, error}) => {
   const werkelijke_kolommen = ['nr','boek_titel','startdatum_display','einddatum_display'];
   const zichtbare_kolommen = ['nr','boek','startdatum reservatie','einddatum reservatie'];

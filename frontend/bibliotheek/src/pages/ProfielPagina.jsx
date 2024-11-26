@@ -23,7 +23,6 @@ const ProfielPagina =()=>{
     isLoading: isLoadingRes,
     error:errorRes,
   } = useSWR( id?`gebruikers/${id}/reservaties`: null, API.getAll);
-
   if(user && user.id  !=id){ // admins mogen alle gebruikers wel bekijken via het dashboard maar niet via hier
     return( // allen de gebruiker waarvan het profiel behoort mag deze pagina zien
       <VerbodenToegang/>
