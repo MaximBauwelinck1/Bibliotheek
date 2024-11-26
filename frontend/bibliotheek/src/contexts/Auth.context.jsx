@@ -36,13 +36,12 @@ export const AuthProvider = ({ children }) => {
         });
   
         setToken(token); 
-        console.error('werkttt');
         localStorage.setItem(JWT_TOKEN_KEY, token); 
   
         return true; 
       } catch (error) {
        
-        console.error('testttt' +error);
+        console.error(error);
         return false;
       }
     },
@@ -65,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
     }),
-    [user, loginError, loginLoading, userError, userLoading, login, logout],
+    [user, loginError, userError, loginLoading, userLoading, token, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

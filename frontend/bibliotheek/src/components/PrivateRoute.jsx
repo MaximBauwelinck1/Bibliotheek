@@ -1,8 +1,9 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'; 
 import { useAuth } from '../contexts/auth';
+import VerbodenToegang from './VerbodenToegang';
 
 export default function PrivateRoute({permissie}) {
-  const { ready, isAuthed,user } = useAuth();
+  const { ready, isAuthed,user,error } = useAuth();
   const { pathname } = useLocation(); 
   
   if (!ready) {
@@ -20,15 +21,12 @@ export default function PrivateRoute({permissie}) {
       </div>
     );
   }else{
-    if(user){
-      console.log(permissie+'rr' +user.rol );
-    }
+    
     if(user && user.rol != permissie){
       return(
-        <p>Niet geldige permissie</p>
+        <VerbodenToegang/>
       );
-    }
-    if (isAuthed) {
+    } else if (isAuthed && !error) {
       return <Outlet />;
     }
   }

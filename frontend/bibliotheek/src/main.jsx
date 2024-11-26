@@ -8,7 +8,7 @@ import NotFound from './pages/NotFound/NotFound.jsx';
 import BoekDetail from './pages/Boeken/BoekDetail.jsx';
 import { Navigate } from 'react-router-dom';
 import Dashbord from './pages/admin/dashbord.jsx';
-import LayoutAdmin from './pages/LayoutAdmin.jsx';
+import Layout from './pages/Layout.jsx';
 import BoekDetailAdmin from './pages/admin/BoekDetail';
 import GebruikerDetail from './pages/admin/GebruikerDetail.jsx';
 import ReservatieDetail from './pages/admin/ReservatieDetail.jsx';
@@ -21,9 +21,10 @@ import { ThemeProvider } from './contexts/Theme.contexts.jsx';
 import { AuthProvider } from './contexts/Auth.context';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import Logout from './pages/Logout.jsx';
 const router = createBrowserRouter([
   {
-    element: <LayoutAdmin />, 
+    element: <Layout />, 
     children: [
       { 
         path: '/',
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage/>,
+      },
+      {
+        path: '/logout',
+        element: <Logout />,
       },
       { element: <PrivateRoute permissie='admin'/>,
         path: '/dashboard',

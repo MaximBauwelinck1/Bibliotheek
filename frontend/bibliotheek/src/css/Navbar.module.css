@@ -23,3 +23,22 @@
     color: #ccc;
   }
   
+  .gebruiker_icon{
+    min-height: 50px;
+    min-width: 50px;
+   
+  }
+  .gebruiker_container{
+   margin-right: 4em;
+  }
+
+  .dropdown_container{
+    position: absolute;
+    background-color: wheat ;
+    border-radius: 5px;
+    top:5em;
+  }
+  li{
+    text-align: left;
+    list-style:none;
+  }
