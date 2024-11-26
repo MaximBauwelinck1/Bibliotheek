@@ -147,7 +147,7 @@ export const register = async (new_gebruiker: RegisterGebruikerRequest): Promise
         achternaam: new_gebruiker.achternaam,
         geboortedatum: new_gebruiker.geboortedatum,
         email: new_gebruiker.email,
-        rol: new_gebruiker.rol,
+        rol: new_gebruiker.rol?new_gebruiker.rol:'user',
         actief:true,
         hashed_password:passwordHash,
         aangemaakt:new Date(),

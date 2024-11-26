@@ -22,6 +22,7 @@ import { AuthProvider } from './contexts/Auth.context';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Logout from './pages/Logout.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: '/logout',
         element: <Logout />,
+      },
+      {
+        path:'/register',
+        element:<RegisterPage/>,
       },
       { element: <PrivateRoute permissie='admin'/>,
         path: '/dashboard',

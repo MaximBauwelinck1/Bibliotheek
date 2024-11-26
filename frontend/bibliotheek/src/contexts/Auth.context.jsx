@@ -26,6 +26,12 @@ export const AuthProvider = ({ children }) => {
     error: loginError,
   } = useSWRMutation('sessions', api.post);
 
+  const {
+    trigger: doregister,
+    isMutating: registerLoading,
+    error: registerError,
+  } = useSWRMutation('gebruikers', api.post);
+
   const login = useCallback(
     async (email, password) => {
       try {
@@ -47,6 +53,31 @@ export const AuthProvider = ({ children }) => {
     },
     [doLogin],
   );
+
+  const register = useCallback(
+    async (voornaam, achternaam,geboortedatum,email, password) => {
+      try {
+   
+        const { token } = await doregister({
+          voornaam,
+          achternaam,
+          geboortedatum,
+          email,
+          password,
+        });
+  
+        setToken(token); 
+        localStorage.setItem(JWT_TOKEN_KEY, token); 
+  
+        return true; 
+      } catch (error) {
+       
+        console.error(error);
+        return false;
+      }
+    },
+    [doregister],
+  );
  
   const logout = useCallback(() => {
     setToken(null);
@@ -57,14 +88,16 @@ export const AuthProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       user,
-      error: loginError || userError,
-      loading: loginLoading || userLoading,
+      error: loginError || userError || registerError,
+      loading: loginLoading || userLoading || registerLoading,
       isAuthed: Boolean(token),
       ready: !userLoading,
       login,
       logout,
+      register,
     }),
-    [user, loginError, userError, loginLoading, userLoading, token, login, logout],
+    [user, loginError, userError, registerError, loginLoading, userLoading,
+      registerLoading, token, login, logout, register],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import * as styles from '../css/Login.module.css';
 import ToonError from './ToonError';
+import { Link } from 'react-router-dom';
 const validationRules = {
   email: {
     required: 'Email mag niet leeg zijn.',
@@ -37,10 +38,6 @@ export default function Login({ login, error,loading }) {
     }
   };
   const errorBericht = error? error.response.data.message:'';
-  if(error){
-    console.log(error.response.data.message);
-  }
-  console.log(error);
   return (
     <div className={styles.bibliotheek_login}>
       <div className={styles.login_container}>
@@ -73,9 +70,10 @@ export default function Login({ login, error,loading }) {
             Wachtwoord vergeten?
           </a>
           <span className={styles.dot_divider}>·</span>
-          <a href="/register" className={styles.register_link}>
+          <Link to='/register' className={styles.register_link}>
             Registreren
-          </a>
+          </Link>
+
         </div>
       </div>
     </div>

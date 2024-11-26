@@ -49,7 +49,7 @@ registergebruiker.validationScheme = {
     achternaam: Joi.string(),                
     geboortedatum: Joi.date().max('now'),          
     email: Joi.string().email(),    
-    rol: Joi.string().valid(...Object.values(roles)),   
+    rol: Joi.string().valid(...Object.values(roles)).optional(),   
     password: Joi.string().min(8).max(128),     
   },
 };
