@@ -167,7 +167,7 @@ export const register = async (new_gebruiker: RegisterGebruikerRequest): Promise
 
 };
 
-export const deleteById = async (id: UUID): Promise<void> => {
+export const deleteById = async (id: UUID | string): Promise<void> => {
   const opt_gebruiker = await getById(id);
   if (opt_gebruiker) {
     await prisma.gebruiker.update({
@@ -184,7 +184,7 @@ export const deleteById = async (id: UUID): Promise<void> => {
 
 };
 
-export const updateById = async (id: UUID, new_gebruiker: GebruikerUpdateInput): Promise<PublicGebruiker> => {
+export const updateById = async (id: UUID | string, new_gebruiker: GebruikerUpdateInput): Promise<PublicGebruiker> => {
   const opt_gebruiker = await getById(id);
   if(opt_gebruiker instanceof Error){
     return opt_gebruiker;

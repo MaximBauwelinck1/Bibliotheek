@@ -23,6 +23,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Logout from './pages/Logout.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
+import ProfielPagina from './pages/ProfielPagina.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -42,6 +43,17 @@ const router = createBrowserRouter([
       {
         path:'/register',
         element:<RegisterPage/>,
+      },
+      {
+        element: <PrivateRoute permissie='user'/>,
+        path: '/gebruikers',
+        children:[
+          {
+            path: ':id',
+            element: <ProfielPagina />,
+          },
+          
+        ],
       },
       { element: <PrivateRoute permissie='admin'/>,
         path: '/dashboard',

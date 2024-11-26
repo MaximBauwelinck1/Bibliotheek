@@ -12,7 +12,6 @@ const NavBar = () => {
   const { user,isAuthed } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  console.log(isAuthed);
   return (
     <nav className={styles.navbar}>
       <NavLink to="/boeken" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Boeken</NavLink>

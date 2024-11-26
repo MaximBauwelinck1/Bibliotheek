@@ -5,7 +5,12 @@ import VerbodenToegang from './VerbodenToegang';
 export default function PrivateRoute({permissie}) {
   const { ready, isAuthed,user,error } = useAuth();
   const { pathname } = useLocation(); 
-  
+  let toestemming;
+  if(user && user.rol=== 'user'){
+    toestemming = permissie === user.rol;
+  } else if (user && user.rol === 'admin'){
+    toestemming = true;
+  }
   if (!ready) {
     return (
       <div className='container'>
@@ -22,7 +27,7 @@ export default function PrivateRoute({permissie}) {
     );
   }else{
     
-    if(user && user.rol != permissie){
+    if(user && !toestemming){
       return(
         <VerbodenToegang/>
       );

@@ -8,7 +8,7 @@ const Boek = (props) => {
     <div className={styles.boek_detail_container +' ' +className}>
        
       <img src={props.cover_uri} alt={props.titel} className={styles.cover_img} />
-      <MoetIngelogdZijn></MoetIngelogdZijn>
+      <MoetIngelogdZijn titelBoek={props.titel}/>
       <div className={styles.boek_info}>
         <h1 className={styles.boek_titel}>{props.titel}</h1>
         <p><strong>Auteur:</strong> {props.auteur.voornaam} {props.auteur.achternaam}</p>

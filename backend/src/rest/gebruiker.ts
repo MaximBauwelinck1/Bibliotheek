@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 import * as gebruikerService from '../service/gebruikers';
+import * as reservatieService from '../service/reservatie';
 import { getLogger } from '../core/logging';
 import type { BibliotheekAppContext, BibliotheekAppState, KoaRouter,KoaContext } from '../types/koa';
 import type { IdParams } from '../types/common';
@@ -11,6 +12,7 @@ import { requireAuthentication, makeRequireRole,authDelay } from '../core/auth';
 // eslint-disable-next-line @stylistic/max-len
 import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, GetGebruikerRequest, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
 import type { Next } from 'koa';
+import type { GetAllReservatiesResponse } from '../types/reservatie';
 
 const checkUserId = (ctx: KoaContext<unknown, GetGebruikerRequest>, next: Next) => {
   const { userId, role } = ctx.state.session;
@@ -34,6 +36,22 @@ const getAllGebruikers = async (ctx: KoaContext<GetAllgebruikersResponse>) => {
 };
 getAllGebruikers.validationScheme = null;
 
+const getAlleReservatiesVanGebruiker= async (ctx: KoaContext<GetAllReservatiesResponse,IdParams>) => {
+  const {id} = ctx.params;
+  ctx.body = {
+    items: await reservatieService.
+      getAllReservatiesFromUser(ctx.params.id.toString() === 'me' ? ctx.state.session.userId : id),
+  };
+  getLogger().info('Alle gebruikers zijn opgevraagd.');
+};
+getAlleReservatiesVanGebruiker.validationScheme = {
+  params: {
+    id: Joi.alternatives().try(
+      Joi.string().uuid(),
+      Joi.string().valid('me'),
+    ),
+  },
+};
 const registergebruiker = async (ctx: KoaContext<LoginResponse, void, RegisterGebruikerRequest>) => {
   const token = await gebruikerService.register({
     ...ctx.request.body,
@@ -56,7 +74,7 @@ registergebruiker.validationScheme = {
 
 const deleteGebruikerById= async (ctx: KoaContext<void, IdParams>) => {
   const id : UUID = ctx.params.id;
-  await gebruikerService.deleteById(id);
+  await gebruikerService.deleteById(ctx.params.id.toString() === 'me' ? ctx.state.session.userId : id);
   ctx.status = 204;
   getLogger().info(`gebruiker met id:${ctx.params.id} is succesvol verwijderd.`);
 };
@@ -85,7 +103,8 @@ getGebruikerById.validationScheme = {
 };
 const updateGebruikerById = async( ctx: KoaContext<UpdateGebruikerResponse, IdParams, UpdateGebruikerRequest>) => {
   const id : UUID = ctx.params.id;
-  const opt_res =await  gebruikerService.updateById(id, {...ctx.request.body});
+  const opt_res =await  gebruikerService.
+    updateById(ctx.params.id.toString() === 'me' ? ctx.state.session.userId : id, {...ctx.request.body});
   ctx.body = opt_res;
   getLogger().info(`gebruiker met id:${ctx.params.id} is succesvol geupdate.`);
 };
@@ -115,7 +134,9 @@ export default (parent: KoaRouter) => {
   router.post('/',authDelay,validate(registergebruiker.validationScheme), registergebruiker);
 
   const requireAdmin = makeRequireRole(roles.ADMIN);
-  
+  router.get('/:id/reservaties', requireAuthentication,checkUserId,
+    validate(getAlleReservatiesVanGebruiker.validationScheme), getAlleReservatiesVanGebruiker);
+
   router.get('/', requireAuthentication,requireAdmin,validate(getAllGebruikers.validationScheme), getAllGebruikers);
   router.get('/:id', requireAuthentication,checkUserId, validate(getGebruikerById.validationScheme), getGebruikerById);
   router.delete('/:id',requireAuthentication,checkUserId,

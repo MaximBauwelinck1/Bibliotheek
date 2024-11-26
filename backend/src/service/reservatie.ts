@@ -88,7 +88,15 @@ export const getById = async (id: UUID): Promise<Reservatie>  => {
   }
   return reservatie;
 };
-
+export const getAllReservatiesFromUser = async (id: UUID| string): Promise<Reservatie[]>  => {
+  const reservaties = await prisma.reservatie.findMany({
+    select: RESERVATIES_SELECT,
+    where: {
+      gebruiker_id:id,
+    },
+  });
+  return reservaties;
+};
 export const create = async (new_reservatie: ReservatieCreateInput): Promise<Reservatie> => {
   const opt_boekkopie = await prisma.boekKopie.findFirst({
     where: {
