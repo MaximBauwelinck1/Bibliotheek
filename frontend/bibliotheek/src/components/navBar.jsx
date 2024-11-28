@@ -22,7 +22,7 @@ const NavBar = () => {
       </NavLink>}
       <NavLink to="/about" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Over ons</NavLink>
       {
-        isAuthed ? (
+        isAuthed && user ? (
       
           <div  style={{marginLeft:'auto'}}  onClick={()=>setDropdownVisible(!isDropdownVisible)} 
             className={styles.gebruiker_container}> 

@@ -189,6 +189,20 @@ export const updateById = async (id: UUID | string, new_gebruiker: GebruikerUpda
   if(opt_gebruiker instanceof Error){
     return opt_gebruiker;
   } else{
+    const uniekEmail = await prisma.gebruiker.findFirst({
+      where:{
+        email:new_gebruiker.email,
+        voornaam:{
+          not:new_gebruiker.voornaam,
+        },
+        achternaam:{
+          not:new_gebruiker.achternaam,
+        },
+      },
+    });
+    if(uniekEmail){
+      throw ServiceError.conflict('Gebruiker met email addres bestaat al.');
+    }
     const upgedate_gebruiker = await prisma.gebruiker.update({
       where: {
         id,

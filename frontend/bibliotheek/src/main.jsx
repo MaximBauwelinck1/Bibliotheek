@@ -23,7 +23,8 @@ import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Logout from './pages/Logout.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
-import ProfielPagina from './pages/ProfielPagina.jsx';
+import ProfielPagina from './pages/gebruikers/ProfielPagina.jsx';
+import EditGebruikerPage from './pages/gebruikers/EditGebruikerPage.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
             path: ':id',
             element: <ProfielPagina />,
           },
+          {
+            path:':id/edit',
+            element:<EditGebruikerPage/>,
+          },
+          { index:true, element: <NotFound /> },
           
         ],
       },
