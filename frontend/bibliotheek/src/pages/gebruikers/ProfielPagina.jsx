@@ -49,7 +49,9 @@ const ProfielPagina =()=>{
           <Link to={'edit'} className='link_uitgezet'>
             <li><button className='rode_knop'>Acount aanpassen</button></li>
           </Link>
-          <li><button className='rode_knop'>Wachtwoord veranderen</button></li>
+          <Link  to={'passwordChange'}  className='link_uitgezet'>
+            <li><button className='rode_knop'>Wachtwoord veranderen</button></li>
+          </Link>
         </ul>
       </div>
       <div className={dashboard.reservatie_container_user}>

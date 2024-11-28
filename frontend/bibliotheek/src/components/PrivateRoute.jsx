@@ -1,11 +1,18 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'; 
 import { useAuth } from '../contexts/auth';
 import VerbodenToegang from './VerbodenToegang';
+import { useParams } from 'react-router-dom';
 
-export default function PrivateRoute({permissie}) {
+export default function PrivateRoute({permissie, moetZelfdeUserZijn}) {
   const { ready, isAuthed,user,error } = useAuth();
   const { pathname } = useLocation(); 
   let toestemming;
+  const {id} = useParams();
+  if(moetZelfdeUserZijn){
+    if(id != user?.id)return(
+      <VerbodenToegang/>
+    );
+  }
   if(user && user.rol=== 'user'){
     toestemming = permissie === user.rol;
   } else if (user && user.rol === 'admin'){

@@ -113,7 +113,7 @@ export default function Register({ registerTrigger, error,loading }) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="password" className={styles.label}>Password</label>
+          <label htmlFor="password" className={styles.label}>Wachtwoord</label>
           <input
             id="password"
             type="password"
@@ -124,7 +124,7 @@ export default function Register({ registerTrigger, error,loading }) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
+          <label htmlFor="confirmPassword" className={styles.label}>Bevestig wachtwoord</label>
           <input
             id="confirmPassword"
             type="password"

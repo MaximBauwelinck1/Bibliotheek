@@ -25,6 +25,7 @@ import Logout from './pages/Logout.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ProfielPagina from './pages/gebruikers/ProfielPagina.jsx';
 import EditGebruikerPage from './pages/gebruikers/EditGebruikerPage.jsx';
+import ChangepasswordPage from './pages/gebruikers/ChangPasswordPage.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         element:<RegisterPage/>,
       },
       {
-        element: <PrivateRoute permissie='user'/>,
+        element: <PrivateRoute permissie='user' moetZelfdeUserZijn={true}/>,
         path: '/gebruikers',
         children:[
           {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
           {
             path:':id/edit',
             element:<EditGebruikerPage/>,
+          },
+          {
+            path:':id/passwordChange',
+            element:<ChangepasswordPage/>,
           },
           { index:true, element: <NotFound /> },
           
