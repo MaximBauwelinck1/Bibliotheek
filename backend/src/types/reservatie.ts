@@ -11,7 +11,8 @@ export interface Reservatie extends Entity {
 }
   
 export interface ReservatieCreateInput {
-  boek_kopie_id: string;             
+  boek_kopie_id: string | null; 
+  boek_id: string | null;                         
   gebruiker_id: string;                       
   einddatum: Date;   
   status: string;  

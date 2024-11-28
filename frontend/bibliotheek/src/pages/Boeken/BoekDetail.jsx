@@ -40,7 +40,7 @@ const BoekDetail = () => {
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
       <AsyncData loading={isLoading} error={error || saveErrorReservatie}> 
         <div style={{paddingTop:100}}>
-          <Boek key={id} {...boek} />
+          <Boek key={id} {...boek} reserveerTrigger={saveReservatie} />
           { suggestions.length > 1 && <>  {/* Moet 1 zijn omdat het boek zelf ook een suggestion is.*/}
             <div style={{textAlign:'center'}}>
               <div id={boek_suggesties.suggestie_tekst}>Je zal mischien ook leuk vinden</div>

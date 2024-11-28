@@ -30,7 +30,8 @@ const createReservatie = async (ctx: KoaContext<CreateReservatieResponse, void, 
 
 createReservatie.validationScheme = {
   body: {           
-    boek_kopie_id: Joi.string().uuid(),          
+    boek_kopie_id: Joi.string().uuid().optional(), 
+    boek_id: Joi.string().uuid().optional(),                   
     gebruiker_id: Joi.string().uuid(),    
     einddatum: Joi.date().min(new Date().setHours(0,0,0,0)),   
     status: Joi.string().valid('actief','niet-actief'),     

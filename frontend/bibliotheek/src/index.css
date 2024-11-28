@@ -25,3 +25,23 @@
     background-color: #0056b3; 
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   }
+
+  .rode_knop{
+    display: flex;
+    margin-right: auto;
+    margin: 1em 1em;
+    padding: 10px 20px;
+    background-color: red; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .rode_knop:hover {
+    background-color: red; 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }

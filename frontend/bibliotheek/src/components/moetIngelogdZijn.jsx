@@ -21,18 +21,23 @@ const MoetIngelogdZijn = ({reserveerTrigger, titelBoek}) =>{
     );
   } else{
     return(
-      <p className={styles.reserveer_container}>
-        <Link onClick={()=>setToonBevestiging(true)}>
-          <button className={styles.reserveer_knop}>
-            Reserveer
-          </button>
-        </Link>
-        <ToonBevestiging isOpen={toonBevestiging} onConfirm={()=>reserveerTrigger()}
-          onClose={()=>setToonBevestiging(false)}
-          title='Bevestiging reservatie'
-          message={`Wilt u zeker het boek: ${titelBoek} reserveren voor 3 weken?`}/>
-          
-      </p>
+      <>
+        <p className={styles.reserveer_container}>
+          <Link onClick={()=>setToonBevestiging(true)}>
+            <button className={styles.reserveer_knop}>
+              Reserveer
+            </button>
+          </Link>      
+        </p>
+        <ToonBevestiging isOpen={toonBevestiging} onConfirm={()=>{
+          reserveerTrigger(user.id);
+          setToonBevestiging(false);
+        }
+        }
+        onClose={()=>setToonBevestiging(false)}
+        title='Bevestiging reservatie'
+        message={`Wilt u zeker het boek: ${titelBoek} reserveren voor 3 weken?`}/>
+      </>
     );
   }
 };

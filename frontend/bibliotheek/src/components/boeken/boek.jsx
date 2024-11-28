@@ -1,18 +1,27 @@
 import styles from '../../css/BoekDetail.module.css';
 import { useTheme } from '../../contexts/theme';
 import MoetIngelogdZijn from '../moetIngelogdZijn';
+import moment from 'moment';
+
 const Boek = ({reserveerTrigger,...props}) => {
   const { theme } = useTheme();
   const className = theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light';
 
-  const handleReserveren = ()=>{
-    
+  const handleReserveren = (gebruiker_id)=>{
+    reserveerTrigger({
+      values:{
+        gebruiker_id,
+        status:'actief',
+        boek_id:props.id,
+        einddatum: moment(new Date()).add(3,'w'),
+      },
+    });
   };
   return(
     <div className={styles.boek_detail_container +' ' +className}>
        
       <img src={props.cover_uri} alt={props.titel} className={styles.cover_img} />
-      <MoetIngelogdZijn titelBoek={props.titel} reserveerTrigger={()=>handleReserveren()}/>
+      <MoetIngelogdZijn titelBoek={props.titel} reserveerTrigger={handleReserveren}/>
       <div className={styles.boek_info}>
         <h1 className={styles.boek_titel}>{props.titel}</h1>
         <p><strong>Auteur:</strong> {props.auteur.voornaam} {props.auteur.achternaam}</p>

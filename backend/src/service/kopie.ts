@@ -6,7 +6,7 @@ import handleDBError from './_handleDBError';
 import type { BoekKopie, BoekkopieCreateInput, BoekkopieUpdateInput } from '../types/boek_kopie';
 import { Prisma } from '@prisma/client';
 
-const KOPIE_SELECT = {
+export const KOPIE_SELECT = {
   id: true,
   boek: {
     select: { 

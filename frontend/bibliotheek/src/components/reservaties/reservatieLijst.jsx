@@ -1,7 +1,11 @@
 import AsyncData from '../AsyncData';
 import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
-const ReservatieLijst = ({reservaties, actieve, isLoading, error}) => {
+import ToonBevestiging from '../ToonBevestiging';
+
+const ReservatieLijst = ({reservaties, actieve, isLoading, error, leverBoekInTrigger}) => {
+  const [toonBevestiging,setToonbevestiging] = useState(false);
+  const [reservatieId,setReservatieId] = useState('');
   const werkelijke_kolommen = ['nr','boek_titel','startdatum_display','einddatum_display'];
   const zichtbare_kolommen = ['nr','boek','startdatum reservatie','einddatum reservatie'];
   // om datums leesbaar te maken
@@ -64,6 +68,14 @@ const ReservatieLijst = ({reservaties, actieve, isLoading, error}) => {
     setZoekVeld(nieuw_zoekveld);
   
   };
+  const handleBoekInleveren = ()=>{
+    leverBoekInTrigger({
+      id:reservatieId,
+      values:{
+        status:'niet-actief',
+      },
+    });
+  };
 
   return (
     <>
@@ -89,6 +101,13 @@ const ReservatieLijst = ({reservaties, actieve, isLoading, error}) => {
                   {werkelijke_kolommen.map((col, colIndex) => (
                     <td key={colIndex}>
                       {row[col]}
+                      {actieve && colIndex===1 && 
+                      <button className='rode_knop' onClick={()=>{
+                        setReservatieId(row['id']);
+                        setToonbevestiging(true);
+                      }}>
+                        Boek inleveren
+                      </button>}
                     </td>
                   ))}
                 </tr>
@@ -97,6 +116,14 @@ const ReservatieLijst = ({reservaties, actieve, isLoading, error}) => {
           </table>
         </div>
       </AsyncData>
+      <ToonBevestiging isOpen={toonBevestiging} onConfirm={()=>{
+        handleBoekInleveren();
+        setToonbevestiging(false);
+      }
+      }
+      onClose={()=>setToonbevestiging(false)}
+      title='Bevestiging indienen'
+      message={'Wilt u zeker dit boek indienen?'}/>
     </>
   );
 };

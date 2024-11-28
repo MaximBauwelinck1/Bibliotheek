@@ -5,6 +5,8 @@ import ServiceError from '../core/serviceError';
 import handleDBError from './_handleDBError';
 import type { Reservatie, ReservatieCreateInput, ReservatieUpdateInput } from '../types/reservatie';
 import { Prisma } from '@prisma/client';
+import type { BoekKopie } from '../types/boek_kopie';
+import { KOPIE_SELECT } from './kopie';
 
 const RESERVATIES_SELECT = {
   id: true,
@@ -98,28 +100,45 @@ export const getAllReservatiesFromUser = async (id: UUID| string): Promise<Reser
   return reservaties;
 };
 export const create = async (new_reservatie: ReservatieCreateInput): Promise<Reservatie> => {
-  const opt_boekkopie = await prisma.boekKopie.findFirst({
-    where: {
-      id: new_reservatie.boek_kopie_id,
-    }, 
-  });
+  let opt_boekkopie_id: BoekKopie | null = null;
+  if(new_reservatie.boek_kopie_id){
+    opt_boekkopie_id = await prisma.boekKopie.findFirst({
+      where: {
+        id: new_reservatie.boek_kopie_id,
+      },
+      select:KOPIE_SELECT,
+    });
+  } else if (new_reservatie.boek_id){
+    opt_boekkopie_id = await prisma.boekKopie.findFirst({
+      where:{
+        status:'beschikbaar',
+        actief:true,
+        boek_id:new_reservatie.boek_id,
+      },
+      select:KOPIE_SELECT,
+    });
+    if(!opt_boekkopie_id){
+      throw ServiceError.conflict('Er zijn geen vrije kopieen meer om te reserveren');
+    }
+  }
 
+  //console.log({...opt_boekkopie_id});
   const opt_gebruiker = await prisma.gebruiker.findFirst({
     where: {
       id: new_reservatie.gebruiker_id,
     }, 
   });
 
-  if(opt_boekkopie == null || opt_gebruiker == null){
+  if(opt_boekkopie_id == null || opt_gebruiker == null){
     throw ServiceError.notFound('Gebruiker of Boek kopie bestaat niet!');
   }
   const opt_boek = await prisma.boek.findFirst({
     where: {
-      id: opt_boekkopie?.boek_id,
+      id: opt_boekkopie_id?.boek.id,
     }, 
   });
-  if (opt_boekkopie && opt_boek) {
-    if(opt_boekkopie.status != 'beschikbaar' || opt_boek.vrije_kopieen==0){
+  if (opt_boekkopie_id && opt_boek) {
+    if(opt_boekkopie_id.status != 'beschikbaar' || opt_boek.vrije_kopieen==0){
       throw ServiceError.conflict('Boek Kopie is niet beschikbaar!');
     }
   }
@@ -131,7 +150,7 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
           tx.reservatie.create({
             data: {
               id: randomUUID(),
-              boek_kopie_id: new_reservatie.boek_kopie_id,
+              boek_kopie_id: opt_boekkopie_id.id,
               gebruiker_id: new_reservatie.gebruiker_id,
               startdatum: new Date(),
               einddatum: new_reservatie.einddatum,
@@ -140,7 +159,7 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
             select: RESERVATIES_SELECT,
           }),
           tx.boekKopie.update({
-            where: { id: new_reservatie.boek_kopie_id },
+            where: { id: opt_boekkopie_id.id },
             data: {
               status: 'gereserveerd',
             },
