@@ -239,6 +239,7 @@ export default (parent: KoaRouter) => {
     validate(delRandomKopie.validationScheme),delRandomKopie);//admin nodig om dit te deleten
 
   router.get('/kopieen',requireAuthentication, validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);
+  //TODO nakijken of dit admin permissie nodig heeft of niet
   router.get('/:id/kopieen',requireAuthentication,
     validate(getAllBoekKopieenFromBoek.validationScheme),getAllBoekKopieenFromBoek);
 

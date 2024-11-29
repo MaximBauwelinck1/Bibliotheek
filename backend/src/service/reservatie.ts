@@ -7,6 +7,7 @@ import type { Reservatie, ReservatieCreateInput, ReservatieUpdateInput } from '.
 import { Prisma } from '@prisma/client';
 import type { BoekKopie } from '../types/boek_kopie';
 import { KOPIE_SELECT } from './kopie';
+import * as emailservice from './emailService';
 
 const RESERVATIES_SELECT = {
   id: true,
@@ -122,7 +123,6 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
     }
   }
 
-  //console.log({...opt_boekkopie_id});
   const opt_gebruiker = await prisma.gebruiker.findFirst({
     where: {
       id: new_reservatie.gebruiker_id,
@@ -193,6 +193,17 @@ export const create = async (new_reservatie: ReservatieCreateInput): Promise<Res
       select: RESERVATIES_SELECT,
     });
     if(opt_res){
+      await emailservice.sendEmail(opt_gebruiker.email,'Bevestiging reservatie','bevestigingReservatie',{
+        voornaam: opt_gebruiker.voornaam,
+        achternaam: opt_gebruiker.achternaam,
+        boek_titel: opt_boek?.titel,
+        einddatum: new Date(new_reservatie.einddatum).toLocaleDateString('NL-be',{
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+        ISBN: opt_boek?.ISBN,
+      });
       return opt_res;
     } else{
       throw ServiceError.internalServerError('Kan onmogelijk gethrowed worden?');

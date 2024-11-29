@@ -4,7 +4,7 @@ import { Link,useLocation } from 'react-router-dom';
 import ToonBevestiging from './ToonBevestiging';
 import { useState } from 'react';
 
-const MoetIngelogdZijn = ({reserveerTrigger, titelBoek}) =>{
+const MoetIngelogdZijn = ({reserveerTrigger, titelBoek, nogExemplarenVrij}) =>{
   const [toonBevestiging,setToonBevestiging] = useState(false);
   const {pathname} = useLocation();
   const {user }= useAuth();
@@ -21,7 +21,7 @@ const MoetIngelogdZijn = ({reserveerTrigger, titelBoek}) =>{
     );
   } else{
     return(
-      <>
+      nogExemplarenVrij?<>
         <p className={styles.reserveer_container}>
           <Link onClick={()=>setToonBevestiging(true)}>
             <button className={styles.reserveer_knop}>
@@ -37,7 +37,9 @@ const MoetIngelogdZijn = ({reserveerTrigger, titelBoek}) =>{
         onClose={()=>setToonBevestiging(false)}
         title='Bevestiging reservatie'
         message={`Wilt u zeker het boek: ${titelBoek} reserveren voor 3 weken?`}/>
-      </>
+      </>:<p className={styles.reserveer_container}>
+        <p className={styles.niet_ingelogd_knop}>Alle exemplaren zijn uitgeleend</p>
+      </p>
     );
   }
 };

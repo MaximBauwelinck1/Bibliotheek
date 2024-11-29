@@ -62,7 +62,6 @@ export const sendPasswordResetEmail = async (userEmail:string) => {
   }
 
   const resetToken = await generateJWT(user); 
-  console.log(cryto.createHash('sha256').update(resetToken).digest('hex'));
   await prisma.passwordReset.create({
     data:{
       gebruiker_id:user.id,
@@ -71,7 +70,7 @@ export const sendPasswordResetEmail = async (userEmail:string) => {
     },
   });
 
-  await emailservice.sendEmail(userEmail, 'Password Reset', 'passwordReset', {
+  await emailservice.sendEmail(userEmail, 'Wachtwoord reset', 'passwordReset', {
     voornaam: user.voornaam,
     achternaam: user.achternaam,
     link: `http://localhost:5173/reset-password?token=${resetToken}`,

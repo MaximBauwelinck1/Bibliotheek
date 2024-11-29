@@ -46,7 +46,6 @@
     transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   }
-
   .niet_ingelogd_knop{
     background-color: red;
     padding: 1em;

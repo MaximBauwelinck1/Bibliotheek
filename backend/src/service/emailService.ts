@@ -3,8 +3,12 @@ import ejs from 'ejs';
 import path from 'path';
 import config from 'config';
 
-export const sendEmail = async (to:string, subject:string, templateName:string,
-  data:{voornaam:string,achternaam:string,link:string}) => {
+export const sendEmail = async <T extends ejs.Data>(
+  to: string,
+  subject: string,
+  templateName: string,
+  data: T,
+): Promise<any> => {
   try {
     const emailTemplate = await ejs.renderFile(
       path.join(__dirname, '../utils/templates', `${templateName}.ejs`),
@@ -26,4 +30,3 @@ export const sendEmail = async (to:string, subject:string, templateName:string,
     throw error;
   }
 };
-

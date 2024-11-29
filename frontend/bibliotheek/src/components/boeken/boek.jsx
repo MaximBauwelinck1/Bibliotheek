@@ -21,7 +21,8 @@ const Boek = ({reserveerTrigger,...props}) => {
     <div className={styles.boek_detail_container +' ' +className}>
        
       <img src={props.cover_uri} alt={props.titel} className={styles.cover_img} />
-      <MoetIngelogdZijn titelBoek={props.titel} reserveerTrigger={handleReserveren}/>
+      <MoetIngelogdZijn titelBoek={props.titel} reserveerTrigger={handleReserveren}
+        nogExemplarenVrij={props.vrije_kopieen>0?true:false}/>
       <div className={styles.boek_info}>
         <h1 className={styles.boek_titel}>{props.titel}</h1>
         <p><strong>Auteur:</strong> {props.auteur.voornaam} {props.auteur.achternaam}</p>
