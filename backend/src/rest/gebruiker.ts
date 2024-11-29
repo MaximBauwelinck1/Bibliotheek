@@ -10,7 +10,7 @@ import validate from '../core/validation';
 import roles from '../core/roles';
 import { requireAuthentication, makeRequireRole,authDelay } from '../core/auth';
 // eslint-disable-next-line @stylistic/max-len
-import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, GetGebruikerRequest, LoginResponse, RegisterGebruikerRequest, UpdateGebruikerRequest, UpdateGebruikerResponse } from '../types/gebruiker';
+import type { GetAllgebruikersResponse, GetGebruikerByIdResponse, GetGebruikerRequest, LoginResponse, RegisterGebruikerRequest, ForgotPasswordRequest, UpdateGebruikerRequest, UpdateGebruikerResponse, ResetPasswordRequest } from '../types/gebruiker';
 import type { Next } from 'koa';
 import type { GetAllReservatiesResponse } from '../types/reservatie';
 
@@ -126,13 +126,39 @@ updateGebruikerById.validationScheme = {
   },
 };
 
+const ForgotPassword = async (ctx: KoaContext<void,void, ForgotPasswordRequest>) => {
+  await gebruikerService.sendPasswordResetEmail(ctx.request.body.email);
+  ctx.status = 201;
+  getLogger().info(`Er is een reset password email verstuurd naar:${ctx.request.body.email}.`);
+};
+
+ForgotPassword.validationScheme = {
+  body: {            
+    email: Joi.string().email(),       
+  },
+};
+
+const ResetPassword = async (ctx: KoaContext<void,void, ResetPasswordRequest>) => {
+  await gebruikerService.resetPassword({...ctx.request.body});
+  ctx.status = 201;
+  getLogger().info(`Wachtwoord is succesvol reset met token:${ctx.request.body.token}.`);
+};
+
+ResetPassword.validationScheme = {
+  body: {            
+    password: Joi.string(),
+    token: Joi.string(),     
+  },
+};
+
 export default (parent: KoaRouter) => {
   const router = new Router<BibliotheekAppState, BibliotheekAppContext>({
     prefix: '/gebruikers',
   });
 
+  router.post('/passwordForgot',validate(ForgotPassword.validationScheme),ForgotPassword);
+  router.post('/passwordReset',validate(ResetPassword.validationScheme),ResetPassword);
   router.post('/',authDelay,validate(registergebruiker.validationScheme), registergebruiker);
-
   const requireAdmin = makeRequireRole(roles.ADMIN);
   router.get('/:id/reservaties', requireAuthentication,checkUserId,
     validate(getAlleReservatiesVanGebruiker.validationScheme), getAlleReservatiesVanGebruiker);

@@ -3,8 +3,13 @@ import { useForm } from 'react-hook-form';
 import {  useNavigate } from 'react-router';
 import { useMemo } from 'react';
 import ToonError from '../ToonError';
+import { useLocation } from 'react-router';
   
-export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) {
+export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const token = queryParams.get('token');
   const navigate = useNavigate();
   const { register, handleSubmit,formState: {isValid,errors }, reset,getValues } = useForm({
     mode: 'onBlur',
@@ -30,14 +35,14 @@ export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) 
     console.log(gebruiker?.id);
     if (!isValid) return;
     await saveGebruiker({
-      id: gebruiker?.id,
-      values:{
-        password:values.password,
-      }}, {
+      password:values.password,
+      token,
+    }, {
       throwOnError: false,
       onSuccess: () =>{
         reset();
-        navigate(`/gebruikers/${gebruiker.id}`);
+        navigate('/login');
+        alert('Je wachtwoord is succesvol reset.');
       },
     });
   };

@@ -26,6 +26,14 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+export interface ResetPasswordRequest {
+  password: string;
+  token: string;
+}
 export interface RegisterGebruikerRequest {
   voornaam: string;             
   achternaam: string;            

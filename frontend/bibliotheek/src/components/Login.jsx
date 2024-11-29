@@ -66,9 +66,9 @@ export default function Login({ login, error,loading }) {
         </form>
 
         <div className={styles.login_links}>
-          <a href="/forgot" className={styles.vergeten_link}>
-            Wachtwoord vergeten?
-          </a>
+          <Link to='/wachtwoord_vergeten' className={styles.vergeten_link}>  
+            Wachtwoord vergeten
+          </Link>
           <span className={styles.dot_divider}>·</span>
           <Link to='/register' className={styles.register_link}>
             Registreren

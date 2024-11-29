@@ -26,6 +26,8 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import ProfielPagina from './pages/gebruikers/ProfielPagina.jsx';
 import EditGebruikerPage from './pages/gebruikers/EditGebruikerPage.jsx';
 import ChangepasswordPage from './pages/gebruikers/ChangPasswordPage.jsx';
+import PasswordVergeten from './pages/gebruikers/PasswordVergetenPage.jsx';
+import ResetpasswordPage from './pages/gebruikers/ResetPasswordPage.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage/>,
+      },
+      {
+        path: '/wachtwoord_vergeten',
+        element: <PasswordVergeten/>,
+      },
+      {
+        path: '/reset-password',
+        element: <ResetpasswordPage/>,
       },
       {
         path: '/logout',

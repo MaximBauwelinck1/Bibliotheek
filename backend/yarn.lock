@@ -1359,6 +1359,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ejs@npm:^3":
+  version: 3.1.5
+  resolution: "@types/ejs@npm:3.1.5"
+  checksum: 10c0/13d994cf0323d7e0ad33b9384914ccd3b4cd8bf282eced3649b1621b66ee7c784ac2d120a9d7b1f43d6f873518248fb8c3221b06a649b847860b9c2389a0b0ed
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:^1.0.6":
   version: 1.0.6
   resolution: "@types/estree@npm:1.0.6"
@@ -1543,6 +1550,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/c22bf54515c78ff3170142c1e718b90e2a0003419dc2d55f79c9c9362edd590a6ab1450deb09ff6e1b32d1b4698da407930b16285e8be3a009ea6cd2695cac01
+  languageName: node
+  linkType: hard
+
+"@types/nodemailer@npm:^6":
+  version: 6.4.17
+  resolution: "@types/nodemailer@npm:6.4.17"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/689abb3005cf36cf89c2abe56f0aa4469a37e0814633a73fbeb35732e856f4b0d7ab32b6d91585038b6941f5b70db58ec2bd147ebe9f73e528eb6c99604f4e82
   languageName: node
   linkType: hard
 
@@ -2062,6 +2078,7 @@ __metadata:
     "@prisma/client": "npm:^5.20.0"
     "@stylistic/eslint-plugin": "npm:^2.9.0"
     "@types/config": "npm:^3.3.5"
+    "@types/ejs": "npm:^3"
     "@types/jest": "npm:^29.5.14"
     "@types/jsonwebtoken": "npm:^9"
     "@types/koa": "npm:^2.15.0"
@@ -2069,12 +2086,14 @@ __metadata:
     "@types/koa__cors": "npm:^5.0.0"
     "@types/koa__router": "npm:^12.0.4"
     "@types/node": "npm:^22.7.4"
+    "@types/nodemailer": "npm:^6"
     "@types/supertest": "npm:^6.0.2"
     "@types/uuid": "npm:^10.0.0"
     argon2: "npm:^0.41.1"
     bcrypt-ts: "npm:^5.0.2"
     bibliotheek_app: "file:"
     config: "npm:^3.3.12"
+    ejs: "npm:^3.1.10"
     env-cmd: "npm:^10.1.0"
     eslint: "npm:^9.12.0"
     eslint-plugin-jest: "npm:^28.8.3"
@@ -2084,6 +2103,8 @@ __metadata:
     koa: "npm:^2.15.3"
     koa-bodyparser: "npm:^4.4.1"
     koa-helmet: "npm:^7.0.2"
+    moment: "npm:^2.30.1"
+    nodemailer: "npm:^6.9.16"
     prisma: "npm:^5.20.0"
     supertest: "npm:^7.0.0"
     ts-jest: "npm:^29.2.5"
@@ -4933,6 +4954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.30.1":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 10c0/865e4279418c6de666fca7786607705fd0189d8a7b7624e2e56be99290ac846f90878a6f602e34b4e0455c549b85385b1baf9966845962b313699e7cb847543a
+  languageName: node
+  linkType: hard
+
 "ms@npm:^2.1.1, ms@npm:^2.1.3":
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
@@ -5012,6 +5040,13 @@ __metadata:
   version: 2.0.18
   resolution: "node-releases@npm:2.0.18"
   checksum: 10c0/786ac9db9d7226339e1dc84bbb42007cb054a346bd9257e6aa154d294f01bc6a6cddb1348fa099f079be6580acbb470e3c048effd5f719325abd0179e566fd27
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^6.9.16":
+  version: 6.9.16
+  resolution: "nodemailer@npm:6.9.16"
+  checksum: 10c0/9fd73ab4ab5b81544c3c9820afbe386369aba442f997b2f58d171222a898a7aed580fc100bfe6eebc194f18ba6e169d67ee40ca64d32d69022d89e575cef97a4
   languageName: node
   linkType: hard
 

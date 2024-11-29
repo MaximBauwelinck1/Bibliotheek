@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import {prisma} from '../data';
-import type { Gebruiker, GebruikerUpdateInput,PublicGebruiker, RegisterGebruikerRequest } from '../types/gebruiker.js';
+// eslint-disable-next-line @stylistic/max-len
+import type { Gebruiker, GebruikerUpdateInput,PublicGebruiker, RegisterGebruikerRequest, ResetPasswordRequest } from '../types/gebruiker.js';
 import { hashPassword,verifyPassword  } from '../core/password';
 import type {UUID} from 'crypto';
 import ServiceError from '../core/serviceError';
@@ -9,6 +10,9 @@ import { generateJWT,verifyJWT } from '../core/jwt';
 import jwt from 'jsonwebtoken'; 
 import { getLogger } from '../core/logging';
 import type { SessionInfo } from '../types/auth';
+import * as emailservice from './emailService';
+import moment from 'moment';
+import cryto from 'crypto';
 
 const GEBRUIKER_SELECT = { //moet nog veranderen
   id:true,
@@ -34,6 +38,93 @@ const makeExposedUser = (gebruiker: Gebruiker ): PublicGebruiker => ({
   actief: gebruiker.actief,
   rol: gebruiker.rol,
 });
+
+export const sendPasswordResetEmail = async (userEmail:string) => {
+  const user = await prisma.gebruiker.findUnique({
+    where:{
+      email:userEmail,
+    },
+  });
+  if (!user) return;// niet exposen dat gebruiker niet bestaat
+  const  opt_reset = await prisma.passwordReset.findUnique({
+    where:{
+      gebruiker_id: user.id,
+    },
+  });
+  if(opt_reset&& opt_reset.vervalt_binnen > new Date()){
+    throw ServiceError.conflict('Er is nog een geldige herstel wachtwoord link actief. Bekijk je laatste mail');
+  } else if (opt_reset && new Date() > opt_reset.vervalt_binnen){
+    await prisma.passwordReset.delete({
+      where:{
+        gebruiker_id:user.id,
+      },
+    });
+  }
+
+  const resetToken = await generateJWT(user); 
+  console.log(cryto.createHash('sha256').update(resetToken).digest('hex'));
+  await prisma.passwordReset.create({
+    data:{
+      gebruiker_id:user.id,
+      hashed_token: cryto.createHash('sha256').update(resetToken).digest('hex'),
+      vervalt_binnen: moment(new Date()).add(1,'h').toDate(),
+    },
+  });
+
+  await emailservice.sendEmail(userEmail, 'Password Reset', 'passwordReset', {
+    voornaam: user.voornaam,
+    achternaam: user.achternaam,
+    link: `http://localhost:5173/reset-password?token=${resetToken}`,
+  });
+
+  return resetToken;
+};
+
+export const resetPassword = async (resetpwdReq:ResetPasswordRequest) => {
+  try {
+    const {  sub } = await verifyJWT(resetpwdReq.token);
+    if (!sub) {
+      throw ServiceError.unauthorized('UserID is leeg');
+    }
+    const password_request = await prisma.passwordReset.findUnique({
+      where:{
+        gebruiker_id:sub,
+      },
+    });
+    if(!password_request) throw ServiceError.conflict('De token is niet correct');
+    if(new Date()> password_request.vervalt_binnen){
+      throw ServiceError.unauthorized('Het wachtwoord reset verzoek is automatisch verlopen na 1 uur.');
+    }
+    if(password_request.hashed_token != cryto.createHash('sha256').update(resetpwdReq.token).digest('hex')){
+      throw ServiceError.unauthorized('De token is niet correct.');
+    }
+    await prisma.gebruiker.update({
+      where:{
+        id:sub,
+      },
+      data:{
+        hashed_password: await hashPassword(resetpwdReq.password),
+      },
+    });
+    await prisma.passwordReset.delete({
+      where:{
+        gebruiker_id:sub,
+      },
+    });
+  } catch (error: any) {
+    getLogger().error(error.message, { error });
+
+    if (error instanceof jwt.TokenExpiredError) {
+      throw ServiceError.unauthorized('De token is vervallen');
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      throw ServiceError.unauthorized(
+        `Ongeldige authenticatie token: ${error.message}`,
+      );
+    } else {
+      throw ServiceError.unauthorized(error.message);
+    }
+  }
+};
 
 export const checkAndParseSession = async (
   authHeader?: string,

@@ -45,6 +45,7 @@ export const deleteRandomBeschikbaarExemplaar = async (url,{ arg: id }) => {
 };
 
 export const post = async (url, { arg }) => {
+  console.log(arg);
   const { data } = await axios.post(`${url}`, arg);
   return data;
 };

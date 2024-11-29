@@ -75,6 +75,14 @@ model Gebruiker {
   upgedate       DateTime  @updatedAt
   actief        Boolean
   Reservaties    Reservatie[]
+  Password_resets PasswordReset[] 
+}
+model PasswordReset {
+  gebruiker_id   String    @id @default(uuid()) @db.Uuid
+  hashed_token   String    @db.VarChar(255)
+  aangemaakt     DateTime  @default(now())
+  vervalt_binnen DateTime
+  gebruiker      Gebruiker @relation(fields: [gebruiker_id], references: [id])
 }
 
 model Reservatie {

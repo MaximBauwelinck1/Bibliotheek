@@ -54,7 +54,8 @@ export default function Register({ registerTrigger, error,loading }) {
   };
  
   let errorStack ='';
-  if(error){
+  console.log(error);
+  if(error && error.response.data.message !='De token is vervallen'){
     Object.values(error.response.data.details.body).map((val)=>{
       val.map((val2)=>{
         errorStack += `${val2.message} \n`;
@@ -67,7 +68,8 @@ export default function Register({ registerTrigger, error,loading }) {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={styles.title}>Registreren bij bibliotheek Temse</h1>
-        <ToonError isOpen={error} title='Fout bij registreren' message={errorBericht}/>
+        <ToonError isOpen={error && error.response.data.message !='De token is vervallen'}
+          title='Fout bij registreren' message={errorBericht}/>
         <div className={styles.field}>
           <label htmlFor="voornaam" className={styles.label}>Voornaam</label>
           <input
