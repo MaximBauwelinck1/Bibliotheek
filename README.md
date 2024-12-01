@@ -103,8 +103,8 @@ EMAIL_PASSWORD="bwci wedh tnaj ftef"
 ```
 - en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
 ```
-NODE_ENV=production
-DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek"
+NODE_ENV=testing
+DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek_test"
 AANTAL_KOPIEEN_P_BOEK=5
 EMAIL_USER="maximbauwelinck@gmail.com"
 EMAIL_PASSWORD="bwci wedh tnaj ftef"
