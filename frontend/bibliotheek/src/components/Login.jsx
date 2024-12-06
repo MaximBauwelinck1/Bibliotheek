@@ -37,7 +37,10 @@ export default function Login({ login, error,loading }) {
       console.error('Login failed:', error);
     }
   };
-  const errorBericht = error? error.response.data.message:'';
+
+  const errorBericht = error&& error.response? error.response.data.message:
+    error && error.name === 'AxiosError'?error.message:''; 
+  // om netwerkerror te vermijden indien back end niet werkt, doet pagina crashen omdat error geen response bevat
   return (
     <div className={styles.bibliotheek_login}>
       <div className={styles.login_container}>
