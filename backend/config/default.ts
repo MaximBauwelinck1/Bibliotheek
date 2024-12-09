@@ -1,6 +1,6 @@
 export default{
   cors: {
-    origins: ['http://localhost:5173'], 
+    origins: ['http://localhost:5173','https://frontendweb-2425-maximbauwelinck1-1.onrender.com'], 
     maxAge: 3 * 60 * 60, 
   },
   auth:{
