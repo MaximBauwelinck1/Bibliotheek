@@ -8,7 +8,7 @@ const LEGE_GEBRUIKER = {
   rol:undefined,
   geboortedatum: undefined,
   email:undefined,
-  hashed_password:undefined,
+  password:undefined,
 };
 
 export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) {
@@ -23,7 +23,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
         ? new Date(gebruiker.geboortedatum).toISOString().split('T')[0]
         : undefined,
       email:gebruiker.email,
-      hashed_password:gebruiker.hashed_password,
+      password:'',
     },
   });
 
@@ -112,13 +112,13 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
         />
       </div>
       <div className={styles.inputGroup}>
-        <label htmlFor="hashed_password" className={styles.inputLabel}>
+        <label htmlFor="password" className={styles.inputLabel}>
           Wachtwoord:
         </label>
         <input
-          {...register('hashed_password',{required:true})}
-          id="hashed_password"
-          name="hashed_password"
+          {...register('password',{required:true})}
+          id="password"
+          name="password"
           type="password"
           className={styles.textInput}
           required
