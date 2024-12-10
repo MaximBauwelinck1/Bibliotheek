@@ -3,6 +3,7 @@ import ejs from 'ejs';
 import path from 'path';
 import config from 'config';
 import fs from 'fs';
+import { getLogger } from 'nodemailer/lib/shared';
 
 export const sendEmail = async <T extends ejs.Data>(
   to: string,
@@ -14,6 +15,7 @@ export const sendEmail = async <T extends ejs.Data>(
 
   try {
     if (!fs.existsSync(templatePath) && templateName === 'bevestigingReservatie') {
+      getLogger().info('file aanmaken');
       const defaultTemplate = `
         <!DOCTYPE html>
         <html>
@@ -31,7 +33,9 @@ export const sendEmail = async <T extends ejs.Data>(
         </html>
       `;
       fs.writeFileSync(templatePath, defaultTemplate);
+      getLogger().info('file aangemaakt');
     } else if (!fs.existsSync(templatePath) && templateName === 'passwordReset'){
+      getLogger().info('file aanmaken');
       const defaultTemplate = `
        <!DOCTYPE html>
         <html>
@@ -49,6 +53,7 @@ export const sendEmail = async <T extends ejs.Data>(
 
       `;
       fs.writeFileSync(templatePath, defaultTemplate);
+      getLogger().info('file aangemaakt');
     }
     const emailTemplate = await ejs.renderFile(
       path.join(__dirname, '../utils/templates', `${templateName}.ejs`),
