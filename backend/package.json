@@ -14,9 +14,9 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9",
     "@types/koa": "^2.15.0",
-    "@types/koa-bodyparser": "^4.3.12",
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
+    "@types/koa-bodyparser": "^4.3.12",
     "@types/node": "^22.7.4",
     "@types/nodemailer": "^6",
     "@types/supertest": "^6.0.2",
@@ -65,7 +65,8 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:test": "env-cmd -f .env.test prisma migrate dev --skip-seed",
     "test": "env-cmd -f .env.test jest --runInBand",
-    "test:coverage": "env-cmd -f .env.test jest --runInBand --coverage"
+    "test:coverage": "env-cmd -f .env.test jest --runInBand --coverage",
+    "copy-templates": "cp -r src/utils/templates build/src/utils/templates"
   },
   "engines": {
     "node": "20.6.0",
