@@ -32,6 +32,7 @@ const BoekenList = () => {
             id='search'
             className='form-control'
             placeholder='Zoeken'
+            data-cy='zoektxt'
             onChange={(e) => setText(e.target.value)}
           />
           <select id="book-genre" name="genre" multiple size="3" onChange={(e) => {
@@ -53,7 +54,7 @@ const BoekenList = () => {
             <option value="Aventuur">Aventuur</option>
             <option value="Thriller">Thriller</option>
           </select>
-          <select id="taal" name="taal" multiple size="3" onChange={(e) => {
+          <select id="taal" name="taal" multiple size="3" data-cy='taalselect' onChange={(e) => {
             setTaal(Array.from(e.target.selectedOptions, (option) => option.value));
           }}>
             <option value="Engels">Engels</option>
@@ -63,7 +64,7 @@ const BoekenList = () => {
             <option value="Zweeds">Zweeds</option>
           </select>
           
-          <button type='button' className='btn btn-outline-primary' onClick={() => {
+          <button type='button' className='btn btn-outline-primary' data-cy='filter' onClick={() => {
             setSearch(text);
             setSearchCategorie(categorie);
             seSearchtTaal(taal);
@@ -88,7 +89,7 @@ const BoekenList = () => {
       
       <div className='mt-4'>
         <AsyncData loading={isLoading} error={error}>
-          <div className={styles.boek_grid}>
+          <div className={styles.boek_grid} data-cy='boek_grid'>
             {boeken
               .sort((a, b) =>
                 a.titel.toUpperCase().localeCompare(b.titel.toUpperCase()),

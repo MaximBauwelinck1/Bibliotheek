@@ -58,7 +58,7 @@ yarn dev
 
 ## Testen
 
-> Schrijf hier hoe we de testen uitvoeren (.env bestanden aanmaken, commando's om uit te voeren...)
+TODO
 
 ## Back-end
 

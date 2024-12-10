@@ -25,11 +25,11 @@ const Boek = ({reserveerTrigger,...props}) => {
         nogExemplarenVrij={props.vrije_kopieen>0?true:false}/>
       <div className={styles.boek_info}>
         <h1 className={styles.boek_titel}>{props.titel}</h1>
-        <p><strong>Auteur:</strong> {props.auteur.voornaam} {props.auteur.achternaam}</p>
+        <p data-cy='auteurlbl'><strong>Auteur:</strong> {props.auteur.voornaam} {props.auteur.achternaam}</p>
         <p><strong>Genre:</strong> {props.genre}</p>
         <p><strong>Publicatiedatum:</strong> {new Date(props.publicatie_datum).
           toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric'})}</p>
-        <p><strong>Taal:</strong> {props.taal}</p>
+        <p data-cy='taallbl'><strong>Taal:</strong> {props.taal}</p>
         <p><strong>Pagina&apos;s:</strong> {props.paginas}</p>
         <p><strong>Beschikbare Kopieën:</strong> {props.vrije_kopieen} van de {props.totale_kopieen}</p>
         <h3>Beschrijving</h3>

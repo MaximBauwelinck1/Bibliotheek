@@ -16,8 +16,8 @@ const BoekListItem = (props) => {
           )}
         </div>
         <div className={styles.boek_info}>
-          <p className={styles.boek_titel}>{props.titel}</p>
-          <p className={styles.boek_auteur}>{props.auteur.voornaam} {props.auteur.achternaam}</p>
+          <p data-cy='titel' className={styles.boek_titel}>{props.titel}</p>
+          <p data-cy='auteur'className={styles.boek_auteur}>{props.auteur.voornaam} {props.auteur.achternaam}</p>
         </div>
       </div>
     </Link>

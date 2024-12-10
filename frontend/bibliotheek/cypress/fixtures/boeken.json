@@ -1,0 +1,55 @@
+{
+    "items": [
+        {
+            "id": "83f13cbe-4133-4ac8-931f-153074e30743",
+            "ISBN": "9780060850524",
+            "titel": "Brave New World",
+            "genre": "Dystopisch",
+            "publicatie_datum": "1932-09-01T00:00:00.000Z",
+            "taal": "Engels",
+            "paginas": 311,
+            "vrije_kopieen": 4,
+            "totale_kopieen": 5,
+            "beschrijving": "A dystopian novel set in a futuristic World State.",
+            "cover_uri": "https://media.s-bol.com/Rw73j1xDn94R/5Q8JK5v/547x840.jpg",
+            "aangemaakt": "2024-01-01T12:00:00.000Z",
+            "upgedate": "2024-01-01T12:00:00.000Z",
+            "actief": true,
+            "auteur": {
+                "id": "c1bdbf66-b1e5-4f01-9f16-e6e5b4e46c8e",
+                "voornaam": "George",
+                "achternaam": "Orwell",
+                "geboortedatum": "1903-06-25T00:00:00.000Z",
+                "nationaliteit": "British",
+                "biografie": "Famous for dystopian novels like 1984.",
+                "aangemaakt": "2024-12-10T11:41:36.107Z",
+                "upgedate": "2024-12-10T11:41:36.107Z"
+            }
+        },
+        {
+            "id": "769bc105-e65e-497e-9780-df9d6b774486",
+            "ISBN": "9780062316097",
+            "titel": "Fahrenheit 451",
+            "genre": "Dystopisch",
+            "publicatie_datum": "1953-10-19T00:00:00.000Z",
+            "taal": "Engels",
+            "paginas": 158,
+            "vrije_kopieen": 3,
+            "totale_kopieen": 5,
+            "beschrijving": "A dystopian novel about a future where books are banned.",
+            "cover_uri": "https://media.s-bol.com/q9zZDYj46RBk/pG2j5r/546x840.jpg",
+            "aangemaakt": "2024-01-01T12:00:00.000Z",
+            "upgedate": "2024-01-01T12:00:00.000Z",
+            "actief": true,
+            "auteur": {
+                "id": "2b4b0c1e-0e48-41c5-94f1-1c0c2a21507d",
+                "voornaam": "Ray",
+                "achternaam": "Bradbury",
+                "geboortedatum": "1920-08-22T00:00:00.000Z",
+                "nationaliteit": "American",
+                "biografie": "Known for The Martian Chronicles.",
+                "aangemaakt": "2024-12-10T11:41:36.107Z",
+                "upgedate": "2024-12-10T11:41:36.107Z"
+            }
+        }]
+}
