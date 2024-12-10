@@ -65,8 +65,7 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:test": "env-cmd -f .env.test prisma migrate dev --skip-seed",
     "test": "env-cmd -f .env.test jest --runInBand",
-    "test:coverage": "env-cmd -f .env.test jest --runInBand --coverage",
-    "copy-templates": "mkdir -p build/src/utils/templates && cp -r src/utils/templates build/src/utils/templates"
+    "test:coverage": "env-cmd -f .env.test jest --runInBand --coverage"
   },
   "engines": {
     "node": "20.6.0",
