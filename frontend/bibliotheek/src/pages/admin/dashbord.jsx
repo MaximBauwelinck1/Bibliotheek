@@ -7,7 +7,6 @@ import { useState } from 'react';
 import BoekKopiePaneel from '../../components/dashboard/boekkopiePaneel';
 const Dashbord = ({init_menu='boeken'}) => {
   const [menu,setMenu] = useState(init_menu);
-  console.log(menu);
   const handlclick = (btn) =>{
     setMenu(btn);
   };

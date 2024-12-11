@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router';
 import ToonBevestiging from '../ToonBevestiging';
 import { useState } from 'react';
 
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+
 const BoekKopieAdmin = ({onDelete,...boekkopie}) =>{
   const navigate = useNavigate();
   const handelDelete = ()=>{
     onDelete(boekkopieId);
   };
   const [toonBevesteging, setToonBevesteging] = useState(false);
-  const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
   const {
     id: boekkopieId,
     status:boekKopieStatus,

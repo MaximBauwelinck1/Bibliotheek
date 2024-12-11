@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router';
 import * as styles from '../../css/ReservatieDetail.module.css';
 import ToonBevestiging from '../ToonBevestiging';
 import { useState } from 'react';
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+
 const BoekAdmin = ({onDelete,...boek}) =>{
   const navigate = useNavigate();
-  const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
    
   const {
     id: boekId,

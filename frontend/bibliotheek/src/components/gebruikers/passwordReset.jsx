@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import ToonError from '../ToonError';
 import { useLocation } from 'react-router';
   
+let errorStack ='';
 export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -46,7 +47,6 @@ export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
       },
     });
   };
-  let errorStack ='';
   if(error){
     Object.values(error.response.data.details.body).map((val)=>{
       val.map((val2)=>{

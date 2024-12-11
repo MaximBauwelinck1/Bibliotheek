@@ -7,6 +7,17 @@ import { useNavigate } from 'react-router';
 import ToonBevestiging from '../ToonBevestiging';
 import useSWRMutation from 'swr/mutation';
 import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
+
+const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
+  'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt_display','upgedate_display','formattedActief'];
+const zichtbare_kolommen = ['id','ISBN','titel','genre','gepubliceerd','taal','paginas',
+  'aantal beschikbaar','totaal','cover','aangemaakt','laatst aangepast','Archivering'];
+const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+let parsed_zoekveld;
+const string_zoekvelden = ['id','ISBN','titel','genre','taal','cover','Archivering',
+  'aantal beschikbaar','totaal','cover'];
+      
 const BoekPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -18,11 +29,7 @@ const BoekPaneel = () => {
   const [boekIdTodelete,setboekIdTodelete] = useState('');
   const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
-
-  const werkelijke_kolommen = ['id','ISBN','titel','genre','publicatie_datum_display','taal','paginas',
-    'vrije_kopieen','totale_kopieen','cover_uri','aangemaakt_display','upgedate_display','formattedActief'];
-  const zichtbare_kolommen = ['id','ISBN','titel','genre','gepubliceerd','taal','paginas',
-    'aantal beschikbaar','totaal','cover','aangemaakt','laatst aangepast','Archivering'];
+  
   const {
     data: boeken = [],
     isLoading,
@@ -30,8 +37,6 @@ const BoekPaneel = () => {
   } = useSWR('boeken', API.getAll);
   // om datums leesbaar te maken
   let filteredBoeken = useMemo(() => {
-    const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
-    const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...boeken].filter((boek)=>{
       return  ((search && searchcategorieFilter) ?
         boek[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true) &&
@@ -50,9 +55,6 @@ const BoekPaneel = () => {
   const [zoekveld, setZoekVeld] = useState('titel');
   const [order, setOrder] = useState('asc');
   filteredBoeken =useMemo(() => {
-    let parsed_zoekveld;
-    const string_zoekvelden = ['id','ISBN','titel','genre','taal','cover','Archivering',
-      'aantal beschikbaar','totaal','cover'];
     return [...filteredBoeken].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
@@ -76,7 +78,6 @@ const BoekPaneel = () => {
         if (a[parsed_zoekveld] < b[parsed_zoekveld]) return order === 'asc' ? -1 : 1;
         return 0;
       }else{
-        let parsed_zoekveld;
         switch (zoekveld) { // dit is echt een mess maar ik weet anders niet hoe
           case 'gepubliceerd':
             parsed_zoekveld = 'publicatie_datum';
@@ -91,7 +92,6 @@ const BoekPaneel = () => {
             parsed_zoekveld = zoekveld;
             break;
         }
-        console.log(parsed_zoekveld);
         const dateA = new Date(a[parsed_zoekveld]);
         const dateB = new Date(b[parsed_zoekveld]);
         if (dateA > dateB) return order === 'asc' ? 1 : -1;

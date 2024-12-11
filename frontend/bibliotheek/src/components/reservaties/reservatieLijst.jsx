@@ -3,15 +3,18 @@ import * as styles from './../../css/BoekTabel.module.css';
 import { useMemo,useState } from 'react';
 import ToonBevestiging from '../ToonBevestiging';
 
+const werkelijke_kolommen = ['nr','boek_titel','startdatum_display','einddatum_display'];
+const zichtbare_kolommen = ['nr','boek','startdatum reservatie','einddatum reservatie'];
+const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
+let parsed_zoekveld;
+const string_zoekvelden = ['nr','boek'];
+
 const ReservatieLijst = ({reservaties, actieve, isLoading, error, leverBoekInTrigger}) => {
   const [toonBevestiging,setToonbevestiging] = useState(false);
   const [reservatieId,setReservatieId] = useState('');
-  const werkelijke_kolommen = ['nr','boek_titel','startdatum_display','einddatum_display'];
-  const zichtbare_kolommen = ['nr','boek','startdatum reservatie','einddatum reservatie'];
   // om datums leesbaar te maken
 
   let filteredReservaties = useMemo(() => {
-    const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     return [...reservaties].filter((res)=>{
       return actieve? res.status === 'actief': res.status === 'niet-actief';
     }).map((res,index) => {
@@ -25,8 +28,6 @@ const ReservatieLijst = ({reservaties, actieve, isLoading, error, leverBoekInTri
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredReservaties =useMemo(() => {
-    let parsed_zoekveld;
-    const string_zoekvelden = ['nr','boek'];
     return [...filteredReservaties].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {

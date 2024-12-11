@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import ToonBevestiging from '../ToonBevestiging';
 import * as styles from './../../css/BoekTabel.module.css';
-
+// wordt niet gebruikt. Werkt niet voor elke entiteit
 const Tabel = ({
   typeEntiteit,
   apiURL,

@@ -41,7 +41,7 @@ export const save = async (url, { arg: { id, ...data } }) => {
 };
 
 export const deleteRandomBeschikbaarExemplaar = async (url,{ arg: id }) => {
-  await axios.delete(`${url}/${id.id}/deletebeschikbaarkopie`); 
+  await axios.delete(`${url}/${id.id}/beschikbaarkopie`); 
 };
 
 export const post = async (url, { arg }) => {

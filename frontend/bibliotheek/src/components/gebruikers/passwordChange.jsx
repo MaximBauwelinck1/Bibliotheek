@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import {  useNavigate } from 'react-router';
 import { useMemo } from 'react';
 import ToonError from '../ToonError';
-  
+
+let errorStack ='';
 export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) {
   const navigate = useNavigate();
   const { register, handleSubmit,formState: {isValid,errors }, reset,getValues } = useForm({
@@ -41,7 +42,6 @@ export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) 
       },
     });
   };
-  let errorStack ='';
   if(error){
     Object.values(error.response.data.details.body).map((val)=>{
       val.map((val2)=>{

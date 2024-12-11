@@ -235,7 +235,7 @@ export default (parent: KoaRouter) => {
   });
 
   const requireAdmin = makeRequireRole(roles.ADMIN);
-  router.delete('/:id/deletebeschikbaarkopie',requireAuthentication, requireAdmin,
+  router.delete('/:id/beschikbaarkopie',requireAuthentication, requireAdmin,
     validate(delRandomKopie.validationScheme),delRandomKopie);//admin nodig om dit te deleten
 
   router.get('/kopieen',requireAuthentication, validate(getAllBoekkopieen.validationScheme),getAllBoekkopieen);

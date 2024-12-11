@@ -8,6 +8,14 @@ import ToonBevestiging from '../ToonBevestiging';
 import useSWRMutation from 'swr/mutation';
 import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
 
+const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display',
+  'upgedate_display','formattedActief'];
+const zichtbare_kolommen = ['id','boek id','status','extra informatie',
+  'aangemaakt','laatst aangepast','Archivering'];
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+const string_zoekvelden = ['id','boek id','status','extra informatie','Archivering'];
+let parsed_zoekveld;
+
 const BoekKopiePaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -20,10 +28,6 @@ const BoekKopiePaneel = () => {
   const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
 
-  const werkelijke_kolommen = ['id','boek_id','status','extra_informatie','aangemaakt_display',
-    'upgedate_display','formattedActief'];
-  const zichtbare_kolommen = ['id','boek id','status','extra informatie',
-    'aangemaakt','laatst aangepast','Archivering'];
   const {
     data: boekkopieen = [],
     isLoading,
@@ -31,7 +35,6 @@ const BoekKopiePaneel = () => {
   } = useSWR('kopieen', API.getAll);
   // om datums leesbaar te maken
   let filteredBoekKopieen = useMemo(() => {
-    const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...boekkopieen].map((bk) => {
       const formattedActief = bk.actief?'Actief':'Gearchiveerd';
       const formattedDateAangemaakt = new Intl.DateTimeFormat('nl-BE', datum_opties2).format(new Date(bk.aangemaakt));
@@ -47,8 +50,6 @@ const BoekKopiePaneel = () => {
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredBoekKopieen =useMemo(() => {
-    let parsed_zoekveld;
-    const string_zoekvelden = ['id','boek id','status','extra informatie','Archivering'];
     return [...filteredBoekKopieen].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
@@ -80,7 +81,6 @@ const BoekKopiePaneel = () => {
             parsed_zoekveld = zoekveld;
             break;
         }
-        console.log('g'+parsed_zoekveld);
         const dateA = new Date(a[parsed_zoekveld]);
         const dateB = new Date(b[parsed_zoekveld]);
         if (dateA > dateB) return order === 'asc' ? 1 : -1;

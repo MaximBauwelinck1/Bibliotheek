@@ -8,34 +8,54 @@
 - Studentennummer: 302041mb
 - E-mailadres: <mailto:voornaam.naam@student.hogent.be>
 - Demo: <DEMO_LINK_HIER>
-- GitHub-repository: <GITHUB_REPO_LINK_HIER>
+- GitHub-repository: https://github.com/HOGENT-frontendweb/frontendweb-2425-MaximBauwelinck1
 - Front-end Web Development
-  - Online versie: <LINK_ONLINE_VERSIE_HIER>
+  - Online versie: https://frontendweb-2425-maximbauwelinck1-1.onrender.com
 - Web Services:
-  - Online versie: <LINK_ONLINE_VERSIE_HIER>
+  - Online versie: https://frontendweb-2425-maximbauwelinck1.onrender.com
 
 ## Logingegevens
 
 ### Lokaal
 
-- Gebruikersnaam/e-mailadres:
-- Wachtwoord:
+deze gebruiker heeft als rol user
+- e-mailadres: john.doe@example.com
+- Wachtwoord: gebruiker1
+
+deze gebruiker heeft als rol admin
+- e-mailadres: jane.smith@example.com
+- Wachtwoord: admin1
 
 ### Online
 
-- Gebruikersnaam/e-mailadres:
-- Wachtwoord:
+deze gebruiker heeft als rol user
+- e-mailadres: john.doe@example.com
+- Wachtwoord: gebruiker1
 
-> Vul eventueel aan met extra accounts voor administrators of andere rollen.
+deze gebruiker heeft als rol admin
+- e-mailadres: jane.smith@example.com
+- Wachtwoord: admin1
+
 
 ## Projectbeschrijving
 
 > Omschrijf hier duidelijk waarover jouw project gaat. Voeg een domeinmodel (of EERD) toe om jouw entiteiten te verduidelijken.
 
+De applicatie is bedoelt voor een bibliotheek of andere instelling met veel boeken. Je kan hiermee als eerste gewoon de stock beheren van boeken(admin kant).
+Daarnaast kan dit ook gebruikt om reservaties te beheren en plannen van deze boeken. Een gebruiker kan de boeken browsen en boeken reserveren. 
+
 ## Screenshots
 
-> Voeg enkele (nuttige!) screenshots toe die tonen wat de app doet.
-> Dit is weinig zinvol indien je enkel Web Services volgt, verwijder dan deze sectie.
+## verloop user
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+
+## verloop admin
+![alt text](image-4.png)
+![alt text](image-5.png)
+![alt text](image-6.png)
 
 ## API calls
 
@@ -45,8 +65,51 @@
 
 ### Gebruikers
 
-- `GET /api/users`: alle gebruikers ophalen
-- `GET /api/users/:id`: gebruiker met een bepaald id ophalen
+- `POST /api/gebruikers/passwordForgot`     : om een email te sturen naar de gebruiker voor zijn/haar wachtwoord te resetten(indien email bestaat)
+- `POST /api/gebruikers/passwordReset`      : de effectieve request om het wachtwoord te veranderen. Werkt alleen met een geldige token
+- `GET /api/gebruikers/:id/reservaties`     : om alle reservaties te krijgen van een bepaalde gebruiker
+- `GET /api/gebruikers`                     : alle gebruikers ophalen
+- `GET /api/gebruikers/:id`                 : gebruiker met een bepaald id ophalen
+- `POST /api/gebruikers`                    : om een nieuwe gebruiker te registreren
+- `DEL /api/gebruikers/:id`                 : om een gebruiker te soft deleten
+- `PUT /api/gebruikers/:id`                 : om een gebruiker te updaten
+
+### Boeken
+
+- `DEL /api/boeken/:id/beschikbaarkopie`       : delete een beschikbare kopie van een boek
+- `GET /api/boeken/kopieen`                          : geeft alle kopieen van alle boeken
+- `GET /api/boeken/:id/kopieen`                      : geeft alle kopieen terug van een boek
+- `GET api/boeken/:boekId/kopieen/:boekKopieId`      : geeft 1 exemplaar terug dat tot het boek behoort en de juist kopieId heeft
+- `GET /api/boeken`                                  : geeft alle boeken terug
+- `POST /api/boeken`                                 : om een nieuw boek aan te maken
+- `GET /api/boeken/:id`                              : geeft een boek terug met dezelfde id
+- `DEL /api/boeken/:id`                              : soft delete een boek
+- `PUT /api/boeken/:id`                              : update een boek met id
+
+### Health
+
+- `GET /api/health/ping`                             : geeft pong terug
+- `GET /api/health/details`                          : geeft informatie over de server terug
+
+### Kopieen
+
+- `GET /api/kopieen`                                 : geef alle kopieen terug 
+- `POST /api/kopieen`                                : maak een nieuw exemplaar aan
+- `GET /api/kopieen/:id`                             : geeft een specifiek exemplaar terug
+- `DEL api/kopieen/:id`                              : soft delete een exemplaar
+- `PUT /api/kopieen/:id`                             : update een kopie met id
+
+### Reservaties
+
+- `GET /api/reservaties`                                 : geef alle reservaties terug 
+- `POST /api/reservaties`                                : maak een nieuwe reservatie aan
+- `GET /api/reservaties/:id`                             : geeft een specifieke reservatie terug
+- `DEL api/reservaties/:id`                              : zet een reservatie op niet-actief en maak het exemplaar terug vrij
+- `PUT /api/reservaties/:id`                             : update een reservatie met id
+
+### sessions
+
+- `POST /api/sessions`                                : geeft een jwt token terug als de user de juist credentials meegeeft
 
 ## Behaalde minimumvereisten
 

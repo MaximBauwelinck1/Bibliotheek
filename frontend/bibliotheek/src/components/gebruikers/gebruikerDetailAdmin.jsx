@@ -1,8 +1,9 @@
 import * as styles from '../../css/GebruikerDetail.module.css';
 import { useState } from 'react';
 import ToonBevestiging from '../ToonBevestiging';
+
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
 const GebruikerDetailAdmin = ({onDelete,onUpdate,...gebruiker}) =>{
-  const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
   const handelDelete = ()=>{
     onDelete(gebruiker.id);
   };

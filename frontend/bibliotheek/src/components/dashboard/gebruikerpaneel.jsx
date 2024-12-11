@@ -7,6 +7,16 @@ import { useNavigate } from 'react-router';
 import useSWRMutation from 'swr/mutation';
 import ToonBevestiging from '../ToonBevestiging';
 import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
+
+const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
+  'aangemaakt_display','upgedate_display','formattedActief'];
+const zichtbare_kolommen = ['id','voornaam','achternaam','geboortedatum','email','rol',
+  'aangemaakt','laatst aangepast','Archivering'];
+const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
+const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
+let parsed_zoekveld;
+const string_zoekvelden = ['id','voornaam','achternaam','email','rol','Archivering'];
+
 const GebruikerPaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -19,10 +29,6 @@ const GebruikerPaneel = () => {
   const [toonVerwijderde,setToonVerwijderde] = useState(false);
   const navigate = useNavigate();
 
-  const werkelijke_kolommen = ['id','voornaam','achternaam','geboortedatum_display','email','rol',
-    'aangemaakt_display','upgedate_display','formattedActief'];
-  const zichtbare_kolommen = ['id','voornaam','achternaam','geboortedatum','email','rol',
-    'aangemaakt','laatst aangepast','Archivering'];
   const {
     data: gebruikers = [],
     isLoading,
@@ -30,8 +36,6 @@ const GebruikerPaneel = () => {
   } = useSWR('gebruikers', API.getAll);
   // om datums leesbaar te maken
   let filteredgebruikers = useMemo(() => {
-    const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
-    const datum_opties2 = { year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute:'numeric' };
     return [...gebruikers].filter((geb)=>{
       return  ((search && searchcategorieFilter) ?
         geb[searchcategorieFilter].toLowerCase().includes(search.toLowerCase().trim()) : true) &&
@@ -50,8 +54,6 @@ const GebruikerPaneel = () => {
   const [zoekveld, setZoekVeld] = useState('voornaam');
   const [order, setOrder] = useState('asc');
   filteredgebruikers =useMemo(() => {
-    let parsed_zoekveld;
-    const string_zoekvelden = ['id','voornaam','achternaam','email','rol','Archivering'];
     return [...filteredgebruikers].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {
@@ -66,7 +68,6 @@ const GebruikerPaneel = () => {
         if (a[parsed_zoekveld] < b[parsed_zoekveld]) return order === 'asc' ? -1 : 1;
         return 0;
       }else{
-        let parsed_zoekveld;
         switch (zoekveld) { // dit is echt een mess maar ik weet anders niet hoe
           case 'laatst aangepast':
             parsed_zoekveld = 'upgedate';

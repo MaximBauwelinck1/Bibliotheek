@@ -32,6 +32,7 @@ const genres = [
   'Avontuur', 'Memoir', 'Thriller',
 ];
 const talen = [ 'Nederlands','Frans','Engels','Zweeds','Duits','Russisch','Portugees'];
+
 export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKopie }) {
   const [toonBevesteging,setToonBevesteging] = useState(false);
   const [onSuccesMethode,setOnSuccesMethode] = useState();
@@ -53,7 +54,6 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
     }
   };
   const voegExemplaarToe = () => {
-    console.log('test');
     setOnSuccesMethode(() => {
       return () => {
         saveKopie({

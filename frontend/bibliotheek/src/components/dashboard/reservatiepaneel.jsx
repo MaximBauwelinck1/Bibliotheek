@@ -8,6 +8,13 @@ import useSWRMutation from 'swr/mutation';
 import ToonBevestiging from '../ToonBevestiging';
 import AdminNavbarStyles from '../../css/AdminNavbar.module.css';
 
+const werkelijke_kolommen = ['id','boek_kopie_id','gebruiker_id','startdatum_display','einddatum_display','status'];
+const zichtbare_kolommen = ['id','boek kopie id','gebruiker id','startdatum reservatie','einddatum reservatie'
+  ,'status'];
+const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
+let parsed_zoekveld;
+const string_zoekvelden = ['id','boek kopie id','gebruiker id','status'];
+
 const ReservatiePaneel = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
@@ -19,9 +26,6 @@ const ReservatiePaneel = () => {
   const [gebruikeIdTodeleter,setGebruikerIdTodelete] = useState('');
   const navigate = useNavigate();
 
-  const werkelijke_kolommen = ['id','boek_kopie_id','gebruiker_id','startdatum_display','einddatum_display','status'];
-  const zichtbare_kolommen = ['id','boek kopie id','gebruiker id','startdatum reservatie','einddatum reservatie'
-    ,'status'];
   const {
     data: reservaties = [],
     isLoading,
@@ -29,7 +33,6 @@ const ReservatiePaneel = () => {
   } = useSWR('reservaties', API.getAll);
   // om datums leesbaar te maken
   let filteredReservaties = useMemo(() => {
-    const datum_opties = { year: 'numeric', month: 'long', day: 'numeric' };
     return [...reservaties].map((res) => {
       const formattedDateStartdatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.startdatum));
       const formattedDateEinddatum = new Intl.DateTimeFormat('nl-BE', datum_opties).format(new Date(res.einddatum)); 
@@ -43,8 +46,6 @@ const ReservatiePaneel = () => {
   const [zoekveld, setZoekVeld] = useState('id');
   const [order, setOrder] = useState('asc');
   filteredReservaties =useMemo(() => {
-    let parsed_zoekveld;
-    const string_zoekvelden = ['id','boek kopie id','gebruiker id','status'];
     return [...filteredReservaties].sort((a,b) => {
       if(string_zoekvelden.includes(zoekveld)){
         switch (zoekveld) {

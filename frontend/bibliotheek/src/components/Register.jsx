@@ -3,6 +3,7 @@ import styles from '../css/Register.module.css';
 import { useMemo } from 'react';
 import ToonError from './ToonError';
   
+let errorStack ='';
 export default function Register({ registerTrigger, error,loading }) {
 
   const {
@@ -53,8 +54,6 @@ export default function Register({ registerTrigger, error,loading }) {
     }
   };
  
-  let errorStack ='';
-  console.log(error);
   if(error && error.response.data.message !='De token is vervallen'){
     Object.values(error.response.data.details.body).map((val)=>{
       val.map((val2)=>{
