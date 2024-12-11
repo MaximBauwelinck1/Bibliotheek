@@ -62,6 +62,24 @@ describe('Admin dashboard voor users te managen', () => {
     cy.get('[data-cy=email]') .should('have.text', 'Email: john.doe@example.com');
 
   });
+
+  it('maak een gebruiker aan met ongeldige data', () => {
+    cy.wait(5000);
+    cy.get('[data-cy=dashboard]').click();
+    cy.get('[data-cy=gebruiker_btn]').click();
+    cy.get('h2').should('exist');
+    cy.get('[data-cy=maak_gebruiker]').click();
+    cy.get('[data-cy=voornaam]').type('Max');
+    cy.get('[data-cy=achternaam]').type('Bauwelinck');
+    cy.get('[data-cy=geboortedatum]').type('3011-01-01');
+    cy.get('[data-cy=rol]').select('user');
+    cy.get('[data-cy=email]').type('test@gmail.com');
+    cy.get('[data-cy=password]').type('f');
+    cy.get('[data-cy=voornaam]').click();
+
+    cy.get('[data-cy=geboortedatum_error]').should('exist');
+    cy.get('[data-cy=password_error]').should('exist');
+  });
   /*
   it('zet een gebruiker op niet-actief', () => {
     cy.wait(5000);

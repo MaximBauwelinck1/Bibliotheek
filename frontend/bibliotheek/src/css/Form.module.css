@@ -14,6 +14,9 @@
     font-weight: 600;
     color: #343a40;
   }
+  .error{
+    color: rgb(255, 66, 66);
+}
   
   .textInput,
   .selectInput {

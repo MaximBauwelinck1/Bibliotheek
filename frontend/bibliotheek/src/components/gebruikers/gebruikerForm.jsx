@@ -13,7 +13,7 @@ const LEGE_GEBRUIKER = {
 
 export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) {
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid }, reset } = useForm({
+  const { register, handleSubmit,formState: {isValid,errors }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       voornaam:gebruiker.voornaam,
@@ -76,7 +76,8 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           Geboortedatum:
         </label>
         <input
-          {...register('geboortedatum',{required:true,valueAsDate:true})}
+          {...register('geboortedatum',{required:true,valueAsDate:true,
+            validate: (value) => value <= new Date() || 'Datum mag niet in de toekomst liggen.'})}
           id="geboortedatum"
           name="geboortedatum"
           type="date"
@@ -86,6 +87,9 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           data-cy='geboortedatum'
         />
       </div>
+      {errors.geboortedatum && <p data-cy='geboortedatum_error' className={styles.error}>
+        {errors.geboortedatum.message}
+      </p>}
       <div className={styles.inputGroup}>
         <label htmlFor="rol" className={styles.inputLabel}>
           Permissies:
@@ -120,7 +124,8 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           Wachtwoord:
         </label>
         <input
-          {...register('password',{required:true})}
+          {...register('password',{required:true,  
+            validate: (value) => value.length >=8 || 'Wachtwoord moet minstens 8 tekens bevatten'}) }
           id="password"
           name="password"
           type="password"
@@ -129,6 +134,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           required
         />
       </div>
+      {errors.password && <p data-cy='password_error' className={styles.error}>{errors.password.message}</p>}
       <button type="submit" className={styles.submitButton} data-cy='submit_gebruiker'>
         {gebruiker?.id
           ? 'Werk Gebruiker bij'
