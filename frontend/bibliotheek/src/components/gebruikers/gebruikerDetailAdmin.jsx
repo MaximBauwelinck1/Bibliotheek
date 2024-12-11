@@ -10,9 +10,9 @@ const GebruikerDetailAdmin = ({onDelete,onUpdate,...gebruiker}) =>{
   return(
     <div className={styles.userCard}>
       <div className={styles.userInfo}>
-        <h3 className={styles.userName}>{gebruiker.voornaam} {gebruiker.achternaam}</h3>
+        <h3 data-cy='naam'className={styles.userName}>{gebruiker.voornaam} {gebruiker.achternaam}</h3>
         <p><strong>ID:</strong> {gebruiker.id}</p>
-        <p><strong>Email:</strong> {gebruiker.email}</p>
+        <p data-cy='email'><strong>Email:</strong> {gebruiker.email}</p>
         <p><strong>Geboortedatum:</strong> {new Date(gebruiker.geboortedatum).toLocaleDateString()}</p>
         <p><strong>Rol:</strong> {gebruiker.rol}</p>
         <p><strong>Archivering:</strong> {gebruiker.actief?'Actief':'Gearchiveerd'}</p>

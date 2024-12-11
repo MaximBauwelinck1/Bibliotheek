@@ -52,6 +52,7 @@ export default function Login({ login, error,loading }) {
             id='email'
             className={styles.input}
             placeholder='E-mailadres'
+            data-cy='email_input'
             {...register('email', validationRules.email)}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}
@@ -59,11 +60,12 @@ export default function Login({ login, error,loading }) {
             type='password'
             id='password'
             placeholder='wachtwoord'
+            data-cy='password_input'
             className={styles.input}
             {...register('password', validationRules.password)}
           />
           {errors.password && <p className={styles.error}>{errors.password.message}</p>}
-          <button type="submit" className={styles.login_button}>
+          <button type="submit" className={styles.login_button} data-cy='submit_btn'>
             { !loading? 'Aanmelden': <div className='spinner-border'></div>}
           </button>
         </form>

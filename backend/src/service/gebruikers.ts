@@ -73,7 +73,7 @@ export const sendPasswordResetEmail = async (userEmail:string) => {
   await emailservice.sendEmail(userEmail, 'Wachtwoord reset', 'passwordReset', {
     voornaam: user.voornaam,
     achternaam: user.achternaam,
-    link: `https://frontendweb-2425-maximbauwelinck1-1.onrender.com//reset-password?token=${resetToken}`,
+    link: `https://frontendweb-2425-maximbauwelinck1-1.onrender.com/reset-password?token=${resetToken}`,
   });
 
   return resetToken;

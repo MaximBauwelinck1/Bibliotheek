@@ -8,7 +8,7 @@ const ToonBevestiging = ({ isOpen, onClose, onConfirm, title, message }) => {
         <h3>{title}</h3>
         <p>{message}</p>
         <div className={styles.actions}>
-          <button onClick={onConfirm}>Bevestig</button>
+          <button data-cy='bevestig' onClick={onConfirm}>Bevestig</button>
           <button  onClick={onClose}>Annuleer</button>
         </div>
       </div>

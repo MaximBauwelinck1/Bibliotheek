@@ -129,7 +129,8 @@ const GebruikerPaneel = () => {
   return (
     <div>
       <h2>Gebruikers</h2>
-      <button className={AdminNavbarStyles.blue_button} onClick={() => navigate('/dashboard/gebruikers/add')}>
+      <button className={AdminNavbarStyles.blue_button} onClick={() => navigate('/dashboard/gebruikers/add')} 
+        data-cy='maak_gebruiker'>
         Gebruiker aanmaken
       </button>
       <div className='d-flex justify-content-center'>
@@ -143,6 +144,7 @@ const GebruikerPaneel = () => {
             type='checkbox'
             id='toonVerwijderde'
             onChange={(e) => setToonVerwijderde(e.target.checked)}
+            data-cy='toon_deleted'
           />
           <label className='form-check-label' htmlFor='toonVerwijderde'>
             Toon gearchiveerde gebruikers
@@ -196,7 +198,7 @@ const GebruikerPaneel = () => {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody data-cy='tbody'>
               {filteredgebruikers.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {werkelijke_kolommen.map((col, colIndex) => (
@@ -205,11 +207,12 @@ const GebruikerPaneel = () => {
                         {row[col]}
                         {colIndex === 0 && (
                           <div className={styles.menu_container}>
-                            <button className={styles.menu_button} onClick={() => toggleMenu(row['id'])}>⋮</button>
+                            <button className={styles.menu_button} data-cy='opt_menu'
+                              onClick={() => toggleMenu(row['id'])}>⋮</button>
                             <div className={`${styles.menu_options} menuOptions`} id={row['id']} >
-                              <button onClick={() => editItem(row['id'])}>Edit</button>
-                              <button onClick={() => deleteItem(row['id'])}>Delete</button>
-                              <button onClick={()=>  bekijkItem(row['id'])}>Bekijken</button>
+                              <button data-cy='edit' onClick={() => editItem(row['id'])}>Edit</button>
+                              <button data-cy='delete' onClick={() => deleteItem(row['id'])}>Delete</button>
+                              <button data-cy='bekijk' onClick={()=>  bekijkItem(row['id'])}>Bekijken</button>
                             </div>
                           </div>
                         )}

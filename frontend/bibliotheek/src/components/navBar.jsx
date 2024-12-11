@@ -17,7 +17,8 @@ const NavBar = () => {
       <NavLink to="/boeken" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Boeken</NavLink>
 
       { user && user.rol === 'admin' && 
-      <NavLink to="/dashboard" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>
+      <NavLink to="/dashboard" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}
+        data-cy='dashboard'>
         Dashboard
       </NavLink>}
       <NavLink to="/about" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Over ons</NavLink>
@@ -26,14 +27,14 @@ const NavBar = () => {
       
           <div  style={{marginLeft:'auto'}}  onClick={()=>setDropdownVisible(!isDropdownVisible)} 
             className={styles.gebruiker_container}> 
-            <FaUser  className={styles.gebruiker_icon}/>
+            <FaUser data-cy='profiel' className={styles.gebruiker_icon}/>
             {isDropdownVisible && <DropdownMenu />}
           </div>
         ) : (
         
           <div  style={{marginLeft:'auto'}}  className={styles.gebruiker_container}>
             <Link className='nav-link' to='/login'>
-              <FaUser  className={styles.gebruiker_icon}/>
+              <FaUser data-cy='profiel' className={styles.gebruiker_icon}/>
             </Link>
           </div>
         )

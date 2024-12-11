@@ -7,7 +7,7 @@ const  DashboardMenu = ({onAction}) =>{
       <button className={styles.blue_button} onClick={() => {
         navigate('/dashboard/boeken');onAction('boeken');
       }}>Boeken</button>
-      <button className={styles.blue_button} onClick={() =>{
+      <button className={styles.blue_button} data-cy='gebruiker_btn' onClick={() =>{
         navigate('/dashboard/gebruikers');onAction('gebruikers');
       }}>Gebruikers</button>
       <button className={styles.blue_button} onClick={() =>{

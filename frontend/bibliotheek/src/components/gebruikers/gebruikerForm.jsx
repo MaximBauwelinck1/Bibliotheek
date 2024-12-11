@@ -53,6 +53,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           className={styles.textInput}
           required
           readOnly={!!gebruiker?.id}
+          data-cy='voornaam'
         />
       </div>
       <div className={styles.inputGroup}>
@@ -67,6 +68,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           className={styles.textInput}
           required
           readOnly={!!gebruiker?.id}
+          data-cy='achternaam'
         />
       </div>
       <div className={styles.inputGroup}>
@@ -81,6 +83,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           className={styles.textInput}
           readOnly={!!gebruiker?.id}
           required
+          data-cy='geboortedatum'
         />
       </div>
       <div className={styles.inputGroup}>
@@ -90,7 +93,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
         <select  {...register('rol', {
           required: true,
           validate: (val) => val === 'user' || val === 'admin'})}
-        id="rol" name="rol" className={styles.selectInput} required>
+        id="rol" name="rol" className={styles.selectInput} required data-cy='rol'>
           <option value="" disabled>
             -- Kies een rol --
           </option>
@@ -107,6 +110,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           id="email"
           name="email"
           type="email"
+          data-cy='email'
           className={styles.textInput}
           required
         />
@@ -121,10 +125,11 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           name="password"
           type="password"
           className={styles.textInput}
+          data-cy='password'
           required
         />
       </div>
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className={styles.submitButton} data-cy='submit_gebruiker'>
         {gebruiker?.id
           ? 'Werk Gebruiker bij'
           : 'Maak een nieuwe gebruiker aan'}

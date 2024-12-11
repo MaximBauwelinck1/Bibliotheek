@@ -8,7 +8,7 @@ const DropdownMenu = () => {
     <div className={styles.dropdown_container}>
       <ul>
         <Link to='/logout' className='link_uitgezet'>
-          <li><FaSignOutAlt/> Uitloggen</li>
+          <li data-cy='logout'><FaSignOutAlt/> Uitloggen</li>
         </Link>
         <Link to={`/gebruikers/${user.id}`} className='link_uitgezet'>
           <li><FaUserEdit/>Acount bekijken</li>
