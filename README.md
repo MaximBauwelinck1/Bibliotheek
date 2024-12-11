@@ -18,7 +18,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 ## Front-end
 
-## Opstarten
+## Opstarten 
 Al deze commands hebben betrekking tot de front-end en moeten dus in deze folder worden uitegevoerd
 
 ``{home}\frontendweb-2425-MaximBauwelinck1\frontend\bibliotheek``
@@ -50,19 +50,21 @@ yarn dev
 
 
 
-
-
-
-
 > Schrijf hier hoe we de applicatie starten (.env bestanden aanmaken, commando's om uit te voeren...)
 
 ## Testen
 
-TODO
+Voor de testen te moeten uitvoeren moeten zowel de backend als de front end werken.
+open twee terminals en volg de stappen opstarten in zowel de back als frontend
 
+open dan een 3de terminal en voer het volgende commande uit in de directory van de front end
+```bash
+yarn test
+```
+kies dan een browser naar keuze om de testen mee uit te voeren
 ## Back-end
 
-## Opstarten
+## Opstarten 
 
 Al deze commands hebben betrekking tot de back-end en moeten dus in deze folder worden uitegevoerd
 
