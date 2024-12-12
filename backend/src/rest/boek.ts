@@ -643,7 +643,8 @@ getBoekById.validationScheme = {
  * /api/boeken/{id}/kopieen:
  *   get:
  *     summary: Haal alle boek kopieën van een specifiek boek op
- *     description: Haalt een lijst op van alle boek kopieën van een specifiek boek, geïdentificeerd door zijn unieke ID.
+ *     description: Haalt een lijst op van alle boek kopieën van een specifiek boek, 
+ *      geïdentificeerd door zijn unieke ID.
  *     tags:
  *         - Boeken
  *     security:
@@ -724,7 +725,8 @@ getAllBoekKopieenFromBoek.validationScheme = {
  * /api/boeken/{boekId}/kopieen/{boekKopieId}:
  *   get:
  *     summary: Haal een specifieke boek kopie op
- *     description: Haalt een specifieke boek kopie op van een specifiek boek, geïdentificeerd door de boek en boek kopie ID's.
+ *     description: Haalt een specifieke boek kopie op van een specifiek boek,
+ *       geïdentificeerd door de boek en boek kopie ID's.
  *     tags:
  *         - Boeken
  *     security:

@@ -150,6 +150,22 @@ describe('Gebruikers', () => {
       expect(response.statusCode).toBe(201);
       expect(response.body.token).toBeDefined();
     });
+    it('should be 409 with existing name', async () => {
+      const response = await request.post(url)
+        .send({
+          voornaam: 'Test',
+          achternaam: 'TEST',
+          geboortedatum: '1903-06-25T00:00:00.000Z',
+          email: 'testgebruiker@test.be',
+          password: 'testtest',
+        })
+        .set('Authorization', authHeader);
+      expect(response.statusCode).toBe(409);
+      expect(response.body).toMatchObject({
+        code: 'CONFLICT',
+        message: 'gebruiker met voor en achternaam bestaat al!',
+      });
+    });
   });
   describe('PUT /api/gebruikers/:id', () => {
 
@@ -164,6 +180,19 @@ describe('Gebruikers', () => {
       expect(response.body).toMatchObject({
         id: '8a128b24-411e-4312-8618-e0c0c72bcb41',
         email: 'nieuwetestgebruiker@test.be',
+      });
+    });
+    it('should be 409 when updating user with an email addres already in use', async () => {
+      const response = await request.put(`${url}/me`)
+        .send({
+          email: 'jane.smith@example.com',
+        })
+        .set('Authorization', authHeader);
+
+      expect(response.statusCode).toBe(409);
+      expect(response.body).toMatchObject({
+        code: 'CONFLICT',
+        message: 'Gebruiker met email addres bestaat al.',
       });
     });
 
@@ -218,5 +247,112 @@ describe('Gebruikers', () => {
     });
 
     testAuthHeader(() => request.delete(`${url}/1`));
+  });
+  describe('POST /api/gebruikers/passwordForgot', () => {
+    beforeAll(async () => {
+      await prisma.gebruiker.create({ data: {
+        id: '8a128b24-411e-4312-8618-e0c0c72bcb11',
+        voornaam: 'fff',
+        achternaam: 'Doffffe',
+        geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
+        email: 'test@example.com',
+        rol: 'user',
+        actief:true,
+        // eslint-disable-next-line @stylistic/max-len
+        hashed_password:'$argon2id$v=19$m=131072,t=6,p=4$c4yGTzduMqVzDCGN2CzZEw$mCQCHpOSwNf2VNEB18UZ0owtIeBSj7h0k6wVx8WAmDw',
+      } });
+    });
+
+    it('should 200 and sended the mail', async () => {
+      const response = await request.post(url+'/passwordForgot')
+        .send({
+          email: 'test@example.com',
+        });
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toEqual({});
+    });
+
+    it('should be 409 when asking twice for an email verification within an hour', async () => {
+      const response = await request.post(url+'/passwordForgot')
+        .send({
+          email: 'test@example.com',
+        });
+      expect(response.statusCode).toBe(409);
+      expect(response.body).toMatchObject({
+        code: 'CONFLICT',
+        message: 'Er is nog een geldige herstel wachtwoord link actief. Bekijk je laatste mail',
+      });
+    });
+
+    it('should be 400 with query parameters', async () => {
+      const response = await request.post(`${url}/passwordForgot?test=test`);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+      expect(response.body.details.query).toHaveProperty('test');
+    });
+
+    it('should be 400 when sending an body', async () => {
+      const response = await request.post(url+'/passwordForgot').send({
+        test: 's',
+      });
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+    });
+    afterAll(async () => {
+      await prisma.passwordReset.deleteMany();
+      await prisma.gebruiker.delete({ where:{
+        email:'test@example.com',
+      }});
+    });
+  });
+
+  describe('POST /api/gebruikers/passwordReset', () => {
+    beforeAll(async () => {
+      await prisma.gebruiker.create({ data: {
+        id: '8a128b24-411e-4312-8618-e0c0c72bcb11',
+        voornaam: 'fff',
+        achternaam: 'Doffffe',
+        geboortedatum: new Date('1903-06-25T00:00:00.000Z'),
+        email: 'test@example.com',
+        rol: 'user',
+        actief:true,
+        // eslint-disable-next-line @stylistic/max-len
+        hashed_password:'$argon2id$v=19$m=131072,t=6,p=4$c4yGTzduMqVzDCGN2CzZEw$mCQCHpOSwNf2VNEB18UZ0owtIeBSj7h0k6wVx8WAmDw',
+      } });
+    });
+
+    it('should be 401 with invalid token', async () => {
+      const response = await request.post(url+'/passwordReset')
+        .send({
+          token: 'invalidtoken',
+          password: 'testtest',
+        });
+      expect(response.statusCode).toBe(401);
+      expect(response.body).toMatchObject({
+        code: 'UNAUTHORIZED',
+        message: 'Ongeldige authenticatie token: jwt malformed',
+      });
+    });
+
+    it('should be 400 with query parameters', async () => {
+      const response = await request.post(`${url}/passwordReset?test=test`);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+      expect(response.body.details.query).toHaveProperty('test');
+    });
+
+    it('should be 400 when sending an body', async () => {
+      const response = await request.post(url+'/passwordReset').send({
+        test: 's',
+      });
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toBe('VALIDATION_FAILED');
+    });
+    afterAll(async () => {
+      await prisma.passwordReset.deleteMany();
+      await prisma.gebruiker.delete({ where:{
+        email:'test@example.com',
+      }});
+    });
   });
 });

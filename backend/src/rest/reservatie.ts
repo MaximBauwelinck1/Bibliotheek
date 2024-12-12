@@ -97,7 +97,8 @@ getAllReservaties.validationScheme = null;
  * /api/reservaties:
  *   post:
  *     summary: Maak een nieuwe reservatie aan
- *     description: Maak een nieuwe reservatie voor een boek kopie door de gegevens van de gebruiker en de boek kopie te verstrekken.
+ *     description: Maak een nieuwe reservatie voor een boek kopie door de gegevens
+ *       van de gebruiker en de boek kopie te verstrekken.
  *     tags:
  *       - Reservaties
  *     requestBody:
@@ -110,11 +111,13 @@ getAllReservaties.validationScheme = null;
  *               boek_kopie_id:
  *                 type: string
  *                 format: uuid
- *                 description: Het ID van de boek kopie die gereserveerd wordt (optioneel, indien boek_id niet gespecificeerd is).
+ *                 description: Het ID van de boek kopie die gereserveerd wordt (optioneel, 
+ *                  indien boek_id niet gespecificeerd is).
  *               boek_id:
  *                 type: string
  *                 format: uuid
- *                 description: Het ID van het boek dat gereserveerd wordt (optioneel, indien boek_kopie_id niet gespecificeerd is).
+ *                 description: Het ID van het boek dat gereserveerd wordt (optioneel,
+ *                   indien boek_kopie_id niet gespecificeerd is).
  *               gebruiker_id:
  *                 type: string
  *                 format: uuid
@@ -169,7 +172,8 @@ createReservatie.validationScheme = {
  * /api/reservaties/{id}:
  *   delete:
  *     summary: Zet een reservatie op niet-actief en herstel de beschikbaarheid van de boek kopie
- *     description: Zet een reservatie op niet-actief en update de status van de boek kopie zodat deze weer beschikbaar is. Het aantal vrije kopieën van het boek wordt ook aangepast.
+ *     description: Zet een reservatie op niet-actief en update de status van de boek kopie zodat 
+ *      deze weer beschikbaar is. Het aantal vrije kopieën van het boek wordt ook aangepast.
  *     tags:
  *       - Reservaties
  *     parameters:
@@ -276,7 +280,8 @@ getReservatieById.validationScheme = {
  *               einddatum:
  *                 type: string
  *                 format: date
- *                 description: De nieuwe einddatum van de reservatie. Het moet een datum zijn die gelijk of groter is dan de huidige datum.
+ *                 description: De nieuwe einddatum van de reservatie.
+ *                   Het moet een datum zijn die gelijk of groter is dan de huidige datum.
  *               status:
  *                 type: string
  *                 enum:

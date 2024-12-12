@@ -74,84 +74,84 @@ Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te be
 
 #### Componenten
 
-- [ ] heeft meerdere componenten - dom & slim (naast login/register)
-- [ ] applicatie is voldoende complex
-- [ ] definieert constanten (variabelen, functies en componenten) buiten de component
-- [ ] minstens één form met meerdere velden met validatie (naast login/register)
-- [ ] login systeem
+- [x] heeft meerdere componenten - dom & slim (naast login/register)
+- [x] applicatie is voldoende complex
+- [x] definieert constanten (variabelen, functies en componenten) buiten de component
+- [x] minstens één form met meerdere velden met validatie (naast login/register)
+- [x] login systeem
 
 #### Routing
 
-- [ ] heeft minstens 2 pagina's (naast login/register)
-- [ ] routes worden afgeschermd met authenticatie en autorisatie
+- [x] heeft minstens 2 pagina's (naast login/register)
+- [x] routes worden afgeschermd met authenticatie en autorisatie
 
 #### State management
 
-- [ ] meerdere API calls (naast login/register)
-- [ ] degelijke foutmeldingen indien API-call faalt
-- [ ] gebruikt useState enkel voor lokale state
-- [ ] gebruikt gepast state management voor globale state - indien van toepassing
+- [x] meerdere API calls (naast login/register)
+- [x] degelijke foutmeldingen indien API-call faalt
+- [x] gebruikt useState enkel voor lokale state
+- [x] gebruikt gepast state management voor globale state - indien van toepassing
 
 #### Hooks
 
-- [ ] gebruikt de hooks op de juiste manier
+- [x] gebruikt de hooks op de juiste manier
 
 #### Algemeen
 
-- [ ] een aantal niet-triviale én werkende e2e testen
+- [x] een aantal niet-triviale én werkende e2e testen
 - [ ] minstens één extra technologie
-- [ ] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
-- [ ] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+- [x] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
+- [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
 - [ ] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
-- [ ] de applicatie draait online
-- [ ] duidelijke en volledige README.md
-- [ ] er werden voldoende (kleine) commits gemaakt
-- [ ] volledig en tijdig ingediend dossier
+- [x] de applicatie draait online
+- [x] duidelijke en volledige README.md
+- [x] er werden voldoende (kleine) commits gemaakt
+- [x] volledig en tijdig ingediend dossier
 
 ### Web Services
 
 #### Datalaag
 
-- [ ] voldoende complex en correct (meer dan één tabel (naast de user tabel), tabellen bevatten meerdere kolommen, 2 een-op-veel of veel-op-veel relaties)
-- [ ] één module beheert de connectie + connectie wordt gesloten bij sluiten server
-- [ ] heeft migraties - indien van toepassing
-- [ ] heeft seeds
+- [x] voldoende complex en correct (meer dan één tabel (naast de user tabel), tabellen bevatten meerdere kolommen, 2 een-op-veel of veel-op-veel relaties)
+- [x] één module beheert de connectie + connectie wordt gesloten bij sluiten server
+- [x] heeft migraties - indien van toepassing
+- [x] heeft seeds
 
 #### Repositorylaag
 
-- [ ] definieert één repository per entiteit - indien van toepassing
-- [ ] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
-- [ ] er worden kindrelaties opgevraagd (m.b.v. JOINs) - indien van toepassing
+- [x] definieert één repository per entiteit - indien van toepassing
+- [x] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
+- [x] er worden kindrelaties opgevraagd (m.b.v. JOINs) - indien van toepassing
 
 #### Servicelaag met een zekere complexiteit
 
-- [ ] bevat alle domeinlogica
-- [ ] er wordt gerelateerde data uit meerdere tabellen opgevraagd
-- [ ] bevat geen services voor entiteiten die geen zin hebben zonder hun ouder (bv. tussentabellen)
-- [ ] bevat geen SQL-queries of databank-gerelateerde code
+- [x] bevat alle domeinlogica
+- [x] er wordt gerelateerde data uit meerdere tabellen opgevraagd
+- [x] bevat geen services voor entiteiten die geen zin hebben zonder hun ouder (bv. tussentabellen)
+- [x] bevat geen SQL-queries of databank-gerelateerde code
 
 #### REST-laag
 
-- [ ] meerdere routes met invoervalidatie
-- [ ] meerdere entiteiten met alle CRUD-operaties
-- [ ] degelijke foutboodschappen
-- [ ] volgt de conventies van een RESTful API
-- [ ] bevat geen domeinlogica
-- [ ] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bv. tussentabellen)
-- [ ] degelijke autorisatie/authenticatie op alle routes
+- [x] meerdere routes met invoervalidatie
+- [x] meerdere entiteiten met alle CRUD-operaties
+- [x] degelijke foutboodschappen
+- [x] volgt de conventies van een RESTful API
+- [x] bevat geen domeinlogica
+- [x] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bv. tussentabellen)
+- [x] degelijke autorisatie/authenticatie op alle routes
 
 #### Algemeen
 
-- [ ] er is een minimum aan logging en configuratie voorzien
+- [x] er is een minimum aan logging en configuratie voorzien
 - [ ] een aantal niet-triviale én werkende integratietesten (min. 1 entiteit in REST-laag >= 90% coverage, naast de user testen)
-- [ ] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
-- [ ] minstens één extra technologie die we niet gezien hebben in de les
-- [ ] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+- [x] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
+- [x] minstens één extra technologie die we niet gezien hebben in de les
+- [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
 - [ ] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
-- [ ] de API draait online
-- [ ] duidelijke en volledige README.md
-- [ ] er werden voldoende (kleine) commits gemaakt
-- [ ] volledig en tijdig ingediend dossier
+- [x] de API draait online
+- [x] duidelijke en volledige README.md
+- [x] er werden voldoende (kleine) commits gemaakt
+- [x] volledig en tijdig ingediend dossier
 
 ## Projectstructuur
 

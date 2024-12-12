@@ -314,59 +314,48 @@ export const deleteRandomBeschikbareKopie = async(boekId:UUID): Promise<void> =>
 
 export const deleteById = async (id: UUID): Promise<void> => {
   const opt_boek = await getById(id);
-  if (opt_boek) {
 
-    const delete_boek = async (id: any) => {
-      const result = await prisma.$transaction(async (tx) => {
-        const [createdboek] = await Promise.all([
-          tx.boek.update({
-            where:{
-              id,
-            },
-            data: {
-              actief:false,
-            },
-            select: BOEKEN_SELECT,
-          })]);
-
-        await tx.boekKopie.updateMany({
+  const delete_boek = async (id: any) => {
+    const result = await prisma.$transaction(async (tx) => {
+      const [createdboek] = await Promise.all([
+        tx.boek.update({
           where:{
-            boek_id:id,
+            id,
           },
-          data:{
+          data: {
             actief:false,
           },
-        });
+          select: BOEKEN_SELECT,
+        })]);
 
-        await tx.reservatie.updateMany({
-          where:{
-            boek_kopie:{
-              boek_id:id,
-            },
-          },
-          data:{
-            status:'niet-actief',
-          },
-        });
-        return createdboek;
-      }, {
-        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      await tx.boekKopie.updateMany({
+        where:{
+          boek_id:id,
+        },
+        data:{
+          actief:false,
+        },
       });
 
-      return result;
-    };
-    /*
-    await prisma.boek.delete({
-      where:{
-        id,
-      },
+      await tx.reservatie.updateMany({
+        where:{
+          boek_kopie:{
+            boek_id:id,
+          },
+        },
+        data:{
+          status:'niet-actief',
+        },
+      });
+      return createdboek;
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
     });
-    */
-    await  delete_boek(id);
-    await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
-  } else {
-    throw ServiceError.conflict(`Boek met id:${id} bestaat niet.`);
-  }
+
+    return result;
+  };
+  await  delete_boek(id);
+  await deleteAuteurIndienNietGebruikt(opt_boek.auteur.id);
 
 };
 

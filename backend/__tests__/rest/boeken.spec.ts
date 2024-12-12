@@ -149,6 +149,20 @@ describe('boeken', () => {
         ]),
       );
     });
+    it('should 200 and return all books with genre Romance', async () => {
+      const response = await request.get(url+'?genre=Romance').set('Authorization', authHeader); 
+      expect(response.status).toBe(200); 
+      expect(response.body.items.length).toBe(1);
+      expect(response.body.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            ISBN: '9780141439518',
+            titel: 'Pride and Prejudice',
+            genre: 'Romance',
+          }),
+        ]),
+      );
+    });
     it('should be 400 when sending an request with an body', async () => {
       const response = await request.get(url).set('Authorization', authHeader).send({
         test: 'test',
@@ -246,6 +260,38 @@ describe('boeken', () => {
       expect(response.body.auteur).toEqual(expect.objectContaining({
         voornaam: 'Gabriel',
         achternaam: 'Garcia Marquez',
+        geboortedatum:'1927-03-06T00:00:00.000Z',
+        nationaliteit: 'Colombian',
+        biografie: 'Known for One Hundred Years of Solitude.',
+      }));
+    });
+    it('should be 201 and return the created book', async () => { //met nieuwe auteur
+      const response = await request.post(url).set('Authorization', adminAuthHeader).send({
+        ISBN: '9780062225580',
+        titel: 'dddd',
+        genre: 'Romantiek',
+        publicatie_datum: new Date('1903-06-25T00:00:00.000Z'),
+        taal: 'Engels',
+        paginas: 279,
+        totale_kopieen: 4,
+        beschrijving: 'The novel follows the character development of Elizabeth Bennet.',
+        cover_uri: 'https://example.com/cover/pride-and-prejudice.jpg',
+        auteur: {
+          voornaam: 'dd',
+          achternaam: 'Garcdddddrquez',
+          geboortedatum: new Date('1927-03-06T00:00:00.000Z'),
+          nationaliteit: 'Colombian',
+          biografie: 'Known for One Hundred Years of Solitude.',
+        },
+      });
+      
+      expect(response.status).toBe(201); 
+      expect(response.body.id).toBeTruthy(); 
+      expect(response.body.titel).toBe('dddd'); 
+      expect(response.body.cover_uri).toBe('https://example.com/cover/pride-and-prejudice.jpg'); 
+      expect(response.body.auteur).toEqual(expect.objectContaining({
+        voornaam: 'dd',
+        achternaam: 'Garcdddddrquez',
         geboortedatum:'1927-03-06T00:00:00.000Z',
         nationaliteit: 'Colombian',
         biografie: 'Known for One Hundred Years of Solitude.',
@@ -730,31 +776,42 @@ describe('boeken', () => {
       expect(response.statusCode).toBe(400);
       expect(response.body.code).toBe('VALIDATION_FAILED');
     });
+
+    it('should be 404 when requesting an not existing book copy', async () => {
+      const response = await request.
+        get(`${url}/5e846780-937b-471d-96e3-d567b86a95bb/kopieen/5e846180-937b-471d-96e3-d567b86a95bb`)
+        .set('Authorization', authHeader);
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toMatchObject({
+        code: 'NOT_FOUND',
+        // eslint-disable-next-line @stylistic/max-len
+        message: 'Boek kopie met id:5e846180-937b-471d-96e3-d567b86a95bb van boek:5e846780-937b-471d-96e3-d567b86a95bb bestaat niet.',
+      });
+    });
     afterAll(async () => {
       await prisma.boekKopie.deleteMany();
       await prisma.boek.deleteMany();
       await prisma.auteur.deleteMany();
     });
   });
-  describe('DEL /api/boeken/:id/deletebeschikbaarkopie',()=>{
+  describe('DEL /api/boeken/:id/beschikbaarkopie',()=>{
     
     beforeAll(async () => {
       await prisma.auteur.createMany({ data: data.auteurs });
       await prisma.boek.createMany({ data: data.boeken });
       await prisma.boekKopie.createMany({data: data.kopieen});
     });
-    testAuthHeader(() => request.del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/deletebeschikbaarkopie'));
+    testAuthHeader(() => request.del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/beschikbaarkopie'));
     it('should 200 and deleted a copy', async () => {
       const response = await request
-        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/deletebeschikbaarkopie')
+        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/beschikbaarkopie')
         .set('Authorization', adminAuthHeader);
-    
       expect(response.status).toBe(204); 
       expect(response.body).toEqual({});
     });
     it('should be 400 when sending an request with an body', async () => {
       const response = await request
-        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/deletebeschikbaarkopie')
+        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/beschikbaarkopie')
         .set('Authorization', adminAuthHeader).send({
           test: 'test',
         });
@@ -763,13 +820,13 @@ describe('boeken', () => {
     });
     it('should be 400 when sending an request with an query parameter', async () => {
       const response = await request
-        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/deletebeschikbaarkopie?test=test')
+        .del(url+'/5e846780-937b-471d-96e3-d567b86a95bb/beschikbaarkopie?test=test')
         .set('Authorization', adminAuthHeader);
       expect(response.statusCode).toBe(400);
       expect(response.body.code).toBe('VALIDATION_FAILED');
     });
     it('should be 409 when deleting an copy of an non existant book', async () => {
-      const response = await request.del(url+'/1e846780-937b-471d-96e3-d567b86a95bb/deletebeschikbaarkopie')
+      const response = await request.del(url+'/1e846780-937b-471d-96e3-d567b86a95bb/beschikbaarkopie')
         .set('Authorization', adminAuthHeader);
       expect(response.status).toBe(409); 
       expect(response.body).toMatchObject({

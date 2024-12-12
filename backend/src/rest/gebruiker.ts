@@ -151,7 +151,8 @@ getAllGebruikers.validationScheme = null;
  *         schema:
  *           type: string
  *           format: uuid
- *         description: Het ID van de gebruiker waarvan de reservaties opgehaald moeten worden. Als 'me' wordt gebruikt, worden de reservaties van de ingelogde gebruiker opgehaald.
+ *         description: Het ID van de gebruiker waarvan de reservaties opgehaald moeten worden.
+ *           Als 'me' wordt gebruikt, worden de reservaties van de ingelogde gebruiker opgehaald.
  *         example: "123e4567-e89b-12d3-a456-426614174000"
  *     responses:
  *       200:
@@ -281,7 +282,8 @@ registergebruiker.validationScheme = {
  * /api/gebruikers/{id}:
  *   delete:
  *     summary: Verwijder een gebruiker (soft delete)
- *     description: Verwijdert een gebruiker door middel van soft delete. Als de ID "me" is, verwijdert het de ingelogde gebruiker.
+ *     description: Verwijdert een gebruiker door middel van soft delete. Als de ID "me" is,
+ *       verwijdert het de ingelogde gebruiker.
  *     tags:
  *       - Gebruikers
  *     security:
@@ -380,7 +382,8 @@ getGebruikerById.validationScheme = {
  * /api/gebruikers/{id}:
  *   put:
  *     summary: Werk de gegevens van een gebruiker bij
- *     description: Werk de gegevens van een gebruiker bij op basis van het opgegeven ID. Als het ID "me" is, wordt de ingelogde gebruiker bijgewerkt.
+ *     description: Werk de gegevens van een gebruiker bij op basis van het opgegeven ID.
+ *       Als het ID "me" is, wordt de ingelogde gebruiker bijgewerkt.
  *     tags:
  *       - Gebruikers
  *     security:
@@ -469,7 +472,8 @@ updateGebruikerById.validationScheme = {
  * /api/forgot-password:
  *   post:
  *     summary: Stuur een reset wachtwoord e-mail
- *     description: Verstuurt een e-mail naar het opgegeven e-mailadres om het wachtwoord opnieuw in te stellen, indien het e-mailadres bestaat.
+ *     description: Verstuurt een e-mail naar het opgegeven e-mailadres om het wachtwoord opnieuw in te stellen,
+ *       indien het e-mailadres bestaat.
  *     tags:
  *       - Gebruikers
  *     security:

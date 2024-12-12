@@ -40,6 +40,7 @@ export default function withServer(setter: (s: supertest.Agent) => void): void {
   });
 
   afterAll(async () => {
+    await prisma.passwordReset.deleteMany();
     await prisma.gebruiker.deleteMany();
     await prisma.reservatie.deleteMany();
     await prisma.boekKopie.deleteMany();
