@@ -11,6 +11,48 @@ import type {
 } from '../types/koa';
 import type { LoginResponse, LoginRequest } from '../types/gebruiker';
 
+/**
+ * @swagger
+ * tags:
+ *   name: Sessions
+ *   description: Session management
+ */
+
+/**
+ * @swagger
+ * /api/sessions:
+ *   post:
+ *     summary: proberen in te loggen
+ *     tags:
+ *      - Sessions
+ *     requestBody:
+ *       description: De credentials van de gebruiker die probeert in te loggen
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: A JWT token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       400:
+ *         $ref: '#/components/responses/400BadRequest'
+ *       401:
+ *         $ref: '#/components/responses/401Unauthorized'
+ */
 const login = async (ctx: KoaContext<LoginResponse, void, LoginRequest>) => {
   const { email, password } = ctx.request.body;
   const token = await gebruikerService.login(email, password); 

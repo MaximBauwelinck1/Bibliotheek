@@ -219,8 +219,6 @@ import roles from '../core/roles';
  *     summary: Geeft alle boeken
  *     tags:
  *       - Boeken
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lijst met boeken
@@ -246,12 +244,14 @@ getAllBoeken.validationScheme = {
 
 /**
  * @swagger
- * /boeken/kopieen:
+ * /api/boeken/kopieen:
  *   get:
  *     summary: Haal alle boek kopieën op
  *     description: Haalt een lijst op van alle boek kopieën die beschikbaar zijn in het systeem.
  *     tags:
  *         - Boeken
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       401:
  *            $ref: '#/components/responses/401Unauthorized'
@@ -291,12 +291,14 @@ getAllBoekkopieen.validationScheme = null;
 /**
  * @swagger
  * paths:
- *   /boeken:
+ *   /api/boeken:
  *     post:
  *       summary: Creëer een nieuw boek
  *       description: Voegt een nieuw boek toe aan de bibliotheek.
  *       tags:
  *         - Boeken
+ *       security:
+ *       - bearerAuth: []
  *       requestBody:
  *         required: true
  *         content:
@@ -504,12 +506,14 @@ createBoek.validationScheme = {
 /**
  * @swagger
  * paths:
- *   /boeken/{id}:
+ *   /api/boeken/{id}:
  *     delete:
  *       summary: soft delete een boek op basis van ID
  *       description: Verwijdert een specifiek boek uit de bibliotheek op basis van het unieke ID.
  *       tags:
  *         - Boeken
+ *       security:
+ *       - bearerAuth: []
  *       parameters:
  *         - in: path
  *           name: id
@@ -569,7 +573,7 @@ deleteBoekById.validationScheme = {
 /**
  * @swagger
  * paths:
- *   /boeken/{id}:
+ *   /api/boeken/{id}:
  *     get:
  *       summary: Haal een boek op basis van ID
  *       description: Retourneert een specifiek boek uit de bibliotheek op basis van het unieke ID.
@@ -636,12 +640,14 @@ getBoekById.validationScheme = {
 
 /**
  * @swagger
- * /boeken/{id}/kopieen:
+ * /api/boeken/{id}/kopieen:
  *   get:
  *     summary: Haal alle boek kopieën van een specifiek boek op
  *     description: Haalt een lijst op van alle boek kopieën van een specifiek boek, geïdentificeerd door zijn unieke ID.
  *     tags:
  *         - Boeken
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -715,12 +721,14 @@ getAllBoekKopieenFromBoek.validationScheme = {
 
 /**
  * @swagger
- * /boeken/{boekId}/kopieen/{boekKopieId}:
+ * /api/boeken/{boekId}/kopieen/{boekKopieId}:
  *   get:
  *     summary: Haal een specifieke boek kopie op
  *     description: Haalt een specifieke boek kopie op van een specifiek boek, geïdentificeerd door de boek en boek kopie ID's.
  *     tags:
  *         - Boeken
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: boekId
@@ -794,12 +802,14 @@ getBoekKopieById.validationScheme = {
 };
 /**
  * @swagger
- * /boeken/{id}/beschikbaarkopie:
+ * /api/boeken/{id}/beschikbaarkopie:
  *   delete:
- *     summary: Verwijder een willekeurige boek kopie
+ *     summary: Verwijder een willekeurige boek kopie(soft Delete)
  *     description: Verwijdert een willekeurige boek kopie van het opgegeven boek, geïdentificeerd door het boek ID.
  *     tags:
  *         - Boeken
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -862,12 +872,14 @@ delRandomKopie.validationScheme = {
 /**
  * @swagger
  * paths:
- *   /boeken/{id}:
+ *   /api/boeken/{id}:
  *     put:
  *       summary: Werk een boek bij op basis van ID
  *       description: Update de details van een bestaand boek in de bibliotheek.
  *       tags:
  *         - Boeken
+ *       security:
+ *       - bearerAuth: []
  *       parameters:
  *         - in: path
  *           name: id
