@@ -63,53 +63,8 @@ Daarnaast kan dit ook gebruikt om reservaties te beheren en plannen van deze boe
 > Dit is weinig zinvol indien je enkel Front-end Web Development volgt, verwijder dan deze sectie.
 > Indien je als extra Swagger koos, dan voeg je hier een link toe naar jouw online documentatie. Swagger geeft nl. exact (en nog veel meer) wat je hieronder moet schrijven.
 
-### Gebruikers
-
-- `POST /api/gebruikers/passwordForgot`     : om een email te sturen naar de gebruiker voor zijn/haar wachtwoord te resetten(indien email bestaat)
-- `POST /api/gebruikers/passwordReset`      : de effectieve request om het wachtwoord te veranderen. Werkt alleen met een geldige token
-- `GET /api/gebruikers/:id/reservaties`     : om alle reservaties te krijgen van een bepaalde gebruiker
-- `GET /api/gebruikers`                     : alle gebruikers ophalen
-- `GET /api/gebruikers/:id`                 : gebruiker met een bepaald id ophalen
-- `POST /api/gebruikers`                    : om een nieuwe gebruiker te registreren
-- `DEL /api/gebruikers/:id`                 : om een gebruiker te soft deleten
-- `PUT /api/gebruikers/:id`                 : om een gebruiker te updaten
-
-### Boeken
-
-- `DEL /api/boeken/:id/beschikbaarkopie`       : delete een beschikbare kopie van een boek
-- `GET /api/boeken/kopieen`                          : geeft alle kopieen van alle boeken
-- `GET /api/boeken/:id/kopieen`                      : geeft alle kopieen terug van een boek
-- `GET api/boeken/:boekId/kopieen/:boekKopieId`      : geeft 1 exemplaar terug dat tot het boek behoort en de juist kopieId heeft
-- `GET /api/boeken`                                  : geeft alle boeken terug
-- `POST /api/boeken`                                 : om een nieuw boek aan te maken
-- `GET /api/boeken/:id`                              : geeft een boek terug met dezelfde id
-- `DEL /api/boeken/:id`                              : soft delete een boek
-- `PUT /api/boeken/:id`                              : update een boek met id
-
-### Health
-
-- `GET /api/health/ping`                             : geeft pong terug
-- `GET /api/health/details`                          : geeft informatie over de server terug
-
-### Kopieen
-
-- `GET /api/kopieen`                                 : geef alle kopieen terug 
-- `POST /api/kopieen`                                : maak een nieuw exemplaar aan
-- `GET /api/kopieen/:id`                             : geeft een specifiek exemplaar terug
-- `DEL api/kopieen/:id`                              : soft delete een exemplaar
-- `PUT /api/kopieen/:id`                             : update een kopie met id
-
-### Reservaties
-
-- `GET /api/reservaties`                                 : geef alle reservaties terug 
-- `POST /api/reservaties`                                : maak een nieuwe reservatie aan
-- `GET /api/reservaties/:id`                             : geeft een specifieke reservatie terug
-- `DEL api/reservaties/:id`                              : zet een reservatie op niet-actief en maak het exemplaar terug vrij
-- `PUT /api/reservaties/:id`                             : update een reservatie met id
-
-### sessions
-
-- `POST /api/sessions`                                : geeft een jwt token terug als de user de juist credentials meegeeft
+Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te bezoeken.
+``http://localhost:9000/swagger``
 
 ## Behaalde minimumvereisten
 
