@@ -2,7 +2,8 @@ import { useForm } from 'react-hook-form';
 import styles from '../css/Register.module.css';
 import { useMemo } from 'react';
 import ToonError from './ToonError';
-  
+import PasswordStrength from './PasswordStrength';
+
 let errorStack ='';
 export default function Register({ registerTrigger, error,loading }) {
 
@@ -12,6 +13,7 @@ export default function Register({ registerTrigger, error,loading }) {
     formState: { errors },
     reset,
     getValues,
+    watch,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -25,6 +27,10 @@ export default function Register({ registerTrigger, error,loading }) {
     },
     password: {
       required: 'Wachtwoord mag niet leeg zijn.',  
+      minLength: {
+        value: 8,  
+        message: 'Wachtwoord moet minimaal 8 tekens lang zijn.' ,
+      },
     },
     voornaam:{ required: 'Voornaam is verplicht' },
     achternaam:{ required: 'Achternaam is verplicht' },
@@ -122,6 +128,7 @@ export default function Register({ registerTrigger, error,loading }) {
             className={styles.input}
           />
           {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+          <PasswordStrength pwd={watch('password')}/>
         </div>
 
         <div className={styles.field}>

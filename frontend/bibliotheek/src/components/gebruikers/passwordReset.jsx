@@ -21,6 +21,10 @@ export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
   const validationRules = useMemo(()=> ({
     password: {
       required: 'Wachtwoord mag niet leeg zijn.',  
+      minLength: {
+        value: 8,  
+        message: 'Wachtwoord moet minimaal 8 tekens lang zijn.' ,
+      },
     },
     confirmPassword:{
       required: 'Bevestig wachtwoord is verplicht',
