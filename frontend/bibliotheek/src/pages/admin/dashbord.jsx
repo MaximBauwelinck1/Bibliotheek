@@ -5,6 +5,7 @@ import * as dashboard from './../../css/Dashboard.module.css';
 import DashboardMenu from '../../components/dashboard/dashboardMenu';
 import { useState } from 'react';
 import BoekKopiePaneel from '../../components/dashboard/boekkopiePaneel';
+import Grafieken from './Grafieken';
 const Dashbord = ({init_menu='boeken'}) => {
   const [menu,setMenu] = useState(init_menu);
   const handlclick = (btn) =>{
@@ -18,6 +19,7 @@ const Dashbord = ({init_menu='boeken'}) => {
         {menu === 'gebruikers' && <GebruikersPaneel />}
         {menu === 'reservaties' && <ReservatiesPaneel />}
         {menu === 'boekkopieen' && <BoekKopiePaneel />}
+        {menu === 'grafieken' && <Grafieken />}
       </div>
     </>
   );

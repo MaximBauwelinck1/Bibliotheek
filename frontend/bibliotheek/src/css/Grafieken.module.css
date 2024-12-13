@@ -1,0 +1,16 @@
+
+.charts_container {
+    display: grid;
+    grid-template-columns: repeat(2, 45vw); 
+    gap: 20px; 
+    width: 100vw; 
+    height: auto;
+  }
+  
+  
+  .chart_item {
+    width: 100%;
+    height: 100%; 
+  }
+  
+  

@@ -28,6 +28,7 @@ import EditGebruikerPage from './pages/gebruikers/EditGebruikerPage.jsx';
 import ChangepasswordPage from './pages/gebruikers/ChangPasswordPage.jsx';
 import PasswordVergeten from './pages/gebruikers/PasswordVergetenPage.jsx';
 import ResetpasswordPage from './pages/gebruikers/ResetPasswordPage.jsx';
+import Grafieken from './pages/admin/Grafieken.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
@@ -165,6 +166,16 @@ const router = createBrowserRouter([
                 path: 'edit/:id',
                 element: <AddOrEditBoekKopie />,
               },
+            ],
+          },
+          {
+            path:'grafieken',
+            children: [
+              {
+                index: true,
+                element: <Dashbord init_menu='grafieken'  />,
+              },
+              
             ],
           },
         ],
