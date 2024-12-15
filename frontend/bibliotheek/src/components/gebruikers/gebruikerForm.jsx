@@ -1,7 +1,7 @@
 import * as styles from '../../css/Form.module.css';
 import { useForm } from 'react-hook-form';
 import {  useNavigate } from 'react-router';
-import { useState } from 'react';
+
 const LEGE_GEBRUIKER = {
   voornaam: undefined,
   achternaam: undefined,
@@ -13,7 +13,6 @@ const LEGE_GEBRUIKER = {
 
 export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) {
   const navigate = useNavigate();
-  const [loading,setLoading] = useState(false);
   // dit is puur voor render omdat daar de requests 10 langer duren en isSubmitting niet wertk
   const { register, handleSubmit,formState: {isValid,errors,isSubmitting,isLoading,isValidating }, reset } = useForm({
     mode: 'onBlur',
@@ -30,11 +29,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
   });
   console.log(isSubmitting);
   const onSubmit = async (values) => {
-    setLoading(true);
-    if (!isValid) {
-      setLoading(false);
-      return;
-    }
+    if (!isValid)  return;
     const { password, ...restData } = values;
     const formData = password && password.length >= 8 ? { ...restData, password } : restData;
     await saveGebruiker({
@@ -46,7 +41,6 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
         navigate('/dashboard/gebruikers');
       },
     });
-    setLoading(false);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`${styles.formContainer} w-50 mb-3`}>
