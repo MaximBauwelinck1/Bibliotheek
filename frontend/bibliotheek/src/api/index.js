@@ -32,7 +32,6 @@ export const deleteById = async (url, { arg: id }) => {
 };
 
 export const save = async (url, { arg: { id, ...data } }) => {
-  console.log(data.values);
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${url}/${id ?? ''}`,
