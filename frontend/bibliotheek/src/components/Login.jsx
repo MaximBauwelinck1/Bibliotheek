@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import * as styles from '../css/Login.module.css';
 import ToonError from './ToonError';
 import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 const validationRules = {
   email: {
     required: 'Email mag niet leeg zijn.',
@@ -13,6 +14,8 @@ const validationRules = {
 };
 
 export default function Login({ login, error,loading }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const opt_error = searchParams.get('error');
   const {
     register,
     handleSubmit,
@@ -39,13 +42,14 @@ export default function Login({ login, error,loading }) {
   };
 
   const errorBericht = error&& error.response? error.response.data.message:
-    error && error.name === 'AxiosError'?error.message:''; 
+    error && error.name === 'AxiosError'?error.message:
+      opt_error === 'expired'? 'Je bent automatisch weer uitgelogd na een bepaalde periode':''; 
   // om netwerkerror te vermijden indien back end niet werkt, doet pagina crashen omdat error geen response bevat
   return (
     <div className={styles.bibliotheek_login}>
       <div className={styles.login_container}>
         <h2 className={styles.login_titel}>Aanmelden bij bibliotheek Temse</h2>
-        <ToonError isOpen={error} title='Fout bij aanmelden' message={errorBericht}/>
+        <ToonError isOpen={error || opt_error} title='Fout bij aanmelden' message={errorBericht}/>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.login_form}>
           <input
             type='email'

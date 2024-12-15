@@ -16,16 +16,13 @@ axios.interceptors.request.use((config) => {
 });
 axios.interceptors.response.use(
   (response) => {
-    // If the response is successful, just return it
     return response;
   },
   (error) => {
-    // Check if the response status is 401
     if (error.response?.status === 401) {
       localStorage.removeItem(JWT_TOKEN_KEY);
-      window.location.href = '/login';
+      window.location.href = '/login?error=expired';
     }
-    // Reject the promise with the error object for other errors
     return Promise.reject(error);
   },
 );
