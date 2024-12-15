@@ -1,6 +1,5 @@
 import axiosRoot from 'axios'; 
 import { JWT_TOKEN_KEY } from '../contexts/Auth.context';
-
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const axios = axiosRoot.create({
@@ -16,6 +15,21 @@ axios.interceptors.request.use((config) => {
 
   return config;
 });
+axios.interceptors.response.use(
+  (response) => {
+    // If the response is successful, just return it
+    return response;
+  },
+  (error) => {
+    // Check if the response status is 401
+    if (error.response?.status === 401) {
+      // Redirect to the login page
+    //  window.location.href = '/test';
+    }
+    // Reject the promise with the error object for other errors
+    return Promise.reject(error);
+  },
+);
 export async function getAll(url) {
   const { data } = await axios.get(url); 
   return data.items;

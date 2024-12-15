@@ -12,7 +12,7 @@ const LEGE_KOPIE = {
 
 export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid,isSubmitting }, reset } = useForm({
+  const { register, handleSubmit,formState: {isValid,isSubmitting,isLoading,isValidating }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       status:kopie.status,
@@ -91,9 +91,9 @@ export default function BoekKopieForm({kopie: kopie=LEGE_KOPIE,saveKopie}) {
       </div>
       <button type="submit" className={styles.submitButton}>
       
-        { !isSubmitting? kopie?.id
+        { isSubmitting || isLoading|| isValidating?<div className='spinner-border'></div>: kopie?.id
           ? 'Werk kopie bij'
-          : 'Maak een nieuwe kopie aan': <div className='spinner-border'></div>}
+          : 'Maak een nieuwe kopie aan'}
       </button>
     </form>
   );

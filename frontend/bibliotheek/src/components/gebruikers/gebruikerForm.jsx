@@ -147,7 +147,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
       </div>
       {errors.password && <p data-cy='password_error' className={styles.error}>{errors.password.message}</p>}
       <button type="submit" className={styles.submitButton} data-cy='submit_gebruiker'>
-        { isSubmitting || loading || isLoading|| isValidating? <div className='spinner-border'></div> :gebruiker?.id
+        { isSubmitting  || isLoading|| isValidating? <div className='spinner-border'></div> :gebruiker?.id
           ? 'Werk Gebruiker bij'
           : 'Maak een nieuwe gebruiker aan'}
       </button>

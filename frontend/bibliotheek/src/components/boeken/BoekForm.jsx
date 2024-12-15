@@ -88,7 +88,7 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
     setVrijeKopieen(value);
   };
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors,isValid,isSubmitting }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors,isValid,isSubmitting,isValidating,isLoading }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       ISBN: boek.ISBN,
@@ -402,8 +402,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
         </div>
       
         <button type="submit" className={styles.submitButton}>
-          { !isSubmitting? boek?.id ? 'Werk Boek bij' : 'Maak een nieuw Boek aan':
-            <div className='spinner-border'></div>}
+          { isSubmitting || isLoading || isValidating? <div className='spinner-border'></div>:
+            boek?.id ? 'Werk Boek bij' : 'Maak een nieuw Boek aan'}
         </button>
       </form>
       <ToonBevestiging
