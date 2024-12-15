@@ -13,7 +13,7 @@ const LEGE_GEBRUIKER = {
 
 export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) {
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid,errors,isLoading }, reset } = useForm({
+  const { register, handleSubmit,formState: {isValid,errors,isSubmitting }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       voornaam:gebruiker.voornaam,
@@ -26,7 +26,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
       password:'',
     },
   });
-
+  console.log(isSubmitting);
   const onSubmit = async (values) => {
     if (!isValid) return;
     const { password, ...restData } = values;
@@ -140,7 +140,7 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
       </div>
       {errors.password && <p data-cy='password_error' className={styles.error}>{errors.password.message}</p>}
       <button type="submit" className={styles.submitButton} data-cy='submit_gebruiker'>
-        { !isLoading?gebruiker?.id
+        { !isSubmitting?gebruiker?.id
           ? 'Werk Gebruiker bij'
           : 'Maak een nieuwe gebruiker aan': <div className='spinner-border'></div>}
       </button>
