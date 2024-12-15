@@ -88,7 +88,7 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
     setVrijeKopieen(value);
   };
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors,isValid }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors,isValid,isSubmitting }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       ISBN: boek.ISBN,
@@ -112,7 +112,6 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
       biografie: boek.auteur.biografie,
     },
   });
-
   const onSubmit = async (values) => {
     const formattedData = {
       ISBN: values.ISBN,
@@ -403,7 +402,8 @@ export default function BoekForm({ boek = LEEG_BOEK,saveBoek,saveKopie,DeleteKop
         </div>
       
         <button type="submit" className={styles.submitButton}>
-          {boek?.id ? 'Werk Boek bij' : 'Maak een nieuw Boek aan'}
+          { !isSubmitting? boek?.id ? 'Werk Boek bij' : 'Maak een nieuw Boek aan':
+            <div className='spinner-border'></div>}
         </button>
       </form>
       <ToonBevestiging

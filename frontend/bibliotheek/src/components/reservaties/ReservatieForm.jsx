@@ -15,7 +15,7 @@ const LEGE_RESERVATIE = {
 
 export default function ReservatieForm({reservatie=LEGE_RESERVATIE,saveReservatie}) {
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid }, reset } = useForm({
+  const { register, handleSubmit,formState: {isValid,isSubmitting }, reset } = useForm({
     mode: 'onBlur',
     defaultValues: {
       status:reservatie.status,
@@ -109,9 +109,9 @@ export default function ReservatieForm({reservatie=LEGE_RESERVATIE,saveReservati
         />
       </div>
       <button type="submit" className={styles.submitButton}>
-        {reservatie?.id
+        { !isSubmitting?reservatie?.id
           ? 'Werk reservatie bij'
-          : 'Maak een nieuwe reservatie aan'}
+          : 'Maak een nieuwe reservatie aan': <div className='spinner-border'></div>}
       </button>
     </form>
   );
