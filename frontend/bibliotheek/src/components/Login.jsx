@@ -14,7 +14,7 @@ const validationRules = {
 };
 
 export default function Login({ login, error,loading }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const opt_error = searchParams.get('error');
   const {
     register,
@@ -49,7 +49,7 @@ export default function Login({ login, error,loading }) {
     <div className={styles.bibliotheek_login}>
       <div className={styles.login_container}>
         <h2 className={styles.login_titel}>Aanmelden bij bibliotheek Temse</h2>
-        <ToonError isOpen={error || opt_error} title='Fout bij aanmelden' message={errorBericht}/>
+        <ToonError isOpen={error || opt_error} title={error?'Fout bij aanmelden':'Opgelet'} message={errorBericht}/>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.login_form}>
           <input
             type='email'
