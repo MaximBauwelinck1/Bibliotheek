@@ -17,8 +17,8 @@ export default function PopulaireBoekenChart() {
       map.set(title, (map.get(title) || 0) + 1);
       return map;
     }, new Map());
-    const labels =[...aantal].map(([key]) => key);
-    let data = [...aantal].map(([key, value]) => value);
+    const labels =[...aantal].map((entry) => entry[0]);
+    let data = [...aantal].map((entry) => entry[1]);
     return {
       labels,
       datasets: [

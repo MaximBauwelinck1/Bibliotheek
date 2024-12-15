@@ -29,9 +29,11 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
 
   const onSubmit = async (values) => {
     if (!isValid) return;
+    const { password, ...restData } = values;
+    const formData = password && password.length >= 8 ? { ...restData, password } : restData;
     await saveGebruiker({
       id: gebruiker?.id,
-      values}, {
+      values:formData}, {
       throwOnError: false,
       onSuccess: () =>{
         reset();
@@ -124,14 +126,16 @@ export default function GebruikerForm({gebruiker=LEGE_GEBRUIKER,saveGebruiker}) 
           Wachtwoord:
         </label>
         <input
-          {...register('password',{required:true,  
-            validate: (value) => value.length >=8 || 'Wachtwoord moet minstens 8 tekens bevatten'}) }
+          {...register('password',{required:false,  
+            validate: (value) => {
+              if (!value) return true;
+              return value.length >= 8 || 'Wachtwoord moet minstens 8 tekens bevatten';
+            }}) }
           id="password"
           name="password"
           type="password"
           className={styles.textInput}
           data-cy='password'
-          required
         />
       </div>
       {errors.password && <p data-cy='password_error' className={styles.error}>{errors.password.message}</p>}
