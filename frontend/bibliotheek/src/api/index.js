@@ -32,7 +32,6 @@ export const deleteById = async (url, { arg: id }) => {
 };
 
 export const save = async (url, { arg: { id, ...data } }) => {
-  console.log(data);
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${url}/${id ?? ''}`,
@@ -45,7 +44,6 @@ export const deleteRandomBeschikbaarExemplaar = async (url,{ arg: id }) => {
 };
 
 export const post = async (url, { arg }) => {
-  console.log(arg);
   const { data } = await axios.post(`${url}`, arg);
   return data;
 };

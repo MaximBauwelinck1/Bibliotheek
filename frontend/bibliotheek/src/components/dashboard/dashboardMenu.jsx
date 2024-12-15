@@ -18,7 +18,7 @@ const  DashboardMenu = ({onAction}) =>{
       }}>Boek Kopieën</button>
       <button className={styles.blue_button} onClick={() =>{
         navigate('/dashboard/grafieken');onAction('grafieken');
-      }}>Grafieken</button>
+      }}>Statistieken</button>
     </div>
   );
 };

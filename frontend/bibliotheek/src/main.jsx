@@ -28,9 +28,11 @@ import EditGebruikerPage from './pages/gebruikers/EditGebruikerPage.jsx';
 import ChangepasswordPage from './pages/gebruikers/ChangPasswordPage.jsx';
 import PasswordVergeten from './pages/gebruikers/PasswordVergetenPage.jsx';
 import ResetpasswordPage from './pages/gebruikers/ResetPasswordPage.jsx';
+import ServerError from './components/ServerError.jsx';
 const router = createBrowserRouter([
   {
     element: <Layout />, 
+    errorElement: <ServerError/>,
     children: [
       { 
         path: '/',
@@ -201,7 +203,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <ThemeProvider>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}/>
       </ThemeProvider>
     </AuthProvider>
   </StrictMode>,

@@ -13,7 +13,6 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem(JWT_TOKEN_KEY)); 
- 
   const {
     data: user,
     loading: userLoading,
@@ -88,7 +87,9 @@ export const AuthProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       user,
-      error: loginError || userError || registerError,
+      loginError: loginError || userError, 
+      // errors gescheiden houden, anders kan je een loginError krijgen op de register pagina
+      registerError: registerError || userError,
       loading: loginLoading || userLoading || registerLoading,
       isAuthed: Boolean(token),
       ready: !userLoading,

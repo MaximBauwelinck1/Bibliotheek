@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 export default function LoginPage() {
   const { search } = useLocation();
-  const { error, loading, login } = useAuth(); 
+  const { loginError, loading, login } = useAuth(); 
   const navigate = useNavigate();
 
   const handleLogin = useCallback(
@@ -25,7 +25,7 @@ export default function LoginPage() {
   return (
     <> 
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
-      <Login login={handleLogin} error={error} loading={loading}/>
+      <Login login={handleLogin} error={loginError} loading={loading}/>
     </>
   );
 }

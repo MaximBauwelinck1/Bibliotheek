@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form';
 import {  useNavigate } from 'react-router';
 import { useMemo } from 'react';
 import ToonError from '../ToonError';
+import PasswordStrength from '../PasswordStrength';
 
 let errorStack ='';
 export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) {
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid,errors }, reset,getValues } = useForm({
+  const { register, handleSubmit,formState: {isValid,errors }, reset,getValues,watch } = useForm({
     mode: 'onBlur',
     defaultValues:{
       password: '',
@@ -85,6 +86,7 @@ export default function PasswordChange({gebruiker,saveGebruiker,error,loading}) 
             {errors.confirmPassword && (
               <p className={styles.error}>{errors.confirmPassword.message}</p>
             )}
+            <PasswordStrength pwd={watch('password')}/>
           </div>
           <button type="submit" className={styles.login_button}>
             { !loading? 'Aanpassen': <div className='spinner-border'></div>}

@@ -1,6 +1,4 @@
-// src/pages/about/About.jsx
 import { LoremIpsum } from 'react-lorem-ipsum';
-
 const About = () => (
   <div>
     <h1>Over ons</h1>

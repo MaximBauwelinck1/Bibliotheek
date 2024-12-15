@@ -59,13 +59,8 @@ export default function Register({ registerTrigger, error,loading }) {
       console.error('Login failed:', error);
     }
   };
- 
   if(error && error.response.data.message !='De token is vervallen'){
-    Object.values(error.response.data.details.body).map((val)=>{
-      val.map((val2)=>{
-        errorStack += `${val2.message} \n`;
-      });
-    });
+    errorStack = error.response.data.message;
   }
 
   const errorBericht = error? errorStack:'';

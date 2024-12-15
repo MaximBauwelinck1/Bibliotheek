@@ -4,6 +4,7 @@ import {  useNavigate } from 'react-router';
 import { useMemo } from 'react';
 import ToonError from '../ToonError';
 import { useLocation } from 'react-router';
+import PasswordStrength from '../PasswordStrength';
   
 let errorStack ='';
 export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
@@ -12,7 +13,7 @@ export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
 
   const token = queryParams.get('token');
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: {isValid,errors }, reset,getValues } = useForm({
+  const { register, handleSubmit,formState: {isValid,errors }, reset,getValues,watch } = useForm({
     mode: 'onBlur',
     defaultValues:{
       password: '',
@@ -76,6 +77,7 @@ export default function PasswordReset({gebruiker,saveGebruiker,error,loading}) {
               {...register('password', validationRules.password)}
             />
             {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+            <PasswordStrength pwd={watch('password')}/>
           </div>
 
           <div className={styles.field}>

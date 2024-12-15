@@ -215,17 +215,30 @@ export const login = async (
 };
 
 export const register = async (new_gebruiker: RegisterGebruikerRequest): Promise<string> => {
-  const opt_boek = await prisma.gebruiker.findFirst({
+  const opt_gebr = await prisma.gebruiker.findFirst({
     where: {
-      AND:[
-        { voornaam: new_gebruiker.voornaam},
-        {achternaam: new_gebruiker.achternaam},
+      OR: [
+        {
+          AND: [
+            { voornaam: new_gebruiker.voornaam },
+            { achternaam: new_gebruiker.achternaam },
+          ],
+        },
+        { email: new_gebruiker.email },
       ],
-    }, 
+    },
   });
-
-  if (opt_boek) {
-    throw ServiceError.conflict('gebruiker met voor en achternaam bestaat al!');
+  
+  if (opt_gebr) {
+    if (
+      opt_gebr.voornaam === new_gebruiker.voornaam &&
+      opt_gebr.achternaam === new_gebruiker.achternaam
+    ) {
+      throw ServiceError.conflict('gebruiker met voor en achternaam bestaat al!');
+    }
+    if (opt_gebr.email === new_gebruiker.email) {
+      throw ServiceError.conflict('Een gebruiker met dit e-mailadres bestaat al!');
+    }
   }
 
   try {

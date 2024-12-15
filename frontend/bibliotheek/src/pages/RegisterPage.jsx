@@ -7,7 +7,7 @@ import Register from '../components/Register';
 
 export default function RegisterPage() {
   const { search } = useLocation();
-  const { error, loading, register,user } = useAuth(); 
+  const { registerError, loading, register,user } = useAuth(); 
   const navigate = useNavigate();
   if(user){
     navigate('/');
@@ -28,7 +28,7 @@ export default function RegisterPage() {
   return (
     <> 
       <Link to={'/boeken'}> <button className='top_left_button' >Terugkeren</button></Link>    
-      <Register registerTrigger={handleRegister} error={error} loading={loading}/>
+      <Register registerTrigger={handleRegister} error={registerError} loading={loading}/>
     </>
   );
 }
