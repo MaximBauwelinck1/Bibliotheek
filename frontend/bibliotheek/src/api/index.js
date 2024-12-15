@@ -1,7 +1,6 @@
 import axiosRoot from 'axios'; 
 import { JWT_TOKEN_KEY } from '../contexts/Auth.context';
 const baseUrl = import.meta.env.VITE_API_URL;
-
 export const axios = axiosRoot.create({
   baseURL: baseUrl,
 });
@@ -23,8 +22,8 @@ axios.interceptors.response.use(
   (error) => {
     // Check if the response status is 401
     if (error.response?.status === 401) {
-      // Redirect to the login page
-    //  window.location.href = '/test';
+      localStorage.removeItem(JWT_TOKEN_KEY);
+      window.location.href = '/login';
     }
     // Reject the promise with the error object for other errors
     return Promise.reject(error);

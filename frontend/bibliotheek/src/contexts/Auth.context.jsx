@@ -3,7 +3,6 @@ import {
   useState, 
   useCallback, 
   useMemo, 
-  useEffect,
 } from 'react';
 import useSWRMutation from 'swr/mutation'; 
 import * as api from '../api'; 
@@ -13,7 +12,6 @@ export const JWT_TOKEN_KEY = 'jwtToken';
 export const AuthContext = createContext(); 
 
 export const AuthProvider = ({ children }) => {
-  const [vervallen,setVervallen] = useState(false);
   const [token, setToken] = useState(localStorage.getItem(JWT_TOKEN_KEY)); 
   const {
     data: user,
@@ -21,13 +19,6 @@ export const AuthProvider = ({ children }) => {
     error: userError,
   } = useSWR(token ? 'gebruikers/me' : null, api.getById);
 
-  useEffect(() => {
-    console.log(vervallen);
-    if (userError?.response?.status === 401 && vervallen=== false) {
-      setVervallen(true);
-      // window.location.href = '/login';
-    }
-  }, [userError, vervallen]);
   const {
     trigger: doLogin,
     isMutating: loginLoading,
