@@ -101,6 +101,11 @@ EMAIL_PASSWORD="bwci wedh tnaj ftef"
 ```bash
 yarn prisma migrate dev
 ```
+
+2) om de server te starten tot slot gebruik je het volgende commando
+```bash
+yarn start:dev
+```
 ## production
 1) Als je het project wilt opzetten voor production voer je het volgende commando uit om alleen de databank op te zetten met de nodige migrations.
 ```bash
