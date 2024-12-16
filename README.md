@@ -116,7 +116,7 @@ yarn prisma migrate deploy
 yarn prisma db seed
 ```
 
-- om de server te starten tot slot gebruik je het volgende commando
+3) om de server te starten tot slot gebruik je het volgende commando
 ```bash
 yarn start:dev
 ```
