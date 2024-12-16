@@ -23,7 +23,6 @@ Al deze commands hebben betrekking tot de front-end en moeten dus in deze folder
 
 ``{home}\frontendweb-2425-MaximBauwelinck1\frontend\bibliotheek``
 
-
 Dit project maakt gebruik van Yarn v2.Dus als eerste moeten we corepack inschakelen.
 
 - open een terminal als administrator en voer volgend commando uit.

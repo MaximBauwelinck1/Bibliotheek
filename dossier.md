@@ -1,9 +1,5 @@
 # Dossier
 
-> Duid aan welke vakken je volgt en vermeld voor deze vakken de link naar jouw GitHub repository. In het geval je slechts één vak volgt, verwijder alle inhoud omtrent het andere vak uit dit document.
-> Lees <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet> om te weten hoe een Markdown-bestand opgemaakt moet worden.
-> Verwijder alle instructies (lijnen die starten met >).
-
 - Student: Maxim Bauwelinck
 - Studentennummer: 302041mb
 - E-mailadres: <mailto:voornaam.naam@student.hogent.be>
@@ -22,7 +18,7 @@ deze gebruiker heeft als rol user
 - e-mailadres: john.doe@example.com
 - Wachtwoord: gebruiker1
 
-deze gebruiker heeft als rol admin
+deze gebruiker heeft als rol admin (heeft toegang tot dashboard)
 - e-mailadres: jane.smith@example.com
 - Wachtwoord: admin1
 
@@ -32,36 +28,36 @@ deze gebruiker heeft als rol user
 - e-mailadres: john.doe@example.com
 - Wachtwoord: gebruiker1
 
-deze gebruiker heeft als rol admin
+deze gebruiker heeft als rol admin (heeft toegang tot dashboard)
 - e-mailadres: jane.smith@example.com
 - Wachtwoord: admin1
+
+Je kan zelf ook een acount aanmaken met een bestaand e-mailadres om gebruik te maken van nodemailer. (Bevestiging mail bij reserveren boek, mail voor wachtwoord te resetten)
 
 
 ## Projectbeschrijving
 
-> Omschrijf hier duidelijk waarover jouw project gaat. Voeg een domeinmodel (of EERD) toe om jouw entiteiten te verduidelijken.
-
 De applicatie is bedoelt voor een bibliotheek of andere instelling met veel boeken. Je kan hiermee als eerste gewoon de stock beheren van boeken(admin kant).
-Daarnaast kan dit ook gebruikt om reservaties te beheren en plannen van deze boeken. Een gebruiker kan de boeken browsen en boeken reserveren. 
+Daarnaast kan dit ook gebruikt om reservaties te maken en beheren van deze boeken. Een gebruiker kan de boeken browsen en boeken reserveren. 
+![alt text](/docs/img/image-211.png)
 
 ## Screenshots
 
 ## verloop user
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](/docs/img/image-112.png)
+![alt text](/docs/img/image.png)
+![alt text](/docs/img/image-1.png)
+![alt text](/docs/img/image-2.png)
+![alt text](/docs/img/image-3.png)
 
 ## verloop admin
-![alt text](image-4.png)
-![alt text](image-5.png)
-![alt text](image-6.png)
-
+![alt text](/docs/img/image-4.png)
+![alt text](/docs/img/image-5.png)
+![alt text](/docs/img/image-6.png)
+![alt text](/docs/img/image-111.png)
+![alt text](/docs/img/image-113.png)
 ## API calls
 
-> Maak hier een oplijsting van alle API cals in jouw applicatie. Groepeer dit per entiteit. Hieronder een voorbeeld.
-> Dit is weinig zinvol indien je enkel Front-end Web Development volgt, verwijder dan deze sectie.
-> Indien je als extra Swagger koos, dan voeg je hier een link toe naar jouw online documentatie. Swagger geeft nl. exact (en nog veel meer) wat je hieronder moet schrijven.
 
 Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te bezoeken.
 ``http://localhost:9000/swagger``
@@ -99,10 +95,10 @@ Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te be
 #### Algemeen
 
 - [x] een aantal niet-triviale én werkende e2e testen
-- [ ] minstens één extra technologie
+- [x] minstens één extra technologie
 - [x] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-- [ ] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
+- [x] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
 - [x] de applicatie draait online
 - [x] duidelijke en volledige README.md
 - [x] er werden voldoende (kleine) commits gemaakt
@@ -143,11 +139,11 @@ Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te be
 #### Algemeen
 
 - [x] er is een minimum aan logging en configuratie voorzien
-- [ ] een aantal niet-triviale én werkende integratietesten (min. 1 entiteit in REST-laag >= 90% coverage, naast de user testen)
+- [x] een aantal niet-triviale én werkende integratietesten (min. 1 entiteit in REST-laag >= 90% coverage, naast de user testen)
 - [x] node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - [x] minstens één extra technologie die we niet gezien hebben in de les
 - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-- [ ] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
+- [x] de applicatie start zonder problemen op gebruikmakend van de instructies in de README
 - [x] de API draait online
 - [x] duidelijke en volledige README.md
 - [x] er werden voldoende (kleine) commits gemaakt
@@ -157,27 +153,51 @@ Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te be
 
 ### Front-end Web Development
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns, hiërarchie van componenten, state...)?
+Ik heb een normale mappen structuur met in mijn ``src`` folder een ``pages``,``components``,``contexts`` en ``api`` folders met nog een paar extra voor css en foto's. In mijn ``main.jsx`` heb ik bij een route altijd verwezen naar een element uit de ``pages`` folder en niet rechtstreeks naar een component. Omdat ik deze bv meerdere keren zou nodig moeten hebben en zo duplicate code kan vermijden. De ``components`` folder bevat veel herbuikbare UI elementen. Dit is volgens het component-based architecture model zodat de applicatie consistent is. Ik heb twee keer gebruik gemaakt van contexts voor gedeelte state(theme en Auth). Daarnaast heb ik ook veel useState gebruikt voor kleine componenten om bv te filteren. 
 
 ### Web Services
 
 > Hoe heb je jouw applicatie gestructureerd (mappen, design patterns...)?
 
+Ik heb een normale mappen structuur met in mijn ``src`` folder een ``core``,``data``,``rest``,``service`` en ``types`` folders met nog een extra folder voor mijn utils. In zowel de ``rest`` als ``service`` laag zijn de entiteiten van elkaar afgezonderd. De ``core`` folder bevat veel helper functies die over heel de applicatie gebruikt worden. Ik maak ook gebruik van het middleware pattern, bij een endpoint word er eerst gecontroleerd of de user de juiste permissies heeft dan de request te valideren etc alvorens de endpoint uit te voeren.
 ## Extra technologie
 
 ### Front-end Web Development
 
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+#### Chartjs
 
+https://www.chartjs.org/
+
+https://www.npmjs.com/package/chart.js?activeTab=readme
+
+Deze zijn alleen zichtbaar in het dashboard dat enkel toegangkelijk is voor admins. Deze tonen het aantal reservaties de afgelopen week per dag. De andere geeft een overzicht van alle boeken die al gereserveerd zijn geweest en hoe vaak.
+![alt text](/docs/img/image-111.png)
+
+#### wachtwoord sterkte indicator
+
+Daarnaast heb ik nog een kleine extra toegevoegd, deze toont hoe sterk het wachtwoord is op basis van lengte, uppercase,lowercase, tekens en getallen. Deze is zichtbaar bij het registreren, wachtwoord veranderen pagina en wachtwoord reset pagina
 ### Web Services
 
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+#### nodemailer
+
+https://www.nodemailer.com/
+
+https://www.npmjs.com/package/nodemailer
+
+Users kunnen hun wachtwoord resetten door op wachtwoord vergeten te klikken en hun e-mailadres in te vullen. Zo kunnen ze in hun email op de link klikken om het wachtwoord te veranderen. Daarnaast krijgen gebruikers ook een bevestiging als ze een boek reserveren met de belangerijkste data opgelijst.
+![alt text](/docs/img/image-117.png)
+![alt text](/docs/img/image-118.png)
+
+#### swagger 
+
+https://swagger.io/
+
 
 ## Gekende bugs
 
 ### Front-end Web Development
 
-> Zijn er gekende bugs?
+De theme toggle werkt niet op elke pagina of maakt het soms slechter door het contrast aan te passen op een slechte manier.
 
 ### Web Services
 
