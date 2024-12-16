@@ -12,6 +12,8 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [Yarn](https://yarnpkg.com)
 - [Postgresql](https://www.postgresql.org/download/)
 
+Stel dan een wachtwoord in voor de default gebruiker ``postgres`` en noteer deze.
+
 ### optioneel
 
 een gratis database GUI om de databank te bekijken
