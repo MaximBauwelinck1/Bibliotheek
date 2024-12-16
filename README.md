@@ -78,22 +78,22 @@ yarn install
 ```
 ## .env
 - maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
-Als je je eigen gmail wilt gebruiken pas dan de EMAIL_USER aan en maak een [app password](https://myaccount.google.com/apppasswords?rapt=AEjHL4PseaCWdtEz9MXbV6GxHCzKCuk49Nd9c-kUwbv9d7kcDXUiZkwm1IdLGUqPsGtBW0mOibHtCd6mdmewjUi7hIH5zJ9jtlyN_YmbStEz4HmIJujBcpY) aan.
+Je kan je eigen gmail gebruiken voor de mailserver. Pas dan de EMAIL_USER aan met je eigen email en maak een [app password](https://myaccount.google.com/apppasswords?rapt=AEjHL4PseaCWdtEz9MXbV6GxHCzKCuk49Nd9c-kUwbv9d7kcDXUiZkwm1IdLGUqPsGtBW0mOibHtCd6mdmewjUi7hIH5zJ9jtlyN_YmbStEz4HmIJujBcpY) aan.
 Pas dan EMAIL_PASSWORD aan met het app password dat je zonet gemaakt hebt.
 ```
 NODE_ENV=development
 DATABASE_URL="postgres://<username>:<password>@localhost:5432/bibliotheek"
 AANTAL_KOPIEEN_P_BOEK=5
-EMAIL_USER="maximbauwelinck@gmail.com"
-EMAIL_PASSWORD="bwci wedh tnaj ftef"
+EMAIL_USER="<e-mailadres>"
+EMAIL_PASSWORD="<app wachtwoord>"
 ```
 - en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
 ```
 NODE_ENV=testing
 DATABASE_URL="postgres://<username>:<password>@localhost:5432/bibliotheek_test"
 AANTAL_KOPIEEN_P_BOEK=5
-EMAIL_USER="maximbauwelinck@gmail.com"
-EMAIL_PASSWORD="bwci wedh tnaj ftef"
+EMAIL_USER="<e-mailadres>"
+EMAIL_PASSWORD="<app wachtwoord>"
 ```
 
 ## Development
