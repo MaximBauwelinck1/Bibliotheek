@@ -19,7 +19,9 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401) {
+    console.log(error);
+    if (error.response?.status === 401 && error.response.data.code === 'UNAUTHORIZED'
+       && error.response.data.message === 'De token is vervallen' )  {
       localStorage.removeItem(JWT_TOKEN_KEY);
       window.location.href = '/login?error=expired';
     }
@@ -36,10 +38,6 @@ export async function getById(url) {
 
   return data;
 }
-
-export const deleteById = async (url, { arg: id }) => {
-  await axios.delete(`${url}/${id}`); 
-};
 
 export const save = async (url, { arg: { id, ...data } }) => {
   await axios({

@@ -1,7 +1,5 @@
 # Examenopdracht Front-end Web Development & Web Services
 
-> Schrap hierboven eventueel wat niet past
-
 - Student: Maxim Bauwelinck
 - Studentennummer: 302041mb
 - E-mailadres: <mailto:maxim.bauwelinck@student.hogent.be>
@@ -12,9 +10,13 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 - [NodeJS](https://nodejs.org)
 - [Yarn](https://yarnpkg.com)
-- [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
+- [Postgresql](https://www.postgresql.org/download/)
 
-> Vul eventueel aan
+### optioneel
+
+een gratis database GUI om de databank te bekijken
+- [pgadmin](https://www.pgadmin.org/download/)
+- [Datagrip](https://www.jetbrains.com/datagrip/download/#section=windows) (gratis voor github pro acounts)
 
 ## Front-end
 
@@ -46,21 +48,17 @@ VITE_API_URL='http://localhost:9000/api'
 yarn dev
 ```
 
-
-
-
-> Schrijf hier hoe we de applicatie starten (.env bestanden aanmaken, commando's om uit te voeren...)
-
 ## Testen
 
-Voor de testen te moeten uitvoeren moeten zowel de backend als de front end werken.
+Voor de testen te kunnen uitvoeren moeten zowel de backend als de front end werken.
 open twee terminals en volg de stappen opstarten in zowel de back als frontend
 
 open dan een 3de terminal en voer het volgende commande uit in de directory van de front end
 ```bash
 yarn test
 ```
-kies dan een browser naar keuze om de testen mee uit te voeren
+selecteer dan E2E testing en vervolgens een browser naar keuze.
+klik daarna op een test om deze uit te voeren.
 ## Back-end
 
 ## Opstarten 
@@ -76,11 +74,13 @@ yarn set version berry
 ```bash
 yarn install
 ```
-## postgres
+## .env
 - maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
+Als je je eigen gmail wilt gebruiken pas dan de EMAIL_USER aan en maak een [app password](https://myaccount.google.com/apppasswords?rapt=AEjHL4PseaCWdtEz9MXbV6GxHCzKCuk49Nd9c-kUwbv9d7kcDXUiZkwm1IdLGUqPsGtBW0mOibHtCd6mdmewjUi7hIH5zJ9jtlyN_YmbStEz4HmIJujBcpY) aan.
+Pas dan EMAIL_PASSWORD aan met het app password dat je zonet gemaakt hebt.
 ```
-NODE_ENV=production
-DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek"
+NODE_ENV=development
+DATABASE_URL="postgres://<username>:<password>@localhost:5432/bibliotheek"
 AANTAL_KOPIEEN_P_BOEK=5
 EMAIL_USER="maximbauwelinck@gmail.com"
 EMAIL_PASSWORD="bwci wedh tnaj ftef"
@@ -88,30 +88,14 @@ EMAIL_PASSWORD="bwci wedh tnaj ftef"
 - en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
 ```
 NODE_ENV=testing
-DATABASE_URL="postgres://postgres:root@localhost:5432/bibliotheek_test"
+DATABASE_URL="postgres://<username>:<password>@localhost:5432/bibliotheek_test"
 AANTAL_KOPIEEN_P_BOEK=5
 EMAIL_USER="maximbauwelinck@gmail.com"
 EMAIL_PASSWORD="bwci wedh tnaj ftef"
 ```
-## mysql
-- maak vervolgens een ``.env`` bestand aan in de root van het project met de volgende inhoud.
-```
-NODE_ENV=production
-DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek"
-AANTAL_KOPIEEN_P_BOEK=5
-EMAIL_USER="maximbauwelinck@gmail.com"
-EMAIL_PASSWORD="bwci wedh tnaj ftef"
-```
-- en maak een ``.env.test`` bestand aan in de root van het project met de volgende inhoud.
-```
-NODE_ENV=testing
-DATABASE_URL="mysql://root:root@localhost:3306/bibliotheek_test"
-AANTAL_KOPIEEN_P_BOEK=5
-EMAIL_USER="maximbauwelinck@gmail.com"
-EMAIL_PASSWORD="bwci wedh tnaj ftef"
-```
+
 ## Development
-1) Als je het project wilt opzetten voor development purposes voer je het volgende commando uit om de databank op te zetten met de nodige migrations en ook eveneens de seed data te importeren.
+1) Als je het project lokaal wilt opzetten voor development purposes voer je het volgende commando uit om de databank op te zetten met de nodige migrations en ook eveneens de seed data te importeren.
 ```bash
 yarn prisma migrate dev
 ```
@@ -144,4 +128,4 @@ yarn test
 ```bash
 yarn test:coverage
 ```
-- om de coverage te kunnen bekijken open je het bestand ``coverage/lcov-report/index.html`` in je browser.
+- om het rapport te kunnen bekijken open je het bestand ``backend/coverage/lcov-report/index.html`` in je browser.
