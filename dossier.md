@@ -3,7 +3,7 @@
 - Student: Maxim Bauwelinck
 - Studentennummer: 302041mb
 - E-mailadres: <mailto:voornaam.naam@student.hogent.be>
-- Demo: <DEMO_LINK_HIER>
+- Demo: https://hogent.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=a0320b40-5c0c-4115-91b6-b249011b011a
 - GitHub-repository: https://github.com/HOGENT-frontendweb/frontendweb-2425-MaximBauwelinck1
 - Front-end Web Development
   - Online versie: https://frontendweb-2425-maximbauwelinck1-1.onrender.com
@@ -58,13 +58,12 @@ Daarnaast kan dit ook gebruikt om reservaties te maken en beheren van deze boeke
 ![alt text](/docs/img/image-113.png)
 ## API calls
 
-
+Alle documentatie is gemaakt met swagger, Je kan alle informatie daar vinden.
 Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te bezoeken.
+
 ``http://localhost:9000/swagger``
 
 ## Behaalde minimumvereisten
-
-> Duid per vak aan welke minimumvereisten je denkt behaald te hebben
 
 ### Front-end Web Development
 
@@ -115,9 +114,9 @@ Zorg er zeker eerst voor dat de backend draait alvorens deze link proberen te be
 
 #### Repositorylaag
 
-- [x] definieert één repository per entiteit - indien van toepassing
-- [x] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
-- [x] er worden kindrelaties opgevraagd (m.b.v. JOINs) - indien van toepassing
+- [ ] definieert één repository per entiteit - indien van toepassing
+- [ ] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
+- [ ] er worden kindrelaties opgevraagd (m.b.v. JOINs) - indien van toepassing
 
 #### Servicelaag met een zekere complexiteit
 
@@ -157,7 +156,6 @@ Ik heb een normale mappen structuur met in mijn ``src`` folder een ``pages``,``c
 
 ### Web Services
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns...)?
 
 Ik heb een normale mappen structuur met in mijn ``src`` folder een ``core``,``data``,``rest``,``service`` en ``types`` folders met nog een extra folder voor mijn utils. In zowel de ``rest`` als ``service`` laag zijn de entiteiten van elkaar afgezonderd. De ``core`` folder bevat veel helper functies die over heel de applicatie gebruikt worden. Ik maak ook gebruik van het middleware pattern, bij een endpoint word er eerst gecontroleerd of de user de juiste permissies heeft dan de request te valideren etc alvorens de endpoint uit te voeren.
 ## Extra technologie
@@ -185,6 +183,7 @@ https://www.nodemailer.com/
 https://www.npmjs.com/package/nodemailer
 
 Users kunnen hun wachtwoord resetten door op wachtwoord vergeten te klikken en hun e-mailadres in te vullen. Zo kunnen ze in hun email op de link klikken om het wachtwoord te veranderen. Daarnaast krijgen gebruikers ook een bevestiging als ze een boek reserveren met de belangerijkste data opgelijst.
+
 ![alt text](/docs/img/image-117.png)
 ![alt text](/docs/img/image-118.png)
 
@@ -201,9 +200,13 @@ De theme toggle werkt niet op elke pagina of maakt het soms slechter door het co
 
 ### Web Services
 
-> Zijn er gekende bugs?
+Er zijn geen bugs naar mijn weten.
 
 ## Reflectie
 
-> Wat vond je van dit project? Wat heb je geleerd? Wat zou je anders doen? Wat vond je goed? Wat vond je minder goed?
-> Wat zou je aanpassen aan de cursus? Wat zou je behouden? Wat zou je toevoegen?
+
+Ik vond dit een zeer leerrijk project. Ik heb er zelf veel tijd ingestoken om sommige aspecten volledig na te maken zoals ik ze in mijn gedachten had waardoor ik soms veel tijd verloor.
+Ik snap nu de basis van een restful api maken alsook apps maken met React. Ik vond het project over het algemeen zeer fijn en leuk om aan te werken. Ik zou in het begin meer tijd gestoken moeten hebben in mijn react components zo klein mogelijk te houden waardoor ik dubbelde code kon vermijden. Wat nu niet altijd het geval is in mijn project en nu is het teveel om volledig te refactoren. Het Irritantste in dit project vond ik de seed data maken. Omdat ik veel boeken moest hebben voordat mijn applicatie bruikbaar werd.
+
+
+Ik vond de cursus over het algemeen zeer goed en makkelijk te volgen. Wat ik zeker goed vond is dat alle code grondig werd uitgelegd zodat je wist wat je aan het kopiëren was.
