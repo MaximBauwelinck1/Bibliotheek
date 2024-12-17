@@ -48,7 +48,7 @@ export default function Login({ login, error,loading }) {
   return (
     <div className={styles.bibliotheek_login}>
       <div className={styles.login_container}>
-        <h2 className={styles.login_titel}>Aanmelden bij bibliotheek Temse</h2>
+        <h2 className={styles.login_titel}>Aanmelden bij bibliotheek Boekenland</h2>
         <ToonError isOpen={error || opt_error} title={error?'Fout bij aanmelden':'Opgelet'} message={errorBericht}/>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.login_form}>
           <input

@@ -24,7 +24,7 @@ const BoekenList = () => {
   return (
     <div className={className}>
       <div className='text-center'>Bibliotheek</div>
-      <h1 className='text-center'>Temse</h1>
+      <h1 className='text-center'>Boekenland</h1>
       <div className='d-flex justify-content-center'>
         <div className='input-group mb-3 w-50'>
           <input

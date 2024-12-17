@@ -67,7 +67,7 @@ export default function Register({ registerTrigger, error,loading }) {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <h1 className={styles.title}>Registreren bij bibliotheek Temse</h1>
+        <h1 className={styles.title}>Registreren bij bibliotheek Boekenland</h1>
         <ToonError isOpen={error && error.response.data.message !='De token is vervallen'}
           title='Fout bij registreren' message={errorBericht}/>
         <div className={styles.field}>

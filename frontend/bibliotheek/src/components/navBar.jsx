@@ -21,7 +21,12 @@ const NavBar = () => {
         data-cy='dashboard'>
         Dashboard
       </NavLink>}
-      <NavLink to="/about" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>Over ons</NavLink>
+      <NavLink to="/about" className={({ isActive }) => isActive ? styles.actieveLink : styles.link}>
+        Over de Bib
+      </NavLink>
+      <p style={{marginLeft:'auto',color:'#b30009'}}>
+        Dit is een fictieve website gemaakt voor educatieve doeleinden als onderdeel
+        van een schoolproject. Deze site is niet verbonden aan een bestaande bibliotheek.</p>
       {
         isAuthed && user ? (
       
