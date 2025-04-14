@@ -1,9 +1,5 @@
 # Examenopdracht Front-end Web Development & Web Services
 
-- Student: Maxim Bauwelinck
-- Studentennummer: 302041mb
-- E-mailadres: <mailto:maxim.bauwelinck@student.hogent.be>
-
 ## Vereisten
 
 Ik verwacht dat volgende software reeds geïnstalleerd is:
